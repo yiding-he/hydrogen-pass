@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
  */
 public enum Icons {
 
-    Logo("/fxml/main.fxml"),
+    Logo("/logo.png"),
 
     //////////////////////////////////////////////////////////////
 

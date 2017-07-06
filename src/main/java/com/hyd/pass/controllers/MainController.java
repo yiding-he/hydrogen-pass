@@ -5,4 +5,7 @@ package com.hyd.pass.controllers;
  */
 public class MainController {
 
+    public void openFileClicked() {
+        // Dialogs.openFile()
+    }
 }

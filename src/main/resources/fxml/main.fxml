@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.hyd.pass.controllers.MainController"
             prefHeight="400.0" prefWidth="600.0">
 
-</AnchorPane>
+    <top>
+        <MenuBar>
+            <Menu text="文件">
+                <MenuItem text="打开..." onAction="#openFileClicked"/>
+            </Menu>
+        </MenuBar>
+    </top>
+</BorderPane>

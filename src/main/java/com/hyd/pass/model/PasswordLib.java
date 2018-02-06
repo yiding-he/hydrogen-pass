@@ -58,6 +58,7 @@ public class PasswordLib {
 
             this.saveFile = saveFile;
             this.rootCategory = jsonObject.getObject("rootCategory", Category.class);
+            this.masterPasswordValidator = jsonObject.getString("masterPasswordValidator");
 
             if (this.rootCategory == null) {
                 this.rootCategory = new Category("我的密码库");
@@ -65,6 +66,10 @@ public class PasswordLib {
 
             // 解开其他内容
         }
+    }
+
+    public String filePath() {
+        return this.saveFile.getAbsolutePath();
     }
 
     public Category getRootCategory() {
@@ -86,9 +91,10 @@ public class PasswordLib {
     public void save() {
         Map<String, Object> data = new HashMap<>();
         data.put("masterPasswordValidator", masterPasswordValidator);
+        data.put("rootCategory", rootCategory);
 
         try {
-            FileUtils.write(this.saveFile, JSON.toJSONString(data), charset);
+            FileUtils.write(this.saveFile, JSON.toJSONString(data, true), charset);
         } catch (IOException e) {
             throw new PasswordLibException(e);
         }

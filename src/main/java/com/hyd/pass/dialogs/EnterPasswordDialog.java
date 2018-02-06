@@ -30,6 +30,7 @@ public class EnterPasswordDialog extends BasicDialog {
                 .body("/fxml/enter-password.fxml", this)
                 .buttons(ButtonType.OK, ButtonType.CANCEL)
                 .onOkButtonClicked(this::onOkButtonClicked)
+                .onStageShown(event -> mainPassword.requestFocus())
                 .applyTo(this);
     }
 

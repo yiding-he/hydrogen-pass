@@ -15,6 +15,8 @@
             <Menu text="文件">
                 <MenuItem text="新建..." onAction="#newFileClicked"/>
                 <MenuItem text="打开..." onAction="#openFileClicked"/>
+                <SeparatorMenuItem/>
+                <MenuItem text="保存" onAction="#saveClicked"/>
             </Menu>
         </MenuBar>
     </top>

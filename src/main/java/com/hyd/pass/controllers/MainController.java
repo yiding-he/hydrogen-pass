@@ -88,9 +88,28 @@ public class MainController extends BaseController {
 
     private void loadPasswordLib(PasswordLib passwordLib) {
         loadCategories(passwordLib);
+
+        AppPrimaryStage.getPrimaryStage().setTitle(App.APP_NAME + " - " + passwordLib.filePath());
     }
 
     private void loadCategories(PasswordLib passwordLib) {
-        this.tvCategories.setRoot(new TreeItem<>(passwordLib.getRootCategory()));
+        Category rootCategory = passwordLib.getRootCategory();
+        TreeItem<Category> root = loadCategory(rootCategory);
+        this.tvCategories.setRoot(root);
+    }
+
+    private TreeItem<Category> loadCategory(Category category) {
+        TreeItem<Category> treeItem = new TreeItem<>(category);
+        for (Category child : category.getChildren()) {
+            treeItem.getChildren().add(loadCategory(child));
+        }
+        return treeItem;
+    }
+
+    public void saveClicked() {
+        if (App.getPasswordLib() != null) {
+            App.getPasswordLib().save();
+            AlertDialog.info("保存完毕", "密码库已成功保存。");
+        }
     }
 }

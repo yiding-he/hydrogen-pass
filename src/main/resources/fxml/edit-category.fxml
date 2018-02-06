@@ -1,0 +1,10 @@
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<VBox stylesheets="/css/style.css" styleClass="dialog-body" xmlns:fx="javafx" prefWidth="500">
+    <HBox styleClass="form-field">
+        <Label text="分类名称："/>
+        <TextField HBox.hgrow="ALWAYS" fx:id="txtCategoryName"/>
+    </HBox>
+</VBox>

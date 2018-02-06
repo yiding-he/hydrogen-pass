@@ -55,6 +55,7 @@ public class CategoryTreeCell extends TreeCell<Category> {
 
         if (empty) {
             setText(null);
+            setGraphic(null);
         } else {
             setGraphic(Icons.Folder.getIconImageView());
             setText(item.getName());

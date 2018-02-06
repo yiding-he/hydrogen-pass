@@ -20,23 +20,27 @@ public class PasswordLib {
 
     private static final String ENC_TEST_STRING = "abcdefghijklmnopqrstuvwxyz";
 
+    private String charset = "UTF-8";
+
     private File saveFile;
 
     private String masterPasswordValidator;
 
-    private String charset = "UTF-8";
+    private Category rootCategory;
 
     public PasswordLib(File saveFile, String masterPassword, boolean create) throws PasswordLibException {
         if (create) {
             this.saveFile = saveFile;
             this.masterPasswordValidator = AESUtils.encode128(ENC_TEST_STRING, masterPassword);
+            this.rootCategory = new Category("我的密码库");
 
         } else {
 
             String v;
+            JSONObject jsonObject;
             try {
                 String json = FileUtils.read(saveFile);
-                JSONObject jsonObject = JSON.parseObject(json);
+                jsonObject = JSON.parseObject(json);
                 v = jsonObject.getString("masterPasswordValidator");
             } catch (IOException e) {
                 throw new PasswordLibException("无法打开文件", e);
@@ -53,8 +57,22 @@ public class PasswordLib {
             }
 
             this.saveFile = saveFile;
+            this.rootCategory = jsonObject.getObject("rootCategory", Category.class);
+
+            if (this.rootCategory == null) {
+                this.rootCategory = new Category("我的密码库");
+            }
+
             // 解开其他内容
         }
+    }
+
+    public Category getRootCategory() {
+        return rootCategory;
+    }
+
+    public void setRootCategory(Category rootCategory) {
+        this.rootCategory = rootCategory;
     }
 
     public String getMasterPasswordValidator() {

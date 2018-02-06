@@ -1,6 +1,7 @@
 package com.hyd.pass.fx;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * (description)
@@ -11,6 +12,7 @@ import javafx.scene.image.Image;
 public enum Icons {
 
     Logo("/logo.png"),
+    Folder("/icons/folder.png"),
 
     //////////////////////////////////////////////////////////////
 
@@ -24,5 +26,12 @@ public enum Icons {
 
     public Image getImage() {
         return image;
+    }
+
+    public ImageView getIconImageView() {
+        ImageView imageView = new ImageView(getImage());
+        imageView.setFitWidth(16);
+        imageView.setFitHeight(16);
+        return imageView;
     }
 }

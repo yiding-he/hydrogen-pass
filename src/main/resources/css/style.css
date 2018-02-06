@@ -1,0 +1,8 @@
+.dialog-body {
+    -fx-spacing: 10;
+}
+
+.form-field {
+    -fx-spacing: 10;
+    -fx-alignment: baseline-left;
+}

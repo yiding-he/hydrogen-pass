@@ -12,6 +12,7 @@
     <top>
         <MenuBar>
             <Menu text="文件">
+                <MenuItem text="新建..." onAction="#newFileClicked"/>
                 <MenuItem text="打开..." onAction="#openFileClicked"/>
             </Menu>
         </MenuBar>

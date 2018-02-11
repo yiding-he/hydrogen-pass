@@ -1,0 +1,14 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<HBox spacing="10" xmlns:fx="javafx">
+    <VBox spacing="10">
+        <Button text="上移" onAction="#moveUp"/>
+        <Button text="下移" onAction="#moveDown"/>
+        <Pane prefHeight="10"/>
+        <Button text="置顶" onAction="#moveTop"/>
+        <Button text="置底" onAction="#moveBottom"/>
+    </VBox>
+    <ListView HBox.hgrow="ALWAYS" fx:id="lvCategories"/>
+</HBox>

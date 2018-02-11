@@ -28,6 +28,8 @@ public class PasswordLib {
 
     private Category rootCategory;
 
+    private boolean changed;
+
     public PasswordLib(File saveFile, String masterPassword, boolean create) throws PasswordLibException {
         if (create) {
             this.saveFile = saveFile;
@@ -66,6 +68,14 @@ public class PasswordLib {
 
             // 解开其他内容
         }
+    }
+
+    public boolean isChanged() {
+        return changed;
+    }
+
+    public void setChanged(boolean changed) {
+        this.changed = changed;
     }
 
     public String filePath() {

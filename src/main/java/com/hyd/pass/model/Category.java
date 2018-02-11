@@ -1,6 +1,9 @@
 package com.hyd.pass.model;
 
+import javafx.scene.control.TreeItem;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -54,5 +57,19 @@ public class Category extends OrderedItem {
         category.setOrder(children.size());
         children.add(category);
         return category;
+    }
+
+    public void updateChildrenOrder(List<Category> orderedChildren) {
+        for (int i = 0; i < orderedChildren.size(); i++) {
+            Category child = orderedChildren.get(i);
+            child.setOrder(i);
+        }
+
+        this.children.sort(Comparator.comparing(Category::getOrder));
+    }
+
+    public void applyChildrenOrder(TreeItem<Category> thisTreeItem) {
+        thisTreeItem.getChildren().sort(
+                Comparator.comparing(treeItem -> treeItem.getValue().getOrder()));
     }
 }

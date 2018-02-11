@@ -1,6 +1,8 @@
 package com.hyd.pass.fx;
 
+import com.hyd.pass.App;
 import com.hyd.pass.dialogs.EditCategoryDialog;
+import com.hyd.pass.dialogs.SortCategoryChildDialog;
 import com.hyd.pass.model.Category;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
@@ -20,8 +22,14 @@ public class CategoryTreeCell extends TreeCell<Category> {
 
     private ContextMenu contextMenu = contextMenu(
             menuItem("编辑", this::editItem),
-            menuItem("新建分类...", this::createChild)
+            menuItem("新建分类...", this::createChild),
+            menuItem("子类排序...", this::sortChild)
     );
+
+    private void sortChild() {
+        SortCategoryChildDialog dialog = new SortCategoryChildDialog(this.getTreeItem());
+        dialog.show();
+    }
 
     private void createChild() {
         EditCategoryDialog dialog = new EditCategoryDialog("编辑分类", "");
@@ -31,6 +39,7 @@ public class CategoryTreeCell extends TreeCell<Category> {
             Category category = getItem().createChild(dialog.getCategoryName());
             getTreeItem().getChildren().add(new TreeItem<>(category));
             getTreeItem().setExpanded(true);
+            App.setPasswordLibChanged();
         }
     }
 
@@ -40,12 +49,15 @@ public class CategoryTreeCell extends TreeCell<Category> {
         if (buttonType == ButtonType.OK) {
             getItem().setName(dialog.getCategoryName());
             getTreeView().refresh();
+            App.setPasswordLibChanged();
         }
     }
 
     public CategoryTreeCell() {
         setOnContextMenuRequested(event -> {
-            contextMenu.show(this, event.getScreenX(), event.getScreenY());
+            if (!isEmpty()) {
+                contextMenu.show(this, event.getScreenX(), event.getScreenY());
+            }
         });
     }
 

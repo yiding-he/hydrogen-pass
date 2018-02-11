@@ -33,6 +33,12 @@ public class App extends Application {
         return passwordLib;
     }
 
+    public static void setPasswordLibChanged() {
+        if (passwordLib != null) {
+            passwordLib.setChanged(true);
+        }
+    }
+
     public static void main(String[] args) {
         Application.launch(App.class);
     }

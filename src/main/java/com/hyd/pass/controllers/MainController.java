@@ -11,6 +11,7 @@ import com.hyd.pass.model.Category;
 import com.hyd.pass.model.PasswordLib;
 import com.hyd.pass.model.PasswordLibException;
 import javafx.scene.control.*;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 
@@ -34,6 +35,36 @@ public class MainController extends BaseController {
     public void initialize() {
         this.split1.setDividerPositions(0.2);
         this.split2.setDividerPositions(0.4);
+
+        AppPrimaryStage.getPrimaryStage().setOnCloseRequest(this::beforeClose);
+    }
+
+    private void beforeClose(WindowEvent event) {
+
+        if (App.getPasswordLib() == null) {
+            return;
+        }
+
+        if (App.getPasswordLib().isChanged()) {
+            ButtonType buttonType = AlertDialog.confirmYesNoCancel("保存文件",
+                    "文件尚未保存。是否保存然后退出？\n\n" +
+                            "点击“是”则保存文件然后退出，点击“否”则直接退出，点击“取消”不退出。");
+
+            if (buttonType == ButtonType.CANCEL) {
+                event.consume();
+                return;
+            }
+
+            if (buttonType == ButtonType.YES) {
+                try {
+                    App.getPasswordLib().save();
+                } catch (Exception e) {
+                    logger.error("保存文件失败", e);
+                    AlertDialog.error("保存文件失败: ", e);
+                    event.consume();
+                }
+            }
+        }
     }
 
     public void openFileClicked() {

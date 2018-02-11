@@ -10,6 +10,7 @@ import com.hyd.pass.dialogs.EnterPasswordDialog;
 import com.hyd.pass.model.Category;
 import com.hyd.pass.model.PasswordLib;
 import com.hyd.pass.model.PasswordLibException;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 import javafx.stage.WindowEvent;
 
@@ -32,11 +33,27 @@ public class MainController extends BaseController {
 
     public TableView tvAuthentications;
 
+    public Button btnNewEntry;
+
+    public Button btnNewLogin;
+
+    public TextArea txtNote;
+
+    public TabPane tpEntryInfo;
+
     public void initialize() {
         this.split1.setDividerPositions(0.2);
         this.split2.setDividerPositions(0.4);
+        this.tvCategories.getSelectionModel().selectedItemProperty().addListener(this::selectedCategoryChanged);
 
         AppPrimaryStage.getPrimaryStage().setOnCloseRequest(this::beforeClose);
+    }
+
+    private void selectedCategoryChanged(
+            ObservableValue<? extends TreeItem<Category>> ob, TreeItem<Category> _old, TreeItem<Category> selected) {
+
+        this.btnNewEntry.setDisable(selected == null);
+        this.tblEntries.setDisable(selected == null);
     }
 
     private void beforeClose(WindowEvent event) {
@@ -119,7 +136,8 @@ public class MainController extends BaseController {
 
     private void loadPasswordLib(PasswordLib passwordLib) {
         loadCategories(passwordLib);
-
+        this.tvCategories.getRoot().setExpanded(true);
+        this.tvCategories.getSelectionModel().select(this.tvCategories.getRoot());
         AppPrimaryStage.getPrimaryStage().setTitle(App.APP_NAME + " - " + passwordLib.filePath());
     }
 
@@ -142,5 +160,11 @@ public class MainController extends BaseController {
             App.getPasswordLib().save();
             AlertDialog.info("保存完毕", "密码库已成功保存。");
         }
+    }
+
+    public void newEntryClicked() {
+    }
+
+    public void newLoginClicked() {
     }
 }

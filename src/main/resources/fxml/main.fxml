@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.hyd.pass.fx.CategoryTreeView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.hyd.pass.controllers.MainController"
@@ -25,11 +24,42 @@
         <SplitPane fx:id="split1">
             <CategoryTreeView fx:id="tvCategories" maxWidth="300"/>
             <SplitPane orientation="VERTICAL" fx:id="split2">
-                <TableView fx:id="tblEntries" maxHeight="400"/>
-                <VBox>
-                    <TableView fx:id="tvAuthentications"/>
-                    <Pane prefHeight="150"/>
+                <VBox maxHeight="400">
+                    <HBox spacing="10" alignment="BASELINE_LEFT">
+                        <padding>
+                            <Insets topRightBottomLeft="5"/>
+                        </padding>
+                        <Button text="新建..." disable="true" fx:id="btnNewEntry" onAction="#newEntryClicked"/>
+                    </HBox>
+                    <TableView fx:id="tblEntries" VBox.vgrow="ALWAYS" disable="true">
+                        <columns>
+                            <TableColumn text="名称"/>
+                            <TableColumn text="地址"/>
+                            <TableColumn text="备注"/>
+                        </columns>
+                    </TableView>
                 </VBox>
+                <TabPane fx:id="tpEntryInfo" disable="true">
+                    <Tab text="登录账号" closable="false">
+                        <VBox>
+                            <HBox spacing="10" alignment="BASELINE_LEFT">
+                                <padding>
+                                    <Insets topRightBottomLeft="5"/>
+                                </padding>
+                                <Button text="新建..." disable="true" fx:id="btnNewLogin" onAction="#newLoginClicked"/>
+                            </HBox>
+                            <TableView fx:id="tvAuthentications" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn text="用户名"/>
+                                    <TableColumn text="密码"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+                    <Tab text="笔记" closable="false">
+                        <TextArea fx:id="txtNote" editable="false"/>
+                    </Tab>
+                </TabPane>
             </SplitPane>
         </SplitPane>
     </center>

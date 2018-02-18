@@ -14,11 +14,11 @@ import java.util.List;
  */
 public class Category extends OrderedItem {
 
-    private long id = System.currentTimeMillis();
-
     private long parentId;
 
     private List<Category> children = new ArrayList<>();
+
+    private List<Entry> entries = new ArrayList<>();
 
     public Category() {
     }
@@ -27,20 +27,20 @@ public class Category extends OrderedItem {
         setName(name);
     }
 
+    public List<Entry> getEntries() {
+        return entries;
+    }
+
+    public void setEntries(List<Entry> entries) {
+        this.entries = entries;
+    }
+
     public List<Category> getChildren() {
         return children;
     }
 
     public void setChildren(List<Category> children) {
         this.children = children;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getParentId() {

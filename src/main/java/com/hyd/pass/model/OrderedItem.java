@@ -8,9 +8,19 @@ package com.hyd.pass.model;
  */
 public abstract class OrderedItem {
 
-    private int order;
+    private long id = System.currentTimeMillis();
 
     private String name;
+
+    private int order;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

@@ -7,14 +7,18 @@ import com.hyd.pass.App;
 import com.hyd.pass.Logger;
 import com.hyd.pass.dialogs.CreatePasswordDialog;
 import com.hyd.pass.dialogs.EnterPasswordDialog;
-import com.hyd.pass.model.Category;
-import com.hyd.pass.model.PasswordLib;
-import com.hyd.pass.model.PasswordLibException;
+import com.hyd.pass.dialogs.EntryInfoDialog;
+import com.hyd.pass.fx.EntryTableRow;
+import com.hyd.pass.model.*;
+import com.hyd.pass.utils.OrElse;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
+import java.util.function.Consumer;
+
+import static com.hyd.fx.cells.TableViewHelper.setColumnValueFactory;
 
 /**
  * @author yiding.he
@@ -29,9 +33,9 @@ public class MainController extends BaseController {
 
     public TreeView<Category> tvCategories;
 
-    public TableView tblEntries;
+    public TableView<Entry> tblEntries;
 
-    public TableView tvAuthentications;
+    public TableView<Authentication> tvAuthentications;
 
     public Button btnNewEntry;
 
@@ -41,19 +45,35 @@ public class MainController extends BaseController {
 
     public TabPane tpEntryInfo;
 
+    public TableColumn<Entry, String> colEntryName;
+
+    public TableColumn<Entry, String> colEntryLocation;
+
+    public TableColumn<Entry, String> colEntryComment;
+
     public void initialize() {
         this.split1.setDividerPositions(0.2);
         this.split2.setDividerPositions(0.4);
         this.tvCategories.getSelectionModel().selectedItemProperty().addListener(this::selectedCategoryChanged);
 
+        setColumnValueFactory(colEntryName, Entry::getName);
+        setColumnValueFactory(colEntryLocation, Entry::getLocation);
+        setColumnValueFactory(colEntryComment, Entry::getComment);
+
+        this.tblEntries.setRowFactory(tv -> new EntryTableRow());
+
         AppPrimaryStage.getPrimaryStage().setOnCloseRequest(this::beforeClose);
     }
 
     private void selectedCategoryChanged(
-            ObservableValue<? extends TreeItem<Category>> ob, TreeItem<Category> _old, TreeItem<Category> selected) {
+            ObservableValue<? extends TreeItem<Category>> ob,
+            TreeItem<Category> _old,
+            TreeItem<Category> selected) {
 
         this.btnNewEntry.setDisable(selected == null);
         this.tblEntries.setDisable(selected == null);
+
+        refreshEntryList();
     }
 
     private void beforeClose(WindowEvent event) {
@@ -155,6 +175,28 @@ public class MainController extends BaseController {
         return treeItem;
     }
 
+    private OrElse ifCategorySelectedThen(Consumer<Category> consumer) {
+        TreeItem<Category> item = this.tvCategories.getSelectionModel().getSelectedItem();
+        if (item == null) {
+            return new OrElse(false);
+        }
+
+        Category category = item.getValue();
+        if (category == null) {
+            return new OrElse(false);
+        }
+
+        return new OrElse(true, () -> consumer.accept(category));
+    }
+
+    private void refreshEntryList() {
+        ifCategorySelectedThen(
+                category -> tblEntries.getItems().setAll(category.getEntries())
+        ).orElse(
+                () -> tblEntries.getItems().clear()
+        );
+    }
+
     public void saveClicked() {
         if (App.getPasswordLib() != null) {
             App.getPasswordLib().save();
@@ -163,6 +205,15 @@ public class MainController extends BaseController {
     }
 
     public void newEntryClicked() {
+        EntryInfoDialog dialog = new EntryInfoDialog(null);
+        ButtonType buttonType = dialog.showAndWait().orElse(ButtonType.CANCEL);
+
+        if (buttonType == ButtonType.OK) {
+            Entry entry = dialog.getEntry();
+            ifCategorySelectedThen(category -> category.addEntry(entry));
+            refreshEntryList();
+            App.setPasswordLibChanged();
+        }
     }
 
     public void newLoginClicked() {

@@ -5,6 +5,7 @@ import javafx.scene.control.TreeItem;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * (description)
@@ -71,5 +72,23 @@ public class Category extends OrderedItem {
     public void applyChildrenOrder(TreeItem<Category> thisTreeItem) {
         thisTreeItem.getChildren().sort(
                 Comparator.comparing(treeItem -> treeItem.getValue().getOrder()));
+    }
+
+    public void addEntry(Entry entry) {
+        this.entries.add(entry);
+    }
+
+    public void iterateChildren(Function<Category, Boolean> processor) {
+        if (processor.apply(this)) {
+            iterateChildren(this, processor);
+        }
+    }
+
+    private void iterateChildren(Category parent, Function<Category, Boolean> processor) {
+        for (Category child : parent.getChildren()) {
+            if (processor.apply(child)) {
+                iterateChildren(child, processor);
+            }
+        }
     }
 }

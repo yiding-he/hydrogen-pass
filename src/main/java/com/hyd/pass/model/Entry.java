@@ -16,6 +16,15 @@ public class Entry extends OrderedItem {
 
     private List<Authentication> authentications = new ArrayList<>();
 
+    public Entry() {
+    }
+
+    public Entry(String name, String location, String comment) {
+        this.setName(name);
+        this.location = location;
+        this.comment = comment;
+    }
+
     public String getLocation() {
         return location;
     }

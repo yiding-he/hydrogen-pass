@@ -33,9 +33,9 @@
                     </HBox>
                     <TableView fx:id="tblEntries" VBox.vgrow="ALWAYS" disable="true">
                         <columns>
-                            <TableColumn text="名称"/>
-                            <TableColumn text="地址"/>
-                            <TableColumn text="备注"/>
+                            <TableColumn text="名称" fx:id="colEntryName"/>
+                            <TableColumn text="地址" fx:id="colEntryLocation"/>
+                            <TableColumn text="备注" fx:id="colEntryComment"/>
                         </columns>
                     </TableView>
                 </VBox>

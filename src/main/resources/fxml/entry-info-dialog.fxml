@@ -1,0 +1,18 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<VBox stylesheets="/css/style.css" styleClass="dialog-body" xmlns:fx="javafx" prefWidth="500">
+    <HBox styleClass="form-field">
+        <Label text="名称："/>
+        <TextField HBox.hgrow="ALWAYS" fx:id="txtEntryName"/>
+    </HBox>
+    <HBox styleClass="form-field">
+        <Label text="位置："/>
+        <TextField HBox.hgrow="ALWAYS" fx:id="txtEntryLocation"/>
+    </HBox>
+    <HBox styleClass="form-field">
+        <Label text="备注："/>
+        <TextField HBox.hgrow="ALWAYS" fx:id="txtEntryComment"/>
+    </HBox>
+</VBox>

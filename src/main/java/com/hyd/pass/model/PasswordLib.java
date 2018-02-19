@@ -105,8 +105,29 @@ public class PasswordLib {
 
         try {
             FileUtils.write(this.saveFile, JSON.toJSONString(data, true), charset);
+            setChanged(false);
         } catch (IOException e) {
             throw new PasswordLibException(e);
         }
     }
+
+    public void deleteCategory(Category c) {
+        boolean[] removed = {false};
+
+        this.rootCategory.iterateChildren(category -> {
+            if (category.getChildren().contains(c)) {
+                category.getChildren().remove(c);
+                removed[0] = true;
+                return false;
+            } else {
+                return true;
+            }
+        });
+
+        if (removed[0]) {
+            setChanged(true);
+        }
+    }
+
+
 }

@@ -26,6 +26,12 @@ public class CategoryTreeCell extends TreeCell<Category> {
             menuItem("删除", this::deleteItem)
     );
 
+    private ContextMenu rootContextMenu = contextMenu(
+            menuItem("编辑", this::editItem),
+            menuItem("新建分类...", this::createChild),
+            menuItem("子类排序...", this::sortChild)
+    );
+
     private void deleteItem() {
         if (!AlertDialog.confirmYesNo("删除分类",
                 "确定要删除“" + getItem().getName() + "”及其下面的所有分类和内容吗？")) {
@@ -63,10 +69,19 @@ public class CategoryTreeCell extends TreeCell<Category> {
         }
     }
 
+    private ContextMenu getCurrentContextMenu() {
+        return isRoot() ? rootContextMenu : contextMenu;
+    }
+
+    private boolean isRoot() {
+        return getTreeItem() == getTreeView().getRoot();
+    }
+
     public CategoryTreeCell() {
         setOnContextMenuRequested(event -> {
             if (!isEmpty()) {
-                contextMenu.show(this, event.getScreenX(), event.getScreenY());
+                getCurrentContextMenu()
+                        .show(this, event.getScreenX(), event.getScreenY());
             }
         });
     }

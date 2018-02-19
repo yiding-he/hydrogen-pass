@@ -57,6 +57,10 @@ public class UserConfig {
         return properties.getProperty(key, def);
     }
 
+    public static boolean getBoolean(String key, boolean def) {
+        return Boolean.parseBoolean(getString(key, String.valueOf(def)));
+    }
+
     public static void setString(String key, String value) {
         properties.put(key, value);
 

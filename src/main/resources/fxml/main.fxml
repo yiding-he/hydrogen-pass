@@ -21,6 +21,9 @@
             </Menu>
             <Menu text="编辑">
                 <MenuItem text="修改主密码..." onAction="#changeMasterPasswordClicked"/>
+            </Menu>
+            <Menu text="选项">
+                <CheckMenuItem text="启动时自动打开最近的文件" onAction="#autoOpenToggleClicked" fx:id="mnuAutoOpen"/>
                 <CheckMenuItem text="退出时自动保存" onAction="#autoSaveToggleClicked" fx:id="mnuAutoSave"/>
             </Menu>
         </MenuBar>
@@ -39,9 +42,9 @@
                     </HBox>
                     <TableView fx:id="tblEntries" VBox.vgrow="ALWAYS" disable="true">
                         <columns>
-                            <TableColumn text="名称" fx:id="colEntryName"/>
-                            <TableColumn text="地址" fx:id="colEntryLocation"/>
-                            <TableColumn text="备注" fx:id="colEntryComment"/>
+                            <TableColumn text="名称" prefWidth="120" fx:id="colEntryName"/>
+                            <TableColumn text="地址" prefWidth="100" fx:id="colEntryLocation"/>
+                            <TableColumn text="备注" prefWidth="300" fx:id="colEntryComment"/>
                         </columns>
                     </TableView>
                 </VBox>
@@ -56,8 +59,8 @@
                             </HBox>
                             <TableView fx:id="tblAuthentications" VBox.vgrow="ALWAYS">
                                 <columns>
-                                    <TableColumn text="用户名" fx:id="colAuthUsername"/>
-                                    <TableColumn text="密码" fx:id="colAuthPassword"/>
+                                    <TableColumn text="用户名" prefWidth="200" fx:id="colAuthUsername"/>
+                                    <TableColumn text="密码"  prefWidth="200" fx:id="colAuthPassword"/>
                                 </columns>
                             </TableView>
                         </VBox>

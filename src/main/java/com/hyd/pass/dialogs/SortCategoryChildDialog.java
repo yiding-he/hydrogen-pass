@@ -52,6 +52,10 @@ public class SortCategoryChildDialog extends BasicDialog {
             BiFunction<List<Category>, Integer, Integer> insertPosition
     ) {
         int selectedIndex = this.lvCategories.getSelectionModel().getSelectedIndex();
+        if (selectedIndex == -1) {
+            return;
+        }
+
         List<Category> items = this.lvCategories.getItems();
 
         if (canMove.apply(items, selectedIndex)) {

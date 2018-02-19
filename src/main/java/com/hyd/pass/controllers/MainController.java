@@ -14,11 +14,11 @@ import com.hyd.pass.model.*;
 import com.hyd.pass.utils.OrElse;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.WindowEvent;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -62,6 +62,8 @@ public class MainController extends BaseController {
 
     public CheckMenuItem mnuAutoSave;
 
+    public CheckMenuItem mnuAutoOpen;
+
     public void initialize() {
         this.split1.setDividerPositions(0.2);
         this.split2.setDividerPositions(0.4);
@@ -103,8 +105,25 @@ public class MainController extends BaseController {
 
         AppPrimaryStage.getPrimaryStage().setOnCloseRequest(this::beforeClose);
         AppPrimaryStage.getPrimaryStage().addEventFilter(KeyEvent.KEY_PRESSED, this::keyEventHandler);
-        mnuAutoSave.setSelected(Boolean.parseBoolean(UserConfig.getString("auto_save_on_exit", "false")));
 
+        mnuAutoSave.setSelected(UserConfig.getBoolean("auto_save_on_exit", false));
+        mnuAutoOpen.setSelected(UserConfig.getBoolean("auto_open_on_start", false));
+
+        ///////////////////////////////////////////////
+
+        tryAutoOpenRecentFile();
+    }
+
+    private void tryAutoOpenRecentFile() {
+        if (UserConfig.getBoolean("auto_open_on_start", false)) {
+            String filePath = UserConfig.getString("latest_file", "");
+            if (StringUtils.isNotBlank(filePath)) {
+                File file = new File(filePath);
+                if (file.exists() && file.canRead()) {
+                    openPasswordLibFile(file);
+                }
+            }
+        }
     }
 
     private void keyEventHandler(KeyEvent event) {
@@ -207,20 +226,23 @@ public class MainController extends BaseController {
                 AppPrimaryStage.getPrimaryStage(), "打开密码库文件", App.FILE_EXT, App.FILE_EXT_NAME);
 
         if (file != null) {
-            EnterPasswordDialog dialog = new EnterPasswordDialog();
-            ButtonType buttonType = dialog.showAndWait().orElse(ButtonType.CANCEL);
+            openPasswordLibFile(file);
+        }
+    }
 
-            if (buttonType == ButtonType.OK) {
-                try {
-                    String masterPassword = dialog.getPassword();
+    private void openPasswordLibFile(File file) {
+        EnterPasswordDialog dialog = new EnterPasswordDialog(file.getName());
+        ButtonType buttonType = dialog.showAndWait().orElse(ButtonType.CANCEL);
 
-                    PasswordLib passwordLib = new PasswordLib(file, masterPassword, false);
-                    loadPasswordLib(passwordLib);
-                    App.setPasswordLib(passwordLib);
-                } catch (PasswordLibException e) {
-                    logger.error("打开文件失败", e);
-                    AlertDialog.error("密码不正确", e);
-                }
+        if (buttonType == ButtonType.OK) {
+            try {
+                String masterPassword = dialog.getPassword();
+                PasswordLib passwordLib = new PasswordLib(file, masterPassword, false);
+                loadPasswordLib(passwordLib);
+                App.setPasswordLib(passwordLib);
+            } catch (PasswordLibException e) {
+                logger.error("打开文件失败", e);
+                AlertDialog.error("密码不正确", e);
             }
         }
     }
@@ -262,6 +284,7 @@ public class MainController extends BaseController {
     }
 
     private void loadPasswordLib(PasswordLib passwordLib) {
+        UserConfig.setString("latest_file", passwordLib.filePath());
         loadCategories(passwordLib);
         this.tvCategories.getRoot().setExpanded(true);
         this.tvCategories.getSelectionModel().select(this.tvCategories.getRoot());
@@ -337,6 +360,10 @@ public class MainController extends BaseController {
             App.getCurrentEntry().getAuthentications().add(dialog.getAuthentication());
             refreshAuthenticationList();
         }
+    }
+
+    public void autoOpenToggleClicked() {
+        UserConfig.setString("auto_open_on_start", String.valueOf(mnuAutoOpen.isSelected()));
     }
 
     public void autoSaveToggleClicked() {

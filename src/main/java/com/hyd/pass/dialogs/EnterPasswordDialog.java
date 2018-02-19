@@ -21,11 +21,13 @@ public class EnterPasswordDialog extends BasicDialog {
     @FXML
     private PasswordField mainPassword;
 
+    private String fileName;
+
     private String password;
 
-    public EnterPasswordDialog() {
+    public EnterPasswordDialog(String fileName) {
         new DialogBuilder()
-                .title("输入主密码")
+                .title("输入“" + fileName + "”的主密码")
                 .logo(AppLogo.getLogo())
                 .body("/fxml/enter-password.fxml", this)
                 .buttons(ButtonType.OK, ButtonType.CANCEL)

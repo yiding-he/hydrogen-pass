@@ -55,6 +55,8 @@ public class App extends Application {
         primaryStage.setTitle(APP_NAME);
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
+
+        System.out.println("__OK__");
     }
 
     ////////////////////////////////////////////////////////////////////////////////

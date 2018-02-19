@@ -38,6 +38,14 @@ public class EntryInfoDialog extends BasicDialog {
                 .applyTo(this);
     }
 
+    public void initialize() {
+        if (this.entry != null) {
+            this.txtEntryName.setText(this.entry.getName());
+            this.txtEntryLocation.setText(this.entry.getLocation());
+            this.txtEntryComment.setText(this.entry.getComment());
+        }
+    }
+
     public Entry getEntry() {
         return entry;
     }
@@ -47,10 +55,16 @@ public class EntryInfoDialog extends BasicDialog {
             event.consume();
         }
 
-        this.entry = new Entry(
-                StringUtils.trim(txtEntryName.getText()),
-                StringUtils.trim(txtEntryLocation.getText()),
-                StringUtils.trim(txtEntryComment.getText())
-        );
+        String name = StringUtils.trim(txtEntryName.getText());
+        String location = StringUtils.trim(txtEntryLocation.getText());
+        String comment = StringUtils.trim(txtEntryComment.getText());
+
+        if (this.entry == null) {
+            this.entry = new Entry(name, location, comment);
+        } else {
+            this.entry.setName(name);
+            this.entry.setLocation(location);
+            this.entry.setComment(comment);
+        }
     }
 }

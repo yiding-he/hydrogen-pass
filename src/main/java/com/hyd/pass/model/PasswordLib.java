@@ -2,6 +2,7 @@ package com.hyd.pass.model;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.hyd.pass.App;
 import com.hyd.pass.utils.AESUtils;
 import com.hyd.pass.utils.FileUtils;
 
@@ -62,11 +63,13 @@ public class PasswordLib {
             this.rootCategory = jsonObject.getObject("rootCategory", Category.class);
             this.masterPasswordValidator = jsonObject.getString("masterPasswordValidator");
 
+            App.setMasterPassword(masterPassword);
+
             if (this.rootCategory == null) {
                 this.rootCategory = new Category("我的密码库");
+            } else {
+                this.rootCategory.iterateChildren(Category::readEntries);  // 解密内容
             }
-
-            // 解开其他内容
         }
     }
 
@@ -99,6 +102,8 @@ public class PasswordLib {
     }
 
     public void save() {
+        rootCategory.iterateChildren(Category::saveEntries);
+
         Map<String, Object> data = new HashMap<>();
         data.put("masterPasswordValidator", masterPasswordValidator);
         data.put("rootCategory", rootCategory);

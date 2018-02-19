@@ -11,6 +11,7 @@ import com.hyd.pass.dialogs.EntryInfoDialog;
 import com.hyd.pass.fx.EntryTableRow;
 import com.hyd.pass.model.*;
 import com.hyd.pass.utils.OrElse;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
 import javafx.stage.WindowEvent;
@@ -35,7 +36,7 @@ public class MainController extends BaseController {
 
     public TableView<Entry> tblEntries;
 
-    public TableView<Authentication> tvAuthentications;
+    public TableView<Authentication> tblAuthentications;
 
     public Button btnNewEntry;
 
@@ -54,15 +55,35 @@ public class MainController extends BaseController {
     public void initialize() {
         this.split1.setDividerPositions(0.2);
         this.split2.setDividerPositions(0.4);
-        this.tvCategories.getSelectionModel().selectedItemProperty().addListener(this::selectedCategoryChanged);
+
+        ObservableValue<TreeItem<Category>> selectedCategoryItem =
+                this.tvCategories.getSelectionModel().selectedItemProperty();
+
+        selectedCategoryItem.addListener(this::selectedCategoryChanged);
 
         setColumnValueFactory(colEntryName, Entry::getName);
         setColumnValueFactory(colEntryLocation, Entry::getLocation);
         setColumnValueFactory(colEntryComment, Entry::getComment);
 
         this.tblEntries.setRowFactory(tv -> new EntryTableRow());
+        this.tblEntries.getSortOrder().add(colEntryName);
+
+        ReadOnlyObjectProperty<Entry> selectedEntry =
+                this.tblEntries.getSelectionModel().selectedItemProperty();
+
+        selectedEntry.addListener(this::selectedEntryChanged);
+
+        this.txtNote.textProperty().addListener(this::noteTextChanged);
 
         AppPrimaryStage.getPrimaryStage().setOnCloseRequest(this::beforeClose);
+    }
+
+    private void noteTextChanged(ObservableValue<? extends String> ob, String _old, String text) {
+        Entry currentEntry = App.getCurrentEntry();
+        if (currentEntry != null) {
+            currentEntry.setNote(text);
+            App.setPasswordLibChanged();
+        }
     }
 
     private void selectedCategoryChanged(
@@ -70,10 +91,26 @@ public class MainController extends BaseController {
             TreeItem<Category> _old,
             TreeItem<Category> selected) {
 
+        App.setCurrentCategory(selected == null ? null : selected.getValue());
+
         this.btnNewEntry.setDisable(selected == null);
         this.tblEntries.setDisable(selected == null);
 
         refreshEntryList();
+    }
+
+    private void selectedEntryChanged(
+            ObservableValue<? extends Entry> ob,
+            Entry _old,
+            Entry selected
+    ) {
+        App.setCurrentEntry(selected);
+
+        this.btnNewLogin.setDisable(selected == null);
+        this.tblAuthentications.setDisable(selected == null);
+        this.tpEntryInfo.setDisable(selected == null);
+        this.txtNote.setEditable(selected != null);
+        this.txtNote.setText(selected == null? "": selected.getNote());
     }
 
     private void beforeClose(WindowEvent event) {
@@ -114,7 +151,9 @@ public class MainController extends BaseController {
 
             if (buttonType == ButtonType.OK) {
                 try {
-                    PasswordLib passwordLib = new PasswordLib(file, dialog.getPassword(), false);
+                    String masterPassword = dialog.getPassword();
+
+                    PasswordLib passwordLib = new PasswordLib(file, masterPassword, false);
                     loadPasswordLib(passwordLib);
                     App.setPasswordLib(passwordLib);
                 } catch (PasswordLibException e) {
@@ -177,22 +216,18 @@ public class MainController extends BaseController {
 
     private OrElse ifCategorySelectedThen(Consumer<Category> consumer) {
         TreeItem<Category> item = this.tvCategories.getSelectionModel().getSelectedItem();
-        if (item == null) {
-            return new OrElse(false);
+        if (item == null || item.getValue() == null) {
+            return OrElse.negative();
         }
 
-        Category category = item.getValue();
-        if (category == null) {
-            return new OrElse(false);
-        }
-
-        return new OrElse(true, () -> consumer.accept(category));
+        return OrElse.positive(() -> consumer.accept(item.getValue()));
     }
 
     private void refreshEntryList() {
-        ifCategorySelectedThen(
-                category -> tblEntries.getItems().setAll(category.getEntries())
-        ).orElse(
+        ifCategorySelectedThen(category -> {
+            tblEntries.getItems().setAll(category.getEntries());
+            tblEntries.sort();
+        }).orElse(
                 () -> tblEntries.getItems().clear()
         );
     }

@@ -1,17 +1,27 @@
 package com.hyd.pass.utils;
 
 /**
+ *
+ *
  * @author yidin
  */
 public class OrElse {
 
     private boolean predicate;
 
-    public OrElse(boolean predicate) {
+    public static OrElse negative() {
+        return new OrElse(false);
+    }
+
+    public static OrElse positive(Runnable positiveAction) {
+        return new OrElse(true, positiveAction);
+    }
+
+    private OrElse(boolean predicate) {
         this.predicate = predicate;
     }
 
-    public OrElse(boolean predicate, Runnable positiveAction) {
+    private OrElse(boolean predicate, Runnable positiveAction) {
         this.predicate = predicate;
 
         if (predicate) {

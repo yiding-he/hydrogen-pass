@@ -48,7 +48,7 @@
                                 </padding>
                                 <Button text="新建..." disable="true" fx:id="btnNewLogin" onAction="#newLoginClicked"/>
                             </HBox>
-                            <TableView fx:id="tvAuthentications" VBox.vgrow="ALWAYS">
+                            <TableView fx:id="tblAuthentications" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn text="用户名"/>
                                     <TableColumn text="密码"/>

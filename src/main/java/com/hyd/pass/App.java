@@ -3,6 +3,8 @@ package com.hyd.pass;
 import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.dialog.FileDialog;
 import com.hyd.pass.fx.Icons;
+import com.hyd.pass.model.Category;
+import com.hyd.pass.model.Entry;
 import com.hyd.pass.model.PasswordLib;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -53,5 +55,39 @@ public class App extends Application {
         primaryStage.setTitle(APP_NAME);
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    private static String masterPassword;
+
+    public static String getMasterPassword() {
+        return masterPassword;
+    }
+
+    public static void setMasterPassword(String masterPassword) {
+        App.masterPassword = masterPassword;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    private static Category currentCategory;
+
+    private static Entry currentEntry;
+
+    public static Category getCurrentCategory() {
+        return currentCategory;
+    }
+
+    public static void setCurrentCategory(Category currentCategory) {
+        App.currentCategory = currentCategory;
+    }
+
+    public static Entry getCurrentEntry() {
+        return currentEntry;
+    }
+
+    public static void setCurrentEntry(Entry currentEntry) {
+        App.currentEntry = currentEntry;
     }
 }

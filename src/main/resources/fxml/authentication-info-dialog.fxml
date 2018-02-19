@@ -1,0 +1,13 @@
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
+<VBox stylesheets="/css/style.css" styleClass="dialog-body" xmlns:fx="javafx" prefWidth="500">
+    <HBox styleClass="form-field">
+        <Label text="用户名："/>
+        <TextField HBox.hgrow="ALWAYS" fx:id="txtUsername"/>
+    </HBox>
+    <HBox styleClass="form-field">
+        <Label text="　密码："/>
+        <TextField HBox.hgrow="ALWAYS" fx:id="txtPassword"/>
+    </HBox>
+</VBox>

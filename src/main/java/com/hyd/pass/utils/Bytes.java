@@ -1,5 +1,8 @@
 package com.hyd.pass.utils;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class Bytes {
 
     private static final String[] HEX_ARRAY = {
@@ -61,4 +64,15 @@ public class Bytes {
         return sb.toString();
     }
 
+    public static String md5(String source) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(source.getBytes());
+            byte[] digest = md.digest();
+            return toString(digest);
+        } catch (NoSuchAlgorithmException e) {
+            // nothing to do
+            return null;
+        }
+    }
 }

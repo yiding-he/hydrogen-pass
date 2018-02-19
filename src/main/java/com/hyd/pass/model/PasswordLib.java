@@ -3,13 +3,15 @@ package com.hyd.pass.model;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.hyd.pass.App;
-import com.hyd.pass.utils.AESUtils;
 import com.hyd.pass.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.hyd.pass.utils.AESUtils.encode128;
+import static com.hyd.pass.utils.Bytes.md5;
 
 /**
  * (description)
@@ -34,23 +36,26 @@ public class PasswordLib {
     public PasswordLib(File saveFile, String masterPassword, boolean create) throws PasswordLibException {
         if (create) {
             this.saveFile = saveFile;
-            this.masterPasswordValidator = AESUtils.encode128(ENC_TEST_STRING, masterPassword);
             this.rootCategory = new Category("我的密码库");
+            this.masterPasswordValidator = generateValidator(masterPassword, rootCategory.getId());
+            App.setMasterPassword(masterPassword);
 
         } else {
 
-            String v;
+            String masterPasswordValidator;
             JSONObject jsonObject;
             try {
                 String json = FileUtils.read(saveFile);
                 jsonObject = JSON.parseObject(json);
-                v = jsonObject.getString("masterPasswordValidator");
+                masterPasswordValidator = jsonObject.getString("masterPasswordValidator");
             } catch (IOException e) {
                 throw new PasswordLibException("无法打开文件", e);
             }
 
             try {
-                if (!AESUtils.decode128(v, masterPassword).equals(ENC_TEST_STRING)) {
+                long rootId = jsonObject.getJSONObject("rootCategory").getLong("id");
+                String userValue = generateValidator(masterPassword, rootId);
+                if (!userValue.equals(masterPasswordValidator)) {
                     throw new PasswordLibException("密码不正确");
                 }
             } catch (PasswordLibException e) {
@@ -61,7 +66,7 @@ public class PasswordLib {
 
             this.saveFile = saveFile;
             this.rootCategory = jsonObject.getObject("rootCategory", Category.class);
-            this.masterPasswordValidator = jsonObject.getString("masterPasswordValidator");
+            this.masterPasswordValidator = masterPasswordValidator;
 
             App.setMasterPassword(masterPassword);
 
@@ -71,6 +76,11 @@ public class PasswordLib {
                 this.rootCategory.iterateChildren(Category::readEntries);  // 解密内容
             }
         }
+    }
+
+    private String generateValidator(String masterPassword, long rootId) {
+        // 转为 MD5 是为了防止同样的 masterPassword 产生外观相似的校验字符串
+        return md5(encode128(ENC_TEST_STRING + rootId, masterPassword));
     }
 
     public boolean isChanged() {

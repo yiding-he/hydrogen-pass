@@ -16,14 +16,14 @@ public class FileUtils {
 
     private static final Logger logger = Logger.getLogger(FileUtils.class);
 
-    public static boolean tryCreateNewFile(String filePath) {
+    public static boolean ensureFile(String filePath) {
         if (StringUtils.isBlank(filePath)) {
             return false;
         }
 
         File file = new File(filePath);
         if (file.exists()) {
-            return false;
+            return true;
         }
 
         try {

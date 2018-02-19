@@ -3,17 +3,23 @@ package com.hyd.pass.controllers;
 import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.dialog.FileDialog;
+import com.hyd.fx.system.ClipboardHelper;
 import com.hyd.pass.App;
 import com.hyd.pass.Logger;
+import com.hyd.pass.conf.UserConfig;
+import com.hyd.pass.dialogs.AuthenticationInfoDialog;
 import com.hyd.pass.dialogs.CreatePasswordDialog;
 import com.hyd.pass.dialogs.EnterPasswordDialog;
 import com.hyd.pass.dialogs.EntryInfoDialog;
+import com.hyd.pass.fx.AuthenticationTableRow;
 import com.hyd.pass.fx.EntryTableRow;
 import com.hyd.pass.model.*;
 import com.hyd.pass.utils.OrElse;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
@@ -52,14 +58,24 @@ public class MainController extends BaseController {
 
     public TableColumn<Entry, String> colEntryComment;
 
+    public TableColumn<Authentication, String> colAuthUsername;
+
+    public TableColumn<Authentication, String> colAuthPassword;
+
+    public CheckMenuItem mnuAutoSave;
+
     public void initialize() {
         this.split1.setDividerPositions(0.2);
         this.split2.setDividerPositions(0.4);
+
+        ////////////////////////////////////////////////////////////////////////////////
 
         ObservableValue<TreeItem<Category>> selectedCategoryItem =
                 this.tvCategories.getSelectionModel().selectedItemProperty();
 
         selectedCategoryItem.addListener(this::selectedCategoryChanged);
+
+        ////////////////////////////////////////////////////////////////////////////////
 
         setColumnValueFactory(colEntryName, Entry::getName);
         setColumnValueFactory(colEntryLocation, Entry::getLocation);
@@ -68,6 +84,8 @@ public class MainController extends BaseController {
         this.tblEntries.setRowFactory(tv -> new EntryTableRow());
         this.tblEntries.getSortOrder().add(colEntryName);
 
+        ////////////////////////////////////////////////////////////////////////////////
+
         ReadOnlyObjectProperty<Entry> selectedEntry =
                 this.tblEntries.getSelectionModel().selectedItemProperty();
 
@@ -75,7 +93,40 @@ public class MainController extends BaseController {
 
         this.txtNote.textProperty().addListener(this::noteTextChanged);
 
+        ////////////////////////////////////////////////////////////////////////////////
+
+        setColumnValueFactory(colAuthUsername, Authentication::getUsername);
+        setColumnValueFactory(colAuthPassword, Authentication::getPassword);
+
+        this.tblAuthentications.setRowFactory(tv -> new AuthenticationTableRow());
+        this.tblAuthentications.getSortOrder().add(colAuthUsername);
+
+        ////////////////////////////////////////////////////////////////////////////////
+
         AppPrimaryStage.getPrimaryStage().setOnCloseRequest(this::beforeClose);
+        AppPrimaryStage.getPrimaryStage().addEventFilter(KeyEvent.KEY_PRESSED, this::keyEventHandler);
+        mnuAutoSave.setSelected(Boolean.parseBoolean(UserConfig.getString("auto_save_on_exit", "false")));
+
+    }
+
+    private void keyEventHandler(KeyEvent event) {
+
+        if (this.tblAuthentications.isFocused()) {
+            if (event.isControlDown() && event.getCode() == KeyCode.X) {
+                withCurrentAuthentication(auth -> ClipboardHelper.putString(auth.getUsername()));
+                event.consume();
+            } else if (event.isControlDown() && event.getCode() == KeyCode.C) {
+                withCurrentAuthentication(auth -> ClipboardHelper.putString(auth.getPassword()));
+                event.consume();
+            }
+        }
+    }
+
+    private void withCurrentAuthentication(Consumer<Authentication> consumer) {
+        Authentication item = this.tblAuthentications.getSelectionModel().getSelectedItem();
+        if (item != null) {
+            consumer.accept(item);
+        }
     }
 
     private void noteTextChanged(ObservableValue<? extends String> ob, String _old, String text) {
@@ -110,7 +161,9 @@ public class MainController extends BaseController {
         this.tblAuthentications.setDisable(selected == null);
         this.tpEntryInfo.setDisable(selected == null);
         this.txtNote.setEditable(selected != null);
-        this.txtNote.setText(selected == null? "": selected.getNote());
+        this.txtNote.setText(selected == null ? "" : selected.getNote());
+
+        refreshAuthenticationList();
     }
 
     private void beforeClose(WindowEvent event) {
@@ -120,6 +173,12 @@ public class MainController extends BaseController {
         }
 
         if (App.getPasswordLib().isChanged()) {
+
+            if (mnuAutoSave.isSelected()) {
+                trySaveOnExit(event);
+                return;
+            }
+
             ButtonType buttonType = AlertDialog.confirmYesNoCancel("保存文件",
                     "文件尚未保存。是否保存然后退出？\n\n" +
                             "点击“是”则保存文件然后退出，点击“否”则直接退出，点击“取消”不退出。");
@@ -130,14 +189,18 @@ public class MainController extends BaseController {
             }
 
             if (buttonType == ButtonType.YES) {
-                try {
-                    App.getPasswordLib().save();
-                } catch (Exception e) {
-                    logger.error("保存文件失败", e);
-                    AlertDialog.error("保存文件失败: ", e);
-                    event.consume();
-                }
+                trySaveOnExit(event);
             }
+        }
+    }
+
+    private void trySaveOnExit(WindowEvent event) {
+        try {
+            App.getPasswordLib().save();
+        } catch (Exception e) {
+            logger.error("保存文件失败", e);
+            AlertDialog.error("保存文件失败: ", e);
+            event.consume();
         }
     }
 
@@ -157,7 +220,8 @@ public class MainController extends BaseController {
                     loadPasswordLib(passwordLib);
                     App.setPasswordLib(passwordLib);
                 } catch (PasswordLibException e) {
-                    AlertDialog.error("密码不正确");
+                    logger.error("打开文件失败", e);
+                    AlertDialog.error("密码不正确", e);
                 }
             }
         }
@@ -172,11 +236,17 @@ public class MainController extends BaseController {
         ButtonType buttonType = createPasswordDialog.showAndWait().orElse(ButtonType.CANCEL);
 
         if (buttonType == ButtonType.OK) {
+
+            // 先保存现有密码库
+            if (App.getPasswordLib() != null) {
+                App.getPasswordLib().save();
+            }
+
             try {
                 createPasswordLib(createPasswordDialog);
             } catch (Exception e) {
                 logger.error("创建密码库失败", e);
-                AlertDialog.error("创建密码库失败");
+                AlertDialog.error("创建密码库失败", e);
             }
         }
     }
@@ -224,12 +294,23 @@ public class MainController extends BaseController {
     }
 
     private void refreshEntryList() {
-        ifCategorySelectedThen(category -> {
-            tblEntries.getItems().setAll(category.getEntries());
+        Category currentCategory = App.getCurrentCategory();
+        if (currentCategory != null) {
+            tblEntries.getItems().setAll(currentCategory.getEntries());
             tblEntries.sort();
-        }).orElse(
-                () -> tblEntries.getItems().clear()
-        );
+        } else {
+            tblEntries.getItems().clear();
+        }
+    }
+
+    private void refreshAuthenticationList() {
+        Entry currentEntry = App.getCurrentEntry();
+        if (currentEntry != null) {
+            this.tblAuthentications.getItems().setAll(currentEntry.getAuthentications());
+            this.tblAuthentications.sort();
+        } else {
+            this.tblAuthentications.getItems().clear();
+        }
     }
 
     public void saveClicked() {
@@ -252,5 +333,19 @@ public class MainController extends BaseController {
     }
 
     public void newLoginClicked() {
+        AuthenticationInfoDialog dialog = new AuthenticationInfoDialog(null);
+
+        if (dialog.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            App.getCurrentEntry().getAuthentications().add(dialog.getAuthentication());
+            refreshAuthenticationList();
+        }
+    }
+
+    public void autoSaveToggleClicked() {
+        UserConfig.setString("auto_save_on_exit", String.valueOf(mnuAutoSave.isSelected()));
+    }
+
+    public void exitClicked() {
+        AppPrimaryStage.getPrimaryStage().close();
     }
 }

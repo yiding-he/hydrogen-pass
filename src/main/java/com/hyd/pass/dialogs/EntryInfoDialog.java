@@ -30,11 +30,12 @@ public class EntryInfoDialog extends BasicDialog {
         this.entry = entry;
 
         new DialogBuilder()
-                .title("创建入口")
+                .title("入口信息")
                 .logo(AppLogo.getLogo())
                 .body("/fxml/entry-info-dialog.fxml", this)
                 .buttons(ButtonType.OK, ButtonType.CANCEL)
                 .onOkButtonClicked(this::onOkButtonClicked)
+                .onStageShown(event -> txtEntryName.requestFocus())
                 .applyTo(this);
     }
 
@@ -51,8 +52,10 @@ public class EntryInfoDialog extends BasicDialog {
     }
 
     private void onOkButtonClicked(ActionEvent event) {
+
         if (StringUtils.isBlank(txtEntryName.getText())) {
             event.consume();
+            return;
         }
 
         String name = StringUtils.trim(txtEntryName.getText());

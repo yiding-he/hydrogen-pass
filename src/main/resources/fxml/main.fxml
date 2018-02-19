@@ -5,6 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx"
+            stylesheets="@/css/style.css"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.hyd.pass.controllers.MainController"
             prefHeight="500.0" prefWidth="800.0">
@@ -12,10 +13,14 @@
     <top>
         <MenuBar>
             <Menu text="文件">
-                <MenuItem text="新建..." onAction="#newFileClicked"/>
-                <MenuItem text="打开..." onAction="#openFileClicked"/>
+                <MenuItem text="新建(_N)..." onAction="#newFileClicked" accelerator="Shortcut+N"/>
+                <MenuItem text="打开(_O)..." onAction="#openFileClicked" accelerator="Shortcut+O"/>
                 <SeparatorMenuItem/>
-                <MenuItem text="保存" onAction="#saveClicked"/>
+                <MenuItem text="保存(_S)" onAction="#saveClicked" accelerator="Shortcut+S"/>
+                <MenuItem text="退出(_X)" onAction="#exitClicked"/>
+            </Menu>
+            <Menu text="编辑">
+                <CheckMenuItem text="退出时自动保存" onAction="#autoSaveToggleClicked" fx:id="mnuAutoSave"/>
             </Menu>
         </MenuBar>
     </top>
@@ -50,8 +55,8 @@
                             </HBox>
                             <TableView fx:id="tblAuthentications" VBox.vgrow="ALWAYS">
                                 <columns>
-                                    <TableColumn text="用户名"/>
-                                    <TableColumn text="密码"/>
+                                    <TableColumn text="用户名" fx:id="colAuthUsername"/>
+                                    <TableColumn text="密码" fx:id="colAuthPassword"/>
                                 </columns>
                             </TableView>
                         </VBox>

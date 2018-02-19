@@ -53,8 +53,8 @@ public class CreatePasswordDialog extends BasicDialog {
             return;
         }
 
-        if (!FileUtils.tryCreateNewFile(savePath.getText())) {
-            AlertDialog.error("无法再目标位置创建文件，请选择其他位置");
+        if (!FileUtils.ensureFile(savePath.getText())) {
+            AlertDialog.error("无法在目标位置创建文件，请选择其他位置");
             event.consume();
             return;
         }

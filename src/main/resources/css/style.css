@@ -6,3 +6,7 @@
     -fx-spacing: 10;
     -fx-alignment: baseline-left;
 }
+
+.table-view, .text-field, .text-area {
+    -fx-font-family: Consolas, monospace;
+}

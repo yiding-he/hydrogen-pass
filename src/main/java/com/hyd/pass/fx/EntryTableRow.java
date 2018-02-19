@@ -32,7 +32,7 @@ public class EntryTableRow extends TableRow<Entry> {
         });
 
         setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+            if (!isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                 editEntryClicked();
             }
         });

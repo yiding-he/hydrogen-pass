@@ -70,10 +70,14 @@ public class PasswordLib {
 
             App.setMasterPassword(masterPassword);
 
-            if (this.rootCategory == null) {
-                this.rootCategory = new Category("我的密码库");
-            } else {
-                this.rootCategory.iterateChildren(Category::readEntries);  // 解密内容
+            try {
+                if (this.rootCategory == null) {
+                    this.rootCategory = new Category("我的密码库");
+                } else {
+                    this.rootCategory.iterateChildren(Category::readEntries);  // 解密内容
+                }
+            } catch (Exception e) {
+                throw new PasswordLibException(e);
             }
         }
     }
@@ -112,6 +116,11 @@ public class PasswordLib {
     }
 
     public void save() {
+
+        // 保证校验字符串与最新的主密码一致
+        masterPasswordValidator = generateValidator(App.getMasterPassword(), rootCategory.getId());
+
+        // 加密所有 entry
         rootCategory.iterateChildren(Category::saveEntries);
 
         Map<String, Object> data = new HashMap<>();

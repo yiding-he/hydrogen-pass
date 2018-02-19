@@ -20,6 +20,7 @@
                 <MenuItem text="退出(_X)" onAction="#exitClicked"/>
             </Menu>
             <Menu text="编辑">
+                <MenuItem text="修改主密码..." onAction="#changeMasterPasswordClicked"/>
                 <CheckMenuItem text="退出时自动保存" onAction="#autoSaveToggleClicked" fx:id="mnuAutoSave"/>
             </Menu>
         </MenuBar>

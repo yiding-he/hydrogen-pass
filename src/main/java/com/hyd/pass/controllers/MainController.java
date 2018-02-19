@@ -7,16 +7,14 @@ import com.hyd.fx.system.ClipboardHelper;
 import com.hyd.pass.App;
 import com.hyd.pass.Logger;
 import com.hyd.pass.conf.UserConfig;
-import com.hyd.pass.dialogs.AuthenticationInfoDialog;
-import com.hyd.pass.dialogs.CreatePasswordDialog;
-import com.hyd.pass.dialogs.EnterPasswordDialog;
-import com.hyd.pass.dialogs.EntryInfoDialog;
+import com.hyd.pass.dialogs.*;
 import com.hyd.pass.fx.AuthenticationTableRow;
 import com.hyd.pass.fx.EntryTableRow;
 import com.hyd.pass.model.*;
 import com.hyd.pass.utils.OrElse;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -347,5 +345,19 @@ public class MainController extends BaseController {
 
     public void exitClicked() {
         AppPrimaryStage.getPrimaryStage().close();
+    }
+
+    public void changeMasterPasswordClicked() {
+        PasswordLib passwordLib = App.getPasswordLib();
+        if (passwordLib == null) {
+            return;
+        }
+
+        ChangeMasterPasswordDialog dialog = new ChangeMasterPasswordDialog();
+        if (dialog.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            App.setMasterPassword(dialog.getNewPassword());
+            passwordLib.save();
+            AlertDialog.info("密码已修改", "密码库已经按照新的主密码重新加密保存。");
+        }
     }
 }

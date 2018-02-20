@@ -3,6 +3,7 @@ package com.hyd.pass;
 import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.dialog.FileDialog;
 import com.hyd.pass.fx.Icons;
+import com.hyd.pass.fx.TrayComponent;
 import com.hyd.pass.model.Category;
 import com.hyd.pass.model.Entry;
 import com.hyd.pass.model.PasswordLib;
@@ -55,6 +56,9 @@ public class App extends Application {
         primaryStage.setTitle(APP_NAME);
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
+
+        TrayComponent trayComponent = new TrayComponent();
+        trayComponent.init();
 
         System.out.println("__OK__");
     }

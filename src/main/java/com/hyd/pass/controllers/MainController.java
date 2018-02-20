@@ -64,6 +64,8 @@ public class MainController extends BaseController {
 
     public CheckMenuItem mnuAutoOpen;
 
+    public CheckMenuItem mnuCloseToTray;
+
     public void initialize() {
         this.split1.setDividerPositions(0.2);
         this.split2.setDividerPositions(0.4);
@@ -108,6 +110,7 @@ public class MainController extends BaseController {
 
         mnuAutoSave.setSelected(UserConfig.getBoolean("auto_save_on_exit", false));
         mnuAutoOpen.setSelected(UserConfig.getBoolean("auto_open_on_start", false));
+        mnuCloseToTray.setSelected(UserConfig.getBoolean("close_to_tray", false));
 
         ///////////////////////////////////////////////
 
@@ -368,6 +371,9 @@ public class MainController extends BaseController {
 
     public void autoSaveToggleClicked() {
         UserConfig.setString("auto_save_on_exit", String.valueOf(mnuAutoSave.isSelected()));
+    }
+
+    public void closeToTrayToggleClicked() {
     }
 
     public void exitClicked() {

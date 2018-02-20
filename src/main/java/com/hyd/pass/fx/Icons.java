@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 public enum Icons {
 
     Logo("/logo.png"),
+    Logo16("/logo_16.png"),
     Folder("/icons/folder.png"),
 
     //////////////////////////////////////////////////////////////

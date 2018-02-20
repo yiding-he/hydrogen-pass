@@ -25,6 +25,7 @@
             <Menu text="选项">
                 <CheckMenuItem text="启动时自动打开最近的文件" onAction="#autoOpenToggleClicked" fx:id="mnuAutoOpen"/>
                 <CheckMenuItem text="退出时自动保存" onAction="#autoSaveToggleClicked" fx:id="mnuAutoSave"/>
+                <CheckMenuItem text="关闭时最小化到托盘图标" onAction="#closeToTrayToggleClicked" fx:id="mnuCloseToTray"/>
             </Menu>
         </MenuBar>
     </top>

@@ -64,6 +64,8 @@ public class MainController extends BaseController {
 
     public CheckMenuItem mnuAutoOpen;
 
+    public CheckMenuItem mnuNoteWrap;
+
     public void initialize() {
         this.split1.setDividerPositions(0.2);
         this.split2.setDividerPositions(0.4);
@@ -108,6 +110,7 @@ public class MainController extends BaseController {
 
         mnuAutoSave.setSelected(UserConfig.getBoolean("auto_save_on_exit", false));
         mnuAutoOpen.setSelected(UserConfig.getBoolean("auto_open_on_start", false));
+        mnuNoteWrap.setSelected(UserConfig.getBoolean("note_wrap_text", false));
 
         ///////////////////////////////////////////////
 
@@ -368,6 +371,11 @@ public class MainController extends BaseController {
 
     public void autoSaveToggleClicked() {
         UserConfig.setString("auto_save_on_exit", String.valueOf(mnuAutoSave.isSelected()));
+    }
+
+    public void noteWrapToggleClicked() {
+        txtNote.setWrapText(mnuNoteWrap.isSelected());
+        UserConfig.setString("note_wrap_text", String.valueOf(mnuNoteWrap.isSelected()));
     }
 
     public void exitClicked() {

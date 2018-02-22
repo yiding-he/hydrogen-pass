@@ -8,7 +8,7 @@
             stylesheets="@/css/style.css"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.hyd.pass.controllers.MainController"
-            prefHeight="500.0" prefWidth="800.0">
+            prefHeight="650.0" prefWidth="850.0">
 
     <top>
         <MenuBar>
@@ -25,6 +25,7 @@
             <Menu text="选项">
                 <CheckMenuItem text="启动时自动打开最近的文件" onAction="#autoOpenToggleClicked" fx:id="mnuAutoOpen"/>
                 <CheckMenuItem text="退出时自动保存" onAction="#autoSaveToggleClicked" fx:id="mnuAutoSave"/>
+                <CheckMenuItem text="笔记自动换行" onAction="#noteWrapToggleClicked" fx:id="mnuNoteWrap"/>
             </Menu>
         </MenuBar>
     </top>
@@ -43,7 +44,7 @@
                     <TableView fx:id="tblEntries" VBox.vgrow="ALWAYS" disable="true">
                         <columns>
                             <TableColumn text="名称" prefWidth="120" fx:id="colEntryName"/>
-                            <TableColumn text="地址" prefWidth="100" fx:id="colEntryLocation"/>
+                            <TableColumn text="地址" prefWidth="250" fx:id="colEntryLocation"/>
                             <TableColumn text="备注" prefWidth="300" fx:id="colEntryComment"/>
                         </columns>
                     </TableView>

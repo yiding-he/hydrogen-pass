@@ -7,7 +7,12 @@ import com.hyd.pass.model.Authentication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
+
+import java.security.SecureRandom;
+import java.util.Random;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.trim;
@@ -15,15 +20,64 @@ import static org.apache.commons.lang3.StringUtils.trim;
 /**
  * @author yiding.he
  */
+@SuppressWarnings("unused")
 public class AuthenticationInfoDialog extends BasicDialog {
 
     private Authentication authentication;
 
     @FXML
-    public TextField txtUsername;
+    private TextField txtUsername;
 
     @FXML
-    public TextField txtPassword;
+    private TextField txtPassword;
+
+    @FXML
+    private CheckBox chkNum;
+
+    @FXML
+    private CheckBox chkSml;
+
+    @FXML
+    private CheckBox chkBig;
+
+    @FXML
+    private CheckBox chkSpc;
+
+    @FXML
+    private CheckBox chkCfs;
+
+    @FXML
+    private Spinner<Integer> spnLength;
+
+    private Random random = new SecureRandom();
+
+    public void onGenerateClick() {
+        String chars = "";
+        if (chkNum.isSelected()) {
+            chars += "0123456789";
+        }
+        if (chkSml.isSelected()) {
+            chars += "abcdefghijklmnopqrstuvwxyz";
+        }
+        if (chkBig.isSelected()) {
+            chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+        if (chkSpc.isSelected()) {
+            chars += "~!#$%^&*()_+`-=[]{}\\|;':\",./<>?";
+        }
+        if (chkCfs.isSelected()) {
+            chars = chars.replaceAll("[0oO1Ilq9QB85sSuvUVZ2]", "");
+        }
+
+        int length = spnLength.getValue();
+        char[] selection = chars.toCharArray();
+        char[] result = new char[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = selection[random.nextInt(selection.length)];
+        }
+
+        txtPassword.setText(new String(result));
+    }
 
     public AuthenticationInfoDialog(Authentication authentication) {
         this.authentication = authentication;

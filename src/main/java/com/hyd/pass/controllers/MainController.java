@@ -14,6 +14,7 @@ import com.hyd.pass.model.*;
 import com.hyd.pass.utils.OrElse;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -24,6 +25,8 @@ import java.io.File;
 import java.util.function.Consumer;
 
 import static com.hyd.fx.cells.TableViewHelper.setColumnValueFactory;
+import static com.hyd.fx.system.ClipboardHelper.getApplicationClipboard;
+import static com.hyd.pass.fx.AuthenticationTableRow.CLIP_KEY;
 
 /**
  * @author yiding.he
@@ -65,6 +68,8 @@ public class MainController extends BaseController {
     public CheckMenuItem mnuAutoOpen;
 
     public CheckMenuItem mnuNoteWrap;
+
+    public MenuItem mnuPasteAuthentication;
 
     public void initialize() {
         this.split1.setDividerPositions(0.2);
@@ -149,6 +154,7 @@ public class MainController extends BaseController {
         }
     }
 
+    @SuppressWarnings("unused")
     private void noteTextChanged(ObservableValue<? extends String> ob, String _old, String text) {
         Entry currentEntry = App.getCurrentEntry();
         if (currentEntry != null) {
@@ -157,6 +163,7 @@ public class MainController extends BaseController {
         }
     }
 
+    @SuppressWarnings("unused")
     private void selectedCategoryChanged(
             ObservableValue<? extends TreeItem<Category>> ob,
             TreeItem<Category> _old,
@@ -170,6 +177,7 @@ public class MainController extends BaseController {
         refreshEntryList();
     }
 
+    @SuppressWarnings("unused")
     private void selectedEntryChanged(
             ObservableValue<? extends Entry> ob,
             Entry _old,
@@ -254,7 +262,7 @@ public class MainController extends BaseController {
         runSafe(this::newFileClicked0);
     }
 
-    private void newFileClicked0() throws Exception {
+    private void newFileClicked0() {
         CreatePasswordDialog createPasswordDialog = new CreatePasswordDialog();
         ButtonType buttonType = createPasswordDialog.showAndWait().orElse(ButtonType.CANCEL);
 
@@ -308,6 +316,7 @@ public class MainController extends BaseController {
         return treeItem;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     private OrElse ifCategorySelectedThen(Consumer<Category> consumer) {
         TreeItem<Category> item = this.tvCategories.getSelectionModel().getSelectedItem();
         if (item == null || item.getValue() == null) {
@@ -394,5 +403,20 @@ public class MainController extends BaseController {
             passwordLib.save();
             AlertDialog.info("密码已修改", "密码库已经按照新的主密码重新加密保存。");
         }
+    }
+
+    public void onAuthTablePaste() {
+        Authentication a = getApplicationClipboard(CLIP_KEY);
+        if (a != null) {
+            Entry currentEntry = App.getCurrentEntry();
+            if (currentEntry != null) {
+                currentEntry.getAuthentications().add(a.clone());
+                refreshAuthenticationList();
+            }
+        }
+    }
+
+    public void onAuthTableContextMenuShown() {
+        mnuPasteAuthentication.setDisable(getApplicationClipboard(CLIP_KEY) == null);
     }
 }

@@ -63,6 +63,14 @@
                                     <TableColumn text="用户名" prefWidth="200" fx:id="colAuthUsername"/>
                                     <TableColumn text="密码"  prefWidth="200" fx:id="colAuthPassword"/>
                                 </columns>
+                                <contextMenu>
+                                    <ContextMenu onShown="#onAuthTableContextMenuShown">
+                                        <items>
+                                            <MenuItem fx:id="mnuPasteAuthentication"
+                                                    text="粘贴" accelerator="Shortcut+V" onAction="#onAuthTablePaste"/>
+                                        </items>
+                                    </ContextMenu>
+                                </contextMenu>
                             </TableView>
                         </VBox>
                     </Tab>

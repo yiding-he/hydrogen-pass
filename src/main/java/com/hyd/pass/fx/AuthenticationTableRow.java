@@ -14,25 +14,34 @@ import javafx.scene.input.MouseButton;
 
 import static com.hyd.fx.components.MenuBuilder.contextMenu;
 import static com.hyd.fx.components.MenuBuilder.menuItem;
+import static com.hyd.fx.system.ClipboardHelper.putApplicationClipboard;
 
 /**
  * @author yiding.he
  */
 public class AuthenticationTableRow extends TableRow<Authentication> {
 
+    public static final String CLIP_KEY = "copy_authentication";
+
     private ContextMenu contextMenu = contextMenu(
             menuItem("复制用户名", "Shortcut+X", this::copyUsernameClicked),
             menuItem("复制密码", "Shortcut+C", this::copyPasswordClicked),
             new SeparatorMenuItem(),
+            menuItem("复制", this::copyEntryClicked),
             menuItem("编辑...", this::editEntryClicked),
             menuItem("删除", this::deleteEntryClicked)
     );
+
+    private void copyEntryClicked() {
+        putApplicationClipboard(CLIP_KEY, this.getItem().clone());
+    }
 
     public AuthenticationTableRow() {
 
         setOnContextMenuRequested(event -> {
             if (!isEmpty()) {
                 contextMenu.show(this, event.getScreenX(), event.getScreenY());
+                event.consume();
             }
         });
 

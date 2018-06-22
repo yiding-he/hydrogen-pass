@@ -3,7 +3,7 @@ package com.hyd.pass.model;
 /**
  * @author yiding.he
  */
-public class Authentication {
+public class Authentication implements Cloneable {
 
     private String username;
 
@@ -31,5 +31,15 @@ public class Authentication {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public final Authentication clone() {
+        try {
+            return (Authentication) super.clone();
+        } catch (CloneNotSupportedException e) {
+            // ignore this
+            return null;
+        }
     }
 }

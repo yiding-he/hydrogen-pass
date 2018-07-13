@@ -22,29 +22,37 @@ import static com.hyd.fx.components.MenuBuilder.*;
  */
 public class EntryTableRow extends TableRow<Entry> {
 
+    private ContextMenu currentContextMenu;
+
     private ContextMenu createContextMenu() {
+
+        if (currentContextMenu != null) {
+            currentContextMenu.hide();
+        }
 
         String location = this.getItem().getLocation();
         if (StringUtils.isNotBlank(location)) {
 
             MenuItem[] locationMenuItems = Stream.of(location.split(","))
                     .filter(StringUtils::isNotBlank)
+                    .map(String::trim)
                     .map(l -> menuItem(l, () -> ClipboardHelper.putString(l)))
                     .toArray(MenuItem[]::new);
 
-            return contextMenu(
+            currentContextMenu = contextMenu(
                     menuItem("编辑...", this::editEntryClicked),
                     menuItem("删除", this::deleteEntryClicked),
                     menu("复制地址", locationMenuItems)
             );
 
         } else {
-            return contextMenu(
+            currentContextMenu = contextMenu(
                     menuItem("编辑...", this::editEntryClicked),
                     menuItem("删除", this::deleteEntryClicked)
             );
         }
 
+        return currentContextMenu;
     }
 
     public EntryTableRow() {

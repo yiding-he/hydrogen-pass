@@ -44,7 +44,7 @@
                     <TableView fx:id="tblEntries" VBox.vgrow="ALWAYS" disable="true">
                         <columns>
                             <TableColumn text="名称" prefWidth="120" fx:id="colEntryName"/>
-                            <TableColumn text="地址" prefWidth="250" fx:id="colEntryLocation"/>
+                            <TableColumn text="位置" prefWidth="250" fx:id="colEntryLocation"/>
                             <TableColumn text="备注" prefWidth="300" fx:id="colEntryComment"/>
                         </columns>
                     </TableView>

@@ -22,6 +22,7 @@ import javafx.stage.WindowEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import static com.hyd.fx.cells.TableViewHelper.setColumnValueFactory;
@@ -136,6 +137,12 @@ public class MainController extends BaseController {
 
     private void keyEventHandler(KeyEvent event) {
 
+        if (event.isControlDown() && event.getCode() == KeyCode.F) {
+            openSearch();
+            event.consume();
+            return;
+        }
+
         if (this.tblAuthentications.isFocused()) {
             if (event.isControlDown() && event.getCode() == KeyCode.X) {
                 withCurrentAuthentication(auth -> ClipboardHelper.putString(auth.getUsername()));
@@ -145,6 +152,10 @@ public class MainController extends BaseController {
                 event.consume();
             }
         }
+    }
+
+    private void openSearch() {
+        Optional<ButtonType> buttonType = new SearchDialog().showAndWait();
     }
 
     private void withCurrentAuthentication(Consumer<Authentication> consumer) {

@@ -9,9 +9,10 @@
 
 Icons of this app come from [icons8](https://icons8.com/).
 
-![java_2018-06-19_20-37-36](https://user-images.githubusercontent.com/900606/41597677-b364aaca-7400-11e8-850a-0081e8ad5eb0.png)
+![2018-07-13 19 22 21](https://user-images.githubusercontent.com/900606/42689343-71622a8c-86d2-11e8-9087-336d05489175.png)
 
-![java_2018-06-19_20-36-48](https://user-images.githubusercontent.com/900606/41597675-b2f7ff42-7400-11e8-8330-a821b56c6940.png)
+![2018-07-13 19 21 30](https://user-images.githubusercontent.com/900606/42689346-749eb85a-86d2-11e8-8131-5185f4ea163e.png)
 
-![java_2018-06-19_20-34-40](https://user-images.githubusercontent.com/900606/41597676-b32fb7d4-7400-11e8-9d9a-d403bd782cf7.png)
+![2018-07-13 19 21 04](https://user-images.githubusercontent.com/900606/42689349-764c860a-86d2-11e8-87e8-e83bc2d11093.png)
 
+![2018-07-13 19 22 35](https://user-images.githubusercontent.com/900606/42689351-773892a2-86d2-11e8-9de7-793c289a2ba8.png)

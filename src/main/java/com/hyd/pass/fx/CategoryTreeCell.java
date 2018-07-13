@@ -1,5 +1,6 @@
 package com.hyd.pass.fx;
 
+import com.hyd.fx.FxUI;
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.pass.App;
 import com.hyd.pass.dialogs.EditCategoryDialog;
@@ -19,17 +20,17 @@ import static com.hyd.fx.components.MenuBuilder.menuItem;
 public class CategoryTreeCell extends TreeCell<Category> {
 
     private ContextMenu contextMenu = contextMenu(
-            menuItem("编辑", this::editItem),
-            menuItem("新建分类...", this::createChild),
-            menuItem("子类排序...", this::sortChild),
+            menuItem("编辑", FxUI.image("/icons/edit.png"), this::editItem),
+            menuItem("新建分类...   ", FxUI.image("/icons/new.png"), this::createChild),
+            menuItem("子类排序...   ", FxUI.image("/icons/sort.png"), this::sortChild),
             new SeparatorMenuItem(),
-            menuItem("删除", this::deleteItem)
+            menuItem("删除", FxUI.image("/icons/delete.png"), this::deleteItem)
     );
 
     private ContextMenu rootContextMenu = contextMenu(
-            menuItem("编辑", this::editItem),
-            menuItem("新建分类...", this::createChild),
-            menuItem("子类排序...", this::sortChild)
+            menuItem("编辑", FxUI.image("/icons/edit.png"), this::editItem),
+            menuItem("新建分类...   ", FxUI.image("/icons/new.png"), this::createChild),
+            menuItem("子类排序...   ", FxUI.image("/icons/sort.png"), this::sortChild)
     );
 
     private void deleteItem() {

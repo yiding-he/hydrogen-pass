@@ -4,6 +4,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <BorderPane xmlns="http://javafx.com/javafx"
             stylesheets="@/css/style.css"
             xmlns:fx="http://javafx.com/fxml"
@@ -67,7 +69,13 @@
                                     <ContextMenu onShown="#onAuthTableContextMenuShown">
                                         <items>
                                             <MenuItem fx:id="mnuPasteAuthentication"
-                                                    text="粘贴" accelerator="Shortcut+V" onAction="#onAuthTablePaste"/>
+                                                    text="粘贴" accelerator="Shortcut+V" onAction="#onAuthTablePaste">
+                                                <graphic>
+                                                    <ImageView fitWidth="16" fitHeight="16">
+                                                        <Image url="@/icons/paste.png"/>
+                                                    </ImageView>
+                                                </graphic>
+                                            </MenuItem>
                                         </items>
                                     </ContextMenu>
                                 </contextMenu>

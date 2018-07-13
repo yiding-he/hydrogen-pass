@@ -1,5 +1,6 @@
 package com.hyd.pass.fx;
 
+import com.hyd.fx.FxUI;
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.system.ClipboardHelper;
 import com.hyd.pass.App;
@@ -40,9 +41,9 @@ public class EntryTableRow extends TableRow<Entry> {
                     .toArray(MenuItem[]::new);
 
             currentContextMenu = contextMenu(
-                    menuItem("编辑...", this::editEntryClicked),
-                    menuItem("删除", this::deleteEntryClicked),
-                    menu("复制地址", locationMenuItems)
+                    menuItem("编辑...", FxUI.image("/icons/edit.png"), this::editEntryClicked),
+                    menuItem("删除", FxUI.image("/icons/delete.png"), this::deleteEntryClicked),
+                    menu("复制地址", FxUI.image("/icons/copy.png"), locationMenuItems)
             );
 
         } else {

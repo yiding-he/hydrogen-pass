@@ -22,12 +22,13 @@
                 <MenuItem text="退出(_X)" onAction="#exitClicked"/>
             </Menu>
             <Menu text="编辑">
-                <MenuItem text="修改主密码..." onAction="#changeMasterPasswordClicked"/>
+                <MenuItem text="搜索(_F)..." onAction="#openSearch" accelerator="Shortcut+F"/>
+                <MenuItem text="修改主密码(_M)..." onAction="#changeMasterPasswordClicked"/>
             </Menu>
             <Menu text="选项">
-                <CheckMenuItem text="启动时自动打开最近的文件" onAction="#autoOpenToggleClicked" fx:id="mnuAutoOpen"/>
-                <CheckMenuItem text="退出时自动保存" onAction="#autoSaveToggleClicked" fx:id="mnuAutoSave"/>
-                <CheckMenuItem text="笔记自动换行" onAction="#noteWrapToggleClicked" fx:id="mnuNoteWrap"/>
+                <CheckMenuItem text="启动时自动打开最近的文件(_A)" onAction="#autoOpenToggleClicked" fx:id="mnuAutoOpen"/>
+                <CheckMenuItem text="退出时自动保存(_S)" onAction="#autoSaveToggleClicked" fx:id="mnuAutoSave"/>
+                <CheckMenuItem text="笔记自动换行(_W)" onAction="#noteWrapToggleClicked" fx:id="mnuNoteWrap"/>
             </Menu>
         </MenuBar>
     </top>
@@ -36,7 +37,7 @@
         <SplitPane fx:id="split1">
             <CategoryTreeView fx:id="tvCategories" maxWidth="300"/>
             <SplitPane orientation="VERTICAL" fx:id="split2">
-                <VBox maxHeight="400">
+                <VBox>
                     <HBox spacing="10" alignment="BASELINE_LEFT">
                         <padding>
                             <Insets topRightBottomLeft="5"/>

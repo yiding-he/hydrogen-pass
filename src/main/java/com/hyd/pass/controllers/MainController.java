@@ -1,5 +1,6 @@
 package com.hyd.pass.controllers;
 
+import com.hyd.fx.NodeUtils;
 import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.dialog.FileDialog;
@@ -9,12 +10,12 @@ import com.hyd.pass.Logger;
 import com.hyd.pass.conf.UserConfig;
 import com.hyd.pass.dialogs.*;
 import com.hyd.pass.fx.AuthenticationTableRow;
+import com.hyd.pass.fx.CategoryTreeView;
 import com.hyd.pass.fx.EntryTableRow;
 import com.hyd.pass.model.*;
 import com.hyd.pass.utils.OrElse;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -22,7 +23,6 @@ import javafx.stage.WindowEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import static com.hyd.fx.cells.TableViewHelper.setColumnValueFactory;
@@ -40,7 +40,7 @@ public class MainController extends BaseController {
 
     public SplitPane split2;
 
-    public TreeView<Category> tvCategories;
+    public CategoryTreeView tvCategories;
 
     public TableView<Entry> tblEntries;
 
@@ -137,12 +137,6 @@ public class MainController extends BaseController {
 
     private void keyEventHandler(KeyEvent event) {
 
-        if (event.isControlDown() && event.getCode() == KeyCode.F) {
-            openSearch();
-            event.consume();
-            return;
-        }
-
         if (this.tblAuthentications.isFocused()) {
             if (event.isControlDown() && event.getCode() == KeyCode.X) {
                 withCurrentAuthentication(auth -> ClipboardHelper.putString(auth.getUsername()));
@@ -154,8 +148,21 @@ public class MainController extends BaseController {
         }
     }
 
-    private void openSearch() {
-        Optional<ButtonType> buttonType = new SearchDialog().showAndWait();
+    public void openSearch() {
+        SearchDialog searchDialog = new SearchDialog();
+        searchDialog.showAndWait();
+
+        Entry entry = searchDialog.getSelectedEntry();
+        if (entry != null) {
+            selectEntry(entry);
+        }
+    }
+
+    private void selectEntry(Entry entry) {
+        tvCategories.selectCellByEntry(entry);
+        tblEntries.getSelectionModel().select(entry);
+        tblEntries.scrollTo(entry);
+        tblEntries.requestFocus();
     }
 
     private void withCurrentAuthentication(Consumer<Authentication> consumer) {
@@ -167,6 +174,11 @@ public class MainController extends BaseController {
 
     @SuppressWarnings("unused")
     private void noteTextChanged(ObservableValue<? extends String> ob, String _old, String text) {
+
+        if (NodeUtils.getUserData(this.txtNote, "muteChange") != null) {
+            return;
+        }
+
         Entry currentEntry = App.getCurrentEntry();
         if (currentEntry != null) {
             currentEntry.setNote(text);
@@ -200,7 +212,10 @@ public class MainController extends BaseController {
         this.tblAuthentications.setDisable(selected == null);
         this.tpEntryInfo.setDisable(selected == null);
         this.txtNote.setEditable(selected != null);
+
+        NodeUtils.setUserData(this.txtNote, "muteChange", true);
         this.txtNote.setText(selected == null ? "" : selected.getNote());
+        NodeUtils.setUserData(this.txtNote, "muteChange", null);
 
         refreshAuthenticationList();
     }

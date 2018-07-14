@@ -144,4 +144,8 @@ public class Category extends OrderedItem {
             }
         }
     }
+
+    public boolean containsEntry(Entry entry) {
+        return entries != null && entries.contains(entry);
+    }
 }

@@ -1,5 +1,7 @@
 package com.hyd.pass.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,5 +57,14 @@ public class Entry extends OrderedItem {
 
     public void setAuthentications(List<Authentication> authentications) {
         this.authentications = authentications;
+    }
+
+    ///////////////////////////////////////////////
+
+    public boolean matchKeyword(String keyword) {
+        return StringUtils.containsIgnoreCase(getName(), keyword) ||
+                StringUtils.containsIgnoreCase(location, keyword) ||
+                StringUtils.containsIgnoreCase(comment, keyword) ||
+                StringUtils.containsIgnoreCase(note, keyword);
     }
 }

@@ -12,8 +12,6 @@
         <TextField fx:id="txtKeyword" HBox.hgrow="ALWAYS"/>
         <Button fx:id="btnClear" text="清空"/>
     </HBox>
-    <Label text="入口搜索结果（双击打开）："/>
+    <Label text="搜索结果（双击打开）："/>
     <ListView fx:id="lvEntryList" VBox.vgrow="ALWAYS"/>
-    <Label text="账户搜索结果（双击打开）："/>
-    <ListView fx:id="lvAuthenticationList" VBox.vgrow="ALWAYS"/>
 </VBox>

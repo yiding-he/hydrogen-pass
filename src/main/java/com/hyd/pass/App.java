@@ -25,6 +25,8 @@ public class App extends Application {
 
     public static final String FILE_EXT_NAME = "HPass 密码库";
 
+    public static final boolean IS_DEV = Boolean.parseBoolean(System.getProperty("dev", "false"));
+
     private static PasswordLib passwordLib;
 
     public static void setPasswordLib(PasswordLib passwordLib) {

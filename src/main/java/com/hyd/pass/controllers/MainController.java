@@ -124,6 +124,11 @@ public class MainController extends BaseController {
     }
 
     private void tryAutoOpenRecentFile() {
+
+        if (App.IS_DEV) {
+            return;
+        }
+
         if (UserConfig.getBoolean("auto_open_on_start", false)) {
             String filePath = UserConfig.getString("latest_file", "");
             if (StringUtils.isNotBlank(filePath)) {
@@ -321,11 +326,14 @@ public class MainController extends BaseController {
     }
 
     private void loadPasswordLib(PasswordLib passwordLib) {
-        UserConfig.setString("latest_file", passwordLib.filePath());
         loadCategories(passwordLib);
         this.tvCategories.getRoot().setExpanded(true);
         this.tvCategories.getSelectionModel().select(this.tvCategories.getRoot());
         AppPrimaryStage.getPrimaryStage().setTitle(App.APP_NAME + " - " + passwordLib.filePath());
+
+        if (!App.IS_DEV) {
+            UserConfig.setString("latest_file", passwordLib.filePath());
+        }
     }
 
     private void loadCategories(PasswordLib passwordLib) {

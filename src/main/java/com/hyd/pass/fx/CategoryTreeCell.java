@@ -1,6 +1,5 @@
 package com.hyd.pass.fx;
 
-import com.hyd.fx.FxUI;
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.pass.App;
 import com.hyd.pass.dialogs.EditCategoryDialog;
@@ -8,8 +7,9 @@ import com.hyd.pass.dialogs.SortCategoryChildDialog;
 import com.hyd.pass.model.Category;
 import javafx.scene.control.*;
 
-import static com.hyd.fx.components.MenuBuilder.contextMenu;
-import static com.hyd.fx.components.MenuBuilder.menuItem;
+import static com.hyd.fx.builders.ImageBuilder.image;
+import static com.hyd.fx.builders.MenuBuilder.contextMenu;
+import static com.hyd.fx.builders.MenuBuilder.menuItem;
 
 /**
  * (description)
@@ -20,17 +20,17 @@ import static com.hyd.fx.components.MenuBuilder.menuItem;
 public class CategoryTreeCell extends TreeCell<Category> {
 
     private ContextMenu contextMenu = contextMenu(
-            menuItem("编辑", FxUI.image("/icons/edit.png"), this::editItem),
-            menuItem("新建分类...   ", FxUI.image("/icons/new.png"), this::createChild),
-            menuItem("子类排序...   ", FxUI.image("/icons/sort.png"), this::sortChild),
+            menuItem("编辑", image("/icons/edit.png"), this::editItem),
+            menuItem("新建分类...   ", image("/icons/new.png"), this::createChild),
+            menuItem("子类排序...   ", image("/icons/sort.png"), this::sortChild),
             new SeparatorMenuItem(),
-            menuItem("删除", FxUI.image("/icons/delete.png"), this::deleteItem)
+            menuItem("删除", image("/icons/delete.png"), this::deleteItem)
     );
 
     private ContextMenu rootContextMenu = contextMenu(
-            menuItem("编辑", FxUI.image("/icons/edit.png"), this::editItem),
-            menuItem("新建分类...   ", FxUI.image("/icons/new.png"), this::createChild),
-            menuItem("子类排序...   ", FxUI.image("/icons/sort.png"), this::sortChild)
+            menuItem("编辑", image("/icons/edit.png"), this::editItem),
+            menuItem("新建分类...   ", image("/icons/new.png"), this::createChild),
+            menuItem("子类排序...   ", image("/icons/sort.png"), this::sortChild)
     );
 
     private void deleteItem() {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
+<?import com.hyd.fx.components.FilterableTreeView?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <VBox prefWidth="500" prefHeight="400" spacing="10" xmlns:fx="javafx">
     <HBox alignment="BASELINE_LEFT" spacing="10">
         <Label text="关键字"/>
@@ -13,5 +13,5 @@
         <Button fx:id="btnClear" text="清空"/>
     </HBox>
     <Label text="搜索结果（双击打开）："/>
-    <ListView fx:id="lvEntryList" VBox.vgrow="ALWAYS"/>
+    <FilterableTreeView fx:id="tvSearchResult"/>
 </VBox>

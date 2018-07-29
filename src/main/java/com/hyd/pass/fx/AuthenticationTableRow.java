@@ -1,6 +1,6 @@
 package com.hyd.pass.fx;
 
-import com.hyd.fx.FxUI;
+import com.hyd.fx.builders.ImageBuilder;
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.system.ClipboardHelper;
 import com.hyd.pass.App;
@@ -13,8 +13,9 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableRow;
 import javafx.scene.input.MouseButton;
 
-import static com.hyd.fx.components.MenuBuilder.contextMenu;
-import static com.hyd.fx.components.MenuBuilder.menuItem;
+import static com.hyd.fx.builders.ImageBuilder.image;
+import static com.hyd.fx.builders.MenuBuilder.contextMenu;
+import static com.hyd.fx.builders.MenuBuilder.menuItem;
 import static com.hyd.fx.system.ClipboardHelper.putApplicationClipboard;
 
 /**
@@ -25,12 +26,12 @@ public class AuthenticationTableRow extends TableRow<Authentication> {
     public static final String CLIP_KEY = "copy_authentication";
 
     private ContextMenu contextMenu = contextMenu(
-            menuItem("复制用户名", FxUI.image("/icons/copy.png"), "Shortcut+X", this::copyUsernameClicked),
-            menuItem("复制密码", FxUI.image("/icons/copy.png"), "Shortcut+C", this::copyPasswordClicked),
+            menuItem("复制用户名", image("/icons/copy.png"), "Shortcut+X", this::copyUsernameClicked),
+            menuItem("复制密码", image("/icons/copy.png"), "Shortcut+C", this::copyPasswordClicked),
             new SeparatorMenuItem(),
-            menuItem("复制账号",FxUI.image("/icons/copy.png"),  this::copyEntryClicked),
-            menuItem("编辑...", FxUI.image("/icons/edit.png"), this::editEntryClicked),
-            menuItem("删除", FxUI.image("/icons/delete.png"), this::deleteEntryClicked)
+            menuItem("复制账号",image("/icons/copy.png"),  this::copyEntryClicked),
+            menuItem("编辑...", image("/icons/edit.png"), this::editEntryClicked),
+            menuItem("删除", image("/icons/delete.png"), this::deleteEntryClicked)
     );
 
     private void copyEntryClicked() {

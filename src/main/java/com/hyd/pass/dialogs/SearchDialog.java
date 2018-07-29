@@ -1,23 +1,17 @@
 package com.hyd.pass.dialogs;
 
 import com.hyd.fx.app.AppPrimaryStage;
-import com.hyd.fx.cells.ListCellFactoryBuilder;
+import com.hyd.fx.cells.TreeCellFactoryBuilder;
+import com.hyd.fx.components.FilterableTreeView;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.App;
+import com.hyd.pass.model.Category;
 import com.hyd.pass.model.Entry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.util.Callback;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author yidin
@@ -28,7 +22,7 @@ public class SearchDialog extends BasicDialog {
     private TextField txtKeyword;
 
     @FXML
-    private ListView<SearchItem> lvEntryList;
+    private FilterableTreeView<SearchItem> tvSearchResult;
 
     @FXML
     private Button btnClear;
@@ -57,11 +51,36 @@ public class SearchDialog extends BasicDialog {
     public void initialize() {
         this.btnClear.setOnAction(event -> this.clear());
         this.txtKeyword.textProperty().addListener((ob, oldValue, newValue) -> this.keywordChanged(newValue));
+        this.tvSearchResult.setOriginalRoot(buildOriginalRoot());
 
-        new ListCellFactoryBuilder<SearchItem>()
+        new TreeCellFactoryBuilder<SearchItem>()
                 .setToString(SearchItem::toString)
                 .setOnDoubleClick(this::searchItemSelected)
-                .setTo(this.lvEntryList);
+                .setTo(tvSearchResult);
+    }
+
+    private TreeItem<SearchItem> buildOriginalRoot() {
+        Category rootCategory = App.getPasswordLib().getRootCategory();
+        TreeItem<SearchItem> rootTreeItem = new TreeItem<>(new CategorySearchItem(rootCategory));
+
+        buildOriginalRoot(rootCategory, rootTreeItem);
+        return rootTreeItem;
+    }
+
+    private void buildOriginalRoot(Category parentCategory, TreeItem<SearchItem> parentTreeItem) {
+
+        parentTreeItem.setExpanded(true);
+
+        for (Category child : parentCategory.getChildren()) {
+            TreeItem<SearchItem> childTreeItem = new TreeItem<>(new CategorySearchItem(child));
+            parentTreeItem.getChildren().add(childTreeItem);
+            buildOriginalRoot(child, childTreeItem);
+        }
+
+        for (Entry entry : parentCategory.getEntries()) {
+            TreeItem<SearchItem> childTreeItem = new TreeItem<>(new EntrySearchItem(entry));
+            parentTreeItem.getChildren().add(childTreeItem);
+        }
     }
 
     private void searchItemSelected(SearchItem item) {
@@ -76,25 +95,21 @@ public class SearchDialog extends BasicDialog {
     }
 
     private void keywordChanged(String keyword) {
+        this.tvSearchResult.filter(searchItem -> {
 
-        if (StringUtils.isBlank(keyword)) {
-            lvEntryList.getItems().clear();
-            return;
-        }
+            if (searchItem instanceof CategorySearchItem) {
+                return ((CategorySearchItem) searchItem).category.getName().contains(keyword);
 
-        List<Entry> entryList = new ArrayList<>();
+            } else if (searchItem instanceof EntrySearchItem) {
+                Entry entry = ((EntrySearchItem) searchItem).entry;
+                return StringUtils.containsIgnoreCase(entry.getName(), keyword)||
+                        StringUtils.containsIgnoreCase(entry.getNote(), keyword)||
+                        StringUtils.containsIgnoreCase(entry.getComment(), keyword)||
+                        StringUtils.containsIgnoreCase(entry.getLocation(), keyword);
+            }
 
-        App.getPasswordLib().getRootCategory().iterateChildren(category -> {
-            category.getEntries().stream()
-                    .filter(entry -> entry.matchKeyword(keyword))
-                    .forEach(entryList::add);
+            return false;
         });
-
-        List<EntrySearchItem> searchResult = entryList.stream()
-                .map(entry -> new EntrySearchItem(keyword, entry))
-                .collect(Collectors.toList());
-
-        lvEntryList.getItems().setAll(searchResult);
     }
 
     private void closeButtonClicked(ActionEvent actionEvent) {
@@ -110,58 +125,35 @@ public class SearchDialog extends BasicDialog {
 
     private static abstract class SearchItem {
 
-        String keyword;
-
-        public SearchItem(String keyword) {
-            this.keyword = keyword;
-        }
-
         @Override
         public abstract String toString();
-
-        // 在多行文本中搜索关键字，仅返回包含关键字的一行
-        String findContent(String content) {
-            if (content == null) {
-                return null;
-            }
-
-            return Stream.of(content.split("\n"))
-                    .filter(Objects::nonNull)
-                    .filter(line -> line.contains(keyword))
-                    .findFirst().orElse(null);
-        }
-
-        String generateToString(String[] names, String[] searchContents) {
-            List<String> items = new ArrayList<>();
-
-            for (String name : names) {
-                items.add("[" + name + "]");
-            }
-
-            for (String content : searchContents) {
-                items.add(findContent(content));
-            }
-
-            items.removeAll(Collections.singleton(null));
-            return String.join(" ", items);
-        }
     }
 
     private static class EntrySearchItem extends SearchItem {
 
         Entry entry;
 
-        public EntrySearchItem(String keyword, Entry entry) {
-            super(keyword);
+        public EntrySearchItem(Entry entry) {
             this.entry = entry;
         }
 
         @Override
         public String toString() {
-            return generateToString(
-                    new String[]{entry.getName(), entry.getLocation()},
-                    new String[]{entry.getComment(), entry.getNote()}
-            );
+            return entry.getName();
+        }
+    }
+
+    private static class CategorySearchItem extends SearchItem {
+
+        Category category;
+
+        public CategorySearchItem(Category category) {
+            this.category = category;
+        }
+
+        @Override
+        public String toString() {
+            return category.getName();
         }
     }
 }

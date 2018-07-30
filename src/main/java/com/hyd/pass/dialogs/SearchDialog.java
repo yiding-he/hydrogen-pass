@@ -11,7 +11,10 @@ import com.hyd.pass.model.Entry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import org.apache.commons.lang3.StringUtils;
+
+import static com.hyd.fx.builders.ImageBuilder.image;
 
 /**
  * @author yidin
@@ -56,7 +59,18 @@ public class SearchDialog extends BasicDialog {
         new TreeCellFactoryBuilder<SearchItem>()
                 .setToString(SearchItem::toString)
                 .setOnDoubleClick(this::searchItemSelected)
+                .setIconSupplier(this::getTreeNodeIcon)
                 .setTo(tvSearchResult);
+    }
+
+    private Image getTreeNodeIcon(TreeItem<SearchItem> treeItem) {
+        if (treeItem.getValue() instanceof CategorySearchItem) {
+            return image("/icons/folder.png");
+        } else if (treeItem.getValue() instanceof EntrySearchItem) {
+            return image("/icons/pc.png");
+        } else {
+            return null;
+        }
     }
 
     private TreeItem<SearchItem> buildOriginalRoot() {

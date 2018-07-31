@@ -153,7 +153,7 @@ public class SearchDialog extends BasicDialog {
 
         @Override
         public String toString() {
-            return entry.getName();
+            return entry.getName() + " (" + entry.getLocation() + ")";
         }
     }
 

@@ -1,6 +1,5 @@
 package com.hyd.pass.fx;
 
-import com.hyd.fx.builders.ImageBuilder;
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.system.ClipboardHelper;
 import com.hyd.pass.App;
@@ -23,19 +22,21 @@ import static com.hyd.fx.system.ClipboardHelper.putApplicationClipboard;
  */
 public class AuthenticationTableRow extends TableRow<Authentication> {
 
-    public static final String CLIP_KEY = "copy_authentication";
+    public static final String AUTH_CLIP_KEY = "copy_authentication";
+
+    public static final String ENTRY_CLIP_KEY = "copy_entry";
 
     private ContextMenu contextMenu = contextMenu(
             menuItem("复制用户名", image("/icons/copy.png"), "Shortcut+X", this::copyUsernameClicked),
             menuItem("复制密码", image("/icons/copy.png"), "Shortcut+C", this::copyPasswordClicked),
             new SeparatorMenuItem(),
-            menuItem("复制账号",image("/icons/copy.png"),  this::copyEntryClicked),
-            menuItem("编辑...", image("/icons/edit.png"), this::editEntryClicked),
-            menuItem("删除", image("/icons/delete.png"), this::deleteEntryClicked)
+            menuItem("复制账号", image("/icons/copy.png"), this::copyEntryClicked),
+            menuItem("编辑账号...", image("/icons/edit.png"), this::editEntryClicked),
+            menuItem("删除账号", image("/icons/delete.png"), this::deleteEntryClicked)
     );
 
     private void copyEntryClicked() {
-        putApplicationClipboard(CLIP_KEY, this.getItem().clone());
+        putApplicationClipboard(AUTH_CLIP_KEY, this.getItem().clone());
     }
 
     public AuthenticationTableRow() {

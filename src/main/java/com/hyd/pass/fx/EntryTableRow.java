@@ -17,6 +17,8 @@ import java.util.stream.Stream;
 
 import static com.hyd.fx.builders.ImageBuilder.image;
 import static com.hyd.fx.builders.MenuBuilder.*;
+import static com.hyd.fx.system.ClipboardHelper.putApplicationClipboard;
+import static com.hyd.pass.fx.AuthenticationTableRow.ENTRY_CLIP_KEY;
 
 /**
  * @author yidin
@@ -32,6 +34,7 @@ public class EntryTableRow extends TableRow<Entry> {
         }
 
         String location = this.getItem().getLocation();
+
         if (StringUtils.isNotBlank(location)) {
 
             MenuItem[] locationMenuItems = Stream.of(location.split(","))
@@ -41,15 +44,16 @@ public class EntryTableRow extends TableRow<Entry> {
                     .toArray(MenuItem[]::new);
 
             currentContextMenu = contextMenu(
-                    menuItem("编辑...", image("/icons/edit.png"), this::editEntryClicked),
-                    menuItem("删除", image("/icons/delete.png"), this::deleteEntryClicked),
+                    menuItem("编辑入口...", image("/icons/edit.png"), this::editEntryClicked),
+                    menuItem("复制入口", image("/icons/copy.png"), this::copyEntryClicked),
+                    menuItem("删除入口", image("/icons/delete.png"), this::deleteEntryClicked),
                     menu("复制地址", image("/icons/copy.png"), locationMenuItems)
             );
 
         } else {
             currentContextMenu = contextMenu(
-                    menuItem("编辑...", this::editEntryClicked),
-                    menuItem("删除", this::deleteEntryClicked)
+                    menuItem("编辑入口...", this::editEntryClicked),
+                    menuItem("删除入口", this::deleteEntryClicked)
             );
         }
 
@@ -61,6 +65,7 @@ public class EntryTableRow extends TableRow<Entry> {
         setOnContextMenuRequested(event -> {
             if (!isEmpty()) {
                 createContextMenu().show(this, event.getScreenX(), event.getScreenY());
+                event.consume();
             }
         });
 
@@ -69,6 +74,10 @@ public class EntryTableRow extends TableRow<Entry> {
                 editEntryClicked();
             }
         });
+    }
+
+    private void copyEntryClicked() {
+        putApplicationClipboard(ENTRY_CLIP_KEY, this.getItem().clone());
     }
 
     private void deleteEntryClicked() {

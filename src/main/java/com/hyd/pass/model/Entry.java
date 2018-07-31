@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author yiding.he
  */
-public class Entry extends OrderedItem {
+public class Entry extends OrderedItem implements Cloneable {
 
     private String location;
 
@@ -66,5 +66,15 @@ public class Entry extends OrderedItem {
                 StringUtils.containsIgnoreCase(location, keyword) ||
                 StringUtils.containsIgnoreCase(comment, keyword) ||
                 StringUtils.containsIgnoreCase(note, keyword);
+    }
+
+    @Override
+    public final Entry clone() {
+        try {
+            return (Entry) super.clone();
+        } catch (CloneNotSupportedException e) {
+            // ignore this
+            return null;
+        }
     }
 }

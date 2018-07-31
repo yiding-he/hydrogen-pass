@@ -27,7 +27,8 @@ import java.util.function.Consumer;
 
 import static com.hyd.fx.cells.TableViewHelper.setColumnValueFactory;
 import static com.hyd.fx.system.ClipboardHelper.getApplicationClipboard;
-import static com.hyd.pass.fx.AuthenticationTableRow.CLIP_KEY;
+import static com.hyd.pass.fx.AuthenticationTableRow.AUTH_CLIP_KEY;
+import static com.hyd.pass.fx.AuthenticationTableRow.ENTRY_CLIP_KEY;
 
 /**
  * @author yiding.he
@@ -71,6 +72,8 @@ public class MainController extends BaseController {
     public CheckMenuItem mnuNoteWrap;
 
     public MenuItem mnuPasteAuthentication;
+
+    public MenuItem mnuPasteEntry;
 
     public void initialize() {
         this.split1.setDividerPositions(0.2);
@@ -440,7 +443,7 @@ public class MainController extends BaseController {
     }
 
     public void onAuthTablePaste() {
-        Authentication a = getApplicationClipboard(CLIP_KEY);
+        Authentication a = getApplicationClipboard(AUTH_CLIP_KEY);
         if (a != null) {
             Entry currentEntry = App.getCurrentEntry();
             if (currentEntry != null) {
@@ -450,7 +453,22 @@ public class MainController extends BaseController {
         }
     }
 
+    public void onEntryTablePaste() {
+        Entry entry = getApplicationClipboard(ENTRY_CLIP_KEY);
+        if (entry != null) {
+            Category c = App.getCurrentCategory();
+            if (c != null) {
+                c.addEntry(entry.clone());
+                refreshEntryList();
+            }
+        }
+    }
+
     public void onAuthTableContextMenuShown() {
-        mnuPasteAuthentication.setDisable(getApplicationClipboard(CLIP_KEY) == null);
+        mnuPasteAuthentication.setDisable(getApplicationClipboard(AUTH_CLIP_KEY) == null);
+    }
+
+    public void onEntryTableContextMenuShown() {
+        mnuPasteEntry.setDisable(getApplicationClipboard(ENTRY_CLIP_KEY) == null);
     }
 }

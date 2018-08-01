@@ -29,11 +29,21 @@ public class Category extends OrderedItem {
 
     private List<String> entryStrings = new ArrayList<>();
 
+    private String sortBy;
+
     public Category() {
     }
 
     public Category(String name) {
         setName(name);
+    }
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
     }
 
     public List<Entry> getEntries() {

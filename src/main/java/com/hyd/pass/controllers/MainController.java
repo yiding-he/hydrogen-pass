@@ -23,6 +23,9 @@ import javafx.stage.WindowEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
 
 import static com.hyd.fx.cells.TableViewHelper.setColumnValueFactory;
@@ -94,6 +97,7 @@ public class MainController extends BaseController {
 
         this.tblEntries.setRowFactory(tv -> new EntryTableRow());
         this.tblEntries.getSortOrder().add(colEntryName);
+        this.tblEntries.setOnSort(this::onEntryTableSort);
 
         ////////////////////////////////////////////////////////////////////////////////
 
@@ -124,6 +128,14 @@ public class MainController extends BaseController {
         ///////////////////////////////////////////////
 
         tryAutoOpenRecentFile();
+    }
+
+    private void onEntryTableSort(SortEvent<TableView<Entry>> event) {
+        List<TableColumn<Entry, ?>> sortColumns = event.getSource().getSortOrder();
+        if (!sortColumns.isEmpty()) {
+            TableColumn<Entry, ?> column = sortColumns.get(0);
+            App.getCurrentCategory().setSortBy(getSortByName(column));
+        }
     }
 
     private void tryAutoOpenRecentFile() {
@@ -205,7 +217,31 @@ public class MainController extends BaseController {
         this.btnNewEntry.setDisable(selected == null);
         this.tblEntries.setDisable(selected == null);
 
+        if (selected != null) {
+            String sortBy = selected.getValue().getSortBy();
+            this.tblEntries.getSortOrder().setAll(getEntryTableColumn(sortBy));
+        }
+
         refreshEntryList();
+    }
+
+    private Collection<? extends TableColumn<Entry, ?>> getEntryTableColumn(String property) {
+        TableColumn<Entry, ?> result;
+
+        if (property == null) {
+            result = colEntryName;
+
+        } else {
+            result = this.tblEntries.getColumns().stream()
+                    .filter(column -> column.getUserData().equals(property))
+                    .findFirst().orElse(colEntryName);
+        }
+
+        return Collections.singleton(result);
+    }
+
+    private String getSortByName(TableColumn<Entry, ?> column) {
+        return String.valueOf(column.getUserData());
     }
 
     @SuppressWarnings("unused")
@@ -367,7 +403,6 @@ public class MainController extends BaseController {
         Category currentCategory = App.getCurrentCategory();
         if (currentCategory != null) {
             tblEntries.getItems().setAll(currentCategory.getEntries());
-            tblEntries.sort();
         } else {
             tblEntries.getItems().clear();
         }

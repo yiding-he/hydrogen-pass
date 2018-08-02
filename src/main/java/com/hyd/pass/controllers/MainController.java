@@ -80,6 +80,8 @@ public class MainController extends BaseController {
 
     public MenuItem mnuPasteEntry;
 
+    public MenuItem mnuExport;
+
     public void initialize() {
         this.split1.setDividerPositions(0.2);
         this.split2.setDividerPositions(0.4);
@@ -369,6 +371,8 @@ public class MainController extends BaseController {
 
     private void loadPasswordLib(PasswordLib passwordLib) {
         loadCategories(passwordLib);
+
+        this.mnuExport.setDisable(false);
         this.tvCategories.getRoot().setExpanded(true);
         this.tvCategories.getSelectionModel().select(this.tvCategories.getRoot());
         AppPrimaryStage.getPrimaryStage().setTitle(App.APP_NAME + " - " + passwordLib.filePath());
@@ -509,5 +513,12 @@ public class MainController extends BaseController {
 
     public void onEntryTableContextMenuShown() {
         mnuPasteEntry.setDisable(getApplicationClipboard(ENTRY_CLIP_KEY) == null);
+    }
+
+    public void exportFileClicked() {
+        ButtonType buttonType = new ExportDialog().showAndWait().orElse(ButtonType.CLOSE);
+        if (buttonType == ExportDialog.BUTTON_TYPE_EXPORT) {
+            System.out.println("................");
+        }
     }
 }

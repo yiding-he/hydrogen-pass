@@ -187,6 +187,4 @@ public class PasswordLib {
             setChanged(true);
         }
     }
-
-
 }

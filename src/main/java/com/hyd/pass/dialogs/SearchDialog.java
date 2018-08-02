@@ -8,6 +8,7 @@ import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.App;
 import com.hyd.pass.model.Category;
 import com.hyd.pass.model.Entry;
+import com.hyd.pass.model.SearchItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -64,9 +65,9 @@ public class SearchDialog extends BasicDialog {
     }
 
     private Image getTreeNodeIcon(TreeItem<SearchItem> treeItem) {
-        if (treeItem.getValue() instanceof CategorySearchItem) {
+        if (treeItem.getValue() instanceof SearchItem.CategorySearchItem) {
             return image("/icons/folder.png");
-        } else if (treeItem.getValue() instanceof EntrySearchItem) {
+        } else if (treeItem.getValue() instanceof SearchItem.EntrySearchItem) {
             return image("/icons/pc.png");
         } else {
             return null;
@@ -75,7 +76,7 @@ public class SearchDialog extends BasicDialog {
 
     private TreeItem<SearchItem> buildOriginalRoot() {
         Category rootCategory = App.getPasswordLib().getRootCategory();
-        TreeItem<SearchItem> rootTreeItem = new TreeItem<>(new CategorySearchItem(rootCategory));
+        TreeItem<SearchItem> rootTreeItem = new TreeItem<>(new SearchItem.CategorySearchItem(rootCategory));
 
         buildOriginalRoot(rootCategory, rootTreeItem);
         return rootTreeItem;
@@ -86,20 +87,20 @@ public class SearchDialog extends BasicDialog {
         parentTreeItem.setExpanded(true);
 
         for (Category child : parentCategory.getChildren()) {
-            TreeItem<SearchItem> childTreeItem = new TreeItem<>(new CategorySearchItem(child));
+            TreeItem<SearchItem> childTreeItem = new TreeItem<>(new SearchItem.CategorySearchItem(child));
             parentTreeItem.getChildren().add(childTreeItem);
             buildOriginalRoot(child, childTreeItem);
         }
 
         for (Entry entry : parentCategory.getEntries()) {
-            TreeItem<SearchItem> childTreeItem = new TreeItem<>(new EntrySearchItem(entry));
+            TreeItem<SearchItem> childTreeItem = new TreeItem<>(new SearchItem.EntrySearchItem(entry));
             parentTreeItem.getChildren().add(childTreeItem);
         }
     }
 
     private void searchItemSelected(SearchItem item) {
-        if (item instanceof EntrySearchItem) {
-            entrySelected(((EntrySearchItem) item).entry);
+        if (item instanceof SearchItem.EntrySearchItem) {
+            entrySelected(((SearchItem.EntrySearchItem) item).entry);
         }
     }
 
@@ -111,11 +112,11 @@ public class SearchDialog extends BasicDialog {
     private void keywordChanged(String keyword) {
         this.tvSearchResult.filter(searchItem -> {
 
-            if (searchItem instanceof CategorySearchItem) {
-                return ((CategorySearchItem) searchItem).category.getName().contains(keyword);
+            if (searchItem instanceof SearchItem.CategorySearchItem) {
+                return ((SearchItem.CategorySearchItem) searchItem).category.getName().contains(keyword);
 
-            } else if (searchItem instanceof EntrySearchItem) {
-                Entry entry = ((EntrySearchItem) searchItem).entry;
+            } else if (searchItem instanceof SearchItem.EntrySearchItem) {
+                Entry entry = ((SearchItem.EntrySearchItem) searchItem).entry;
                 return StringUtils.containsIgnoreCase(entry.getName(), keyword)||
                         StringUtils.containsIgnoreCase(entry.getNote(), keyword)||
                         StringUtils.containsIgnoreCase(entry.getComment(), keyword)||
@@ -137,37 +138,4 @@ public class SearchDialog extends BasicDialog {
 
     ///////////////////////////////////////////////
 
-    private static abstract class SearchItem {
-
-        @Override
-        public abstract String toString();
-    }
-
-    private static class EntrySearchItem extends SearchItem {
-
-        Entry entry;
-
-        public EntrySearchItem(Entry entry) {
-            this.entry = entry;
-        }
-
-        @Override
-        public String toString() {
-            return entry.getName() + " (" + entry.getLocation() + ")";
-        }
-    }
-
-    private static class CategorySearchItem extends SearchItem {
-
-        Category category;
-
-        public CategorySearchItem(Category category) {
-            this.category = category;
-        }
-
-        @Override
-        public String toString() {
-            return category.getName();
-        }
-    }
 }

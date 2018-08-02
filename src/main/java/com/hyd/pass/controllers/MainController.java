@@ -386,6 +386,7 @@ public class MainController extends BaseController {
         for (Category child : category.getChildren()) {
             treeItem.getChildren().add(loadCategory(child));
         }
+        treeItem.setExpanded(true);
         return treeItem;
     }
 

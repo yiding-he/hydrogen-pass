@@ -10,7 +10,7 @@
             stylesheets="@/css/style.css"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.hyd.pass.controllers.MainController"
-            prefHeight="650.0" prefWidth="850.0">
+            prefHeight="650.0" prefWidth="1000.0">
 
     <top>
         <MenuBar>
@@ -46,8 +46,9 @@
                     </HBox>
                     <TableView fx:id="tblEntries" VBox.vgrow="ALWAYS" disable="true">
                         <columns>
-                            <TableColumn text="名称" userData="name" prefWidth="120" fx:id="colEntryName"/>
-                            <TableColumn text="位置" userData="location" prefWidth="250" fx:id="colEntryLocation"/>
+                            <TableColumn text="名称" userData="name" prefWidth="150" fx:id="colEntryName"/>
+                            <TableColumn text="位置" userData="location" prefWidth="200" fx:id="colEntryLocation"/>
+                            <TableColumn text="创建时间" userData="createTime" prefWidth="150" fx:id="colEntryCreateTime"/>
                             <TableColumn text="备注" userData="comment" prefWidth="300" fx:id="colEntryComment"/>
                         </columns>
                         <contextMenu>

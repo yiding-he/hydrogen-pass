@@ -62,6 +62,8 @@ public class MainController extends BaseController {
 
     public TableColumn<Entry, String> colEntryLocation;
 
+    public TableColumn<Entry, String> colEntryCreateTime;
+
     public TableColumn<Entry, String> colEntryComment;
 
     public TableColumn<Authentication, String> colAuthUsername;
@@ -93,6 +95,7 @@ public class MainController extends BaseController {
 
         setColumnValueFactory(colEntryName, Entry::getName);
         setColumnValueFactory(colEntryLocation, Entry::getLocation);
+        setColumnValueFactory(colEntryCreateTime, Entry::getCreateTime);
         setColumnValueFactory(colEntryComment, Entry::getComment);
 
         this.tblEntries.setRowFactory(tv -> new EntryTableRow());

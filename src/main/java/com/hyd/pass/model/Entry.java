@@ -1,8 +1,10 @@
 package com.hyd.pass.model;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,11 +12,15 @@ import java.util.List;
  */
 public class Entry extends OrderedItem implements Cloneable {
 
+    public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm";
+
     private String location;
 
     private String comment;
 
     private String note;
+
+    private String createTime = now();
 
     private List<Authentication> authentications = new ArrayList<>();
 
@@ -25,6 +31,18 @@ public class Entry extends OrderedItem implements Cloneable {
         this.setName(name);
         this.location = location;
         this.comment = comment;
+    }
+
+    private static String now() {
+        return DateFormatUtils.format(new Date(), DATE_PATTERN);
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public String getLocation() {

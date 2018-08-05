@@ -13,6 +13,7 @@ public enum Icons {
 
     Logo("/logo.png"),
     Folder("/icons/folder.png"),
+    Pc("/icons/pc.png"),
 
     //////////////////////////////////////////////////////////////
 

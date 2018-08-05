@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.hyd.fx.cells.TableViewHelper.setColumnValueFactory;
+import static com.hyd.fx.helpers.TableViewHelper.setColumnValueFactory;
 import static com.hyd.fx.system.ClipboardHelper.getApplicationClipboard;
 import static com.hyd.pass.fx.AuthenticationTableRow.AUTH_CLIP_KEY;
 import static com.hyd.pass.fx.AuthenticationTableRow.ENTRY_CLIP_KEY;

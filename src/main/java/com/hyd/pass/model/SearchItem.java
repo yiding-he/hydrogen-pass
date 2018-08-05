@@ -2,7 +2,19 @@ package com.hyd.pass.model;
 
 public abstract class SearchItem {
 
+    private boolean selected;
+
     public abstract String toString();
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    ///////////////////////////////////////////////
 
     public static class EntrySearchItem extends SearchItem {
 

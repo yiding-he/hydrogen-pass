@@ -2,7 +2,6 @@ package com.hyd.pass.model;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.hyd.pass.App;
 import com.hyd.pass.utils.AESUtils;
 import javafx.scene.control.TreeItem;
 
@@ -80,10 +79,14 @@ public class Category extends OrderedItem {
 
     public Category createChild(String categoryName) {
         Category category = new Category(categoryName);
+        addChild(category);
+        return category;
+    }
+
+    public void addChild(Category category) {
         category.setParentId(getId());
         category.setOrder(children.size());
         children.add(category);
-        return category;
     }
 
     public void updateChildrenOrder(List<Category> orderedChildren) {
@@ -108,20 +111,20 @@ public class Category extends OrderedItem {
         this.entries.remove(entry);
     }
 
-    public void readEntries() {
+    public void readEntries(String password) {
         if (this.entryStrings == null) {
             return;
         }
 
         this.entries.clear();
         this.entryStrings.forEach(entryString -> {
-            String json = AESUtils.decode128(entryString, App.getMasterPassword());
+            String json = AESUtils.decode128(entryString, password);
             Entry entry = JSON.parseObject(json, Entry.class);
             this.entries.add(entry);
         });
     }
 
-    public void saveEntries() {
+    public void saveEntries(String password) {
         if (this.entries == null) {
             return;
         }
@@ -129,7 +132,7 @@ public class Category extends OrderedItem {
         this.entryStrings.clear();
         this.entries.forEach(entry -> {
             String json = JSON.toJSONString(entry);
-            String enc = AESUtils.encode128(json, App.getMasterPassword());
+            String enc = AESUtils.encode128(json, password);
             this.entryStrings.add(enc);
         });
     }

@@ -338,8 +338,8 @@ public class MainController extends BaseController {
     }
 
     private void newFileClicked0() {
-        CreatePasswordDialog createPasswordDialog = new CreatePasswordDialog();
-        ButtonType buttonType = createPasswordDialog.showAndWait().orElse(ButtonType.CANCEL);
+        CreatePasswordLibDialog createPasswordLibDialog = new CreatePasswordLibDialog();
+        ButtonType buttonType = createPasswordLibDialog.showAndWait().orElse(ButtonType.CANCEL);
 
         if (buttonType == ButtonType.OK) {
 
@@ -349,7 +349,7 @@ public class MainController extends BaseController {
             }
 
             try {
-                createPasswordLib(createPasswordDialog);
+                createPasswordLib(createPasswordLibDialog);
             } catch (Exception e) {
                 logger.error("创建密码库失败", e);
                 AlertDialog.error("创建密码库失败", e);
@@ -357,10 +357,10 @@ public class MainController extends BaseController {
         }
     }
 
-    private void createPasswordLib(CreatePasswordDialog createPasswordDialog) {
+    private void createPasswordLib(CreatePasswordLibDialog createPasswordLibDialog) {
         PasswordLib passwordLib = new PasswordLib(
-                createPasswordDialog.getSaveFile(),
-                createPasswordDialog.getMasterPassword(),
+                createPasswordLibDialog.getSaveFile(),
+                createPasswordLibDialog.getMasterPassword(),
                 true
         );
 
@@ -479,7 +479,7 @@ public class MainController extends BaseController {
 
         ChangeMasterPasswordDialog dialog = new ChangeMasterPasswordDialog();
         if (dialog.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
-            App.setMasterPassword(dialog.getNewPassword());
+            passwordLib.setMasterPassword(dialog.getNewPassword());
             passwordLib.save();
             AlertDialog.info("密码已修改", "密码库已经按照新的主密码重新加密保存。");
         }
@@ -516,9 +516,6 @@ public class MainController extends BaseController {
     }
 
     public void exportFileClicked() {
-        ButtonType buttonType = new ExportDialog().showAndWait().orElse(ButtonType.CLOSE);
-        if (buttonType == ExportDialog.BUTTON_TYPE_EXPORT) {
-            System.out.println("................");
-        }
+        new ExportDialog().showAndWait();
     }
 }

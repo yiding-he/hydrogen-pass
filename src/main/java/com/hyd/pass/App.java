@@ -63,18 +63,6 @@ public class App extends Application {
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    private static String masterPassword;
-
-    public static String getMasterPassword() {
-        return masterPassword;
-    }
-
-    public static void setMasterPassword(String masterPassword) {
-        App.masterPassword = masterPassword;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////
-
     private static Category currentCategory;
 
     private static Entry currentEntry;

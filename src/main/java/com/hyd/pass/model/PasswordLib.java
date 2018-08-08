@@ -2,7 +2,7 @@ package com.hyd.pass.model;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.hyd.pass.App;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.hyd.pass.utils.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -38,14 +39,27 @@ public class PasswordLib {
 
     private Category rootCategory;
 
+    @JSONField(serialize = false)
     private boolean changed;
 
+    @JSONField(serialize = false)
+    private String masterPassword;
+
+    /**
+     * 创建或打开密码库
+     *
+     * @param saveFile       文件路径
+     * @param masterPassword 主密码
+     * @param create         true 表示是创建新的密码库，false 表示是打开现有的密码库
+     *
+     * @throws PasswordLibException 如果创建或打开密码库失败
+     */
     public PasswordLib(File saveFile, String masterPassword, boolean create) throws PasswordLibException {
         if (create) {
             this.saveFile = saveFile;
             this.rootCategory = new Category("我的密码库");
             this.masterPasswordValidator = generateValidator(masterPassword, rootCategory.getId());
-            App.setMasterPassword(masterPassword);
+            this.masterPassword = masterPassword;
 
         } else {
 
@@ -74,14 +88,15 @@ public class PasswordLib {
             this.saveFile = saveFile;
             this.rootCategory = jsonObject.getObject("rootCategory", Category.class);
             this.masterPasswordValidator = masterPasswordValidator;
-
-            App.setMasterPassword(masterPassword);
+            this.masterPassword = masterPassword;
 
             try {
                 if (this.rootCategory == null) {
                     this.rootCategory = new Category("我的密码库");
                 } else {
-                    this.rootCategory.iterateChildren(Category::readEntries);  // 解密内容
+                    this.rootCategory.iterateChildren(category -> {
+                        category.readEntries(masterPassword);
+                    });  // 解密内容
                 }
             } catch (Exception e) {
                 throw new PasswordLibException(e);
@@ -100,6 +115,10 @@ public class PasswordLib {
 
     public void setChanged(boolean changed) {
         this.changed = changed;
+    }
+
+    public void setMasterPassword(String masterPassword) {
+        this.masterPassword = masterPassword;
     }
 
     public String filePath() {
@@ -125,17 +144,19 @@ public class PasswordLib {
     public void save() {
 
         // 保证校验字符串与最新的主密码一致
-        masterPasswordValidator = generateValidator(App.getMasterPassword(), rootCategory.getId());
+        masterPasswordValidator = generateValidator(this.masterPassword, rootCategory.getId());
 
         // 加密所有 entry
-        rootCategory.iterateChildren(Category::saveEntries);
+        rootCategory.iterateChildren(category -> {
+            category.saveEntries(this.masterPassword);
+        });
 
         Map<String, Object> data = new HashMap<>();
         data.put("masterPasswordValidator", masterPasswordValidator);
         data.put("rootCategory", rootCategory);
 
         try {
-            try(ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(saveFile))) {
+            try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(saveFile))) {
                 saveContent(data, zos);
             }
             setChanged(false);
@@ -186,5 +207,9 @@ public class PasswordLib {
         if (removed[0]) {
             setChanged(true);
         }
+    }
+
+    public boolean validatePassword(String password) {
+        return Objects.equals(this.masterPassword, password);
     }
 }

@@ -24,10 +24,10 @@ import java.util.Objects;
  *
  * @author yidin
  */
-public class CreatePasswordDialog extends BasicDialog {
+public class CreatePasswordLibDialog extends BasicDialog {
 
     @FXML
-    private TextField savePath;
+    private TextField txtSavePath;
 
     @FXML
     private PasswordField password1;
@@ -35,7 +35,7 @@ public class CreatePasswordDialog extends BasicDialog {
     @FXML
     private PasswordField password2;
 
-    public CreatePasswordDialog() {
+    public CreatePasswordLibDialog() {
         new DialogBuilder()
                 .title("创建密码库")
                 .logo(AppLogo.getLogo())
@@ -47,13 +47,13 @@ public class CreatePasswordDialog extends BasicDialog {
 
     private void onOkButtonClicked(ActionEvent event) {
 
-        if (StringUtils.isBlank(savePath.getText())) {
+        if (StringUtils.isBlank(txtSavePath.getText())) {
             AlertDialog.error("存储文件不能为空");
             event.consume();
             return;
         }
 
-        if (!FileUtils.ensureFile(savePath.getText())) {
+        if (!FileUtils.ensureFile(txtSavePath.getText())) {
             AlertDialog.error("无法在目标位置创建文件，请选择其他位置");
             event.consume();
             return;
@@ -71,7 +71,7 @@ public class CreatePasswordDialog extends BasicDialog {
             return;
         }
 
-        this.saveFile = new File(this.savePath.getText());
+        this.saveFile = new File(this.txtSavePath.getText());
         this.masterPassword = this.password1.getText();
     }
 
@@ -85,7 +85,7 @@ public class CreatePasswordDialog extends BasicDialog {
                 AppPrimaryStage.getPrimaryStage(), "选择保存位置", App.FILE_EXT, App.FILE_EXT_NAME, "");
 
         if (f != null) {
-            this.savePath.setText(f.getAbsolutePath());
+            this.txtSavePath.setText(f.getAbsolutePath());
         }
     }
 

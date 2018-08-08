@@ -13,6 +13,7 @@ public class TreeItemBuilder {
         SearchItem.CategorySearchItem searchItem = new SearchItem.CategorySearchItem(rootCategory);
         CheckBoxTreeItem<SearchItem> rootTreeItem = new CheckBoxTreeItem<>(searchItem);
         rootTreeItem.setGraphic(Icons.Folder.getIconImageView());
+        rootTreeItem.setExpanded(true);
 
         rootTreeItem.selectedProperty().addListener(
                 (ob, oldValue, newValue) -> searchItem.setSelected(newValue));
@@ -35,6 +36,7 @@ public class TreeItemBuilder {
         SearchItem.EntrySearchItem searchItem = new SearchItem.EntrySearchItem(entry);
         CheckBoxTreeItem<SearchItem> treeItem = new CheckBoxTreeItem<>(searchItem);
         treeItem.setGraphic(Icons.Pc.getIconImageView());
+        treeItem.setExpanded(true);
 
         treeItem.selectedProperty().addListener(
                 (ob, oldValue, newValue) -> searchItem.setSelected(newValue));

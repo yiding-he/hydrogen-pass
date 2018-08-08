@@ -1,22 +1,34 @@
 package com.hyd.pass.dialogs;
 
 import com.hyd.fx.app.AppPrimaryStage;
+import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
+import com.hyd.fx.dialog.FileDialog;
 import com.hyd.fx.helpers.TreeViewHelper;
 import com.hyd.pass.App;
 import com.hyd.pass.fx.TreeItemBuilder;
 import com.hyd.pass.model.Category;
+import com.hyd.pass.model.PasswordLib;
 import com.hyd.pass.model.SearchItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTreeCell;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
 
 public class ExportDialog extends BasicDialog {
 
     @FXML
     private TreeView<SearchItem> tvEntries;
+
+    @FXML
+    private PasswordField pwdMasterPassword;
+
+    @FXML
+    private TextField txtSavePath;
 
     public static final ButtonType BUTTON_TYPE_EXPORT =
             new ButtonType("导出...", ButtonBar.ButtonData.YES);
@@ -35,16 +47,86 @@ public class ExportDialog extends BasicDialog {
 
     private void exportButtonClicked(ActionEvent actionEvent) {
 
-        TreeItem<SearchItem> export =
+        TreeItem<SearchItem> rootEntry =
                 TreeViewHelper.buildSubTree(tvEntries.getRoot(), SearchItem::isSelected);
 
-        TreeViewHelper.iterate(export, treeItem -> {
-            SearchItem searchItem = treeItem.getValue();
-            System.out.println(searchItem + ":" + searchItem.isSelected());
-            return true;
-        });
+        String password = pwdMasterPassword.getText();
+        String savePath = txtSavePath.getText();
 
-        actionEvent.consume();
+        if (rootEntry == null) {
+            AlertDialog.error("导出", "请选择要导出的节点。");
+            actionEvent.consume();
+            return;
+        }
+
+        if (StringUtils.isBlank(password)) {
+            AlertDialog.error("导出", "请填写主密码。");
+            actionEvent.consume();
+            return;
+        }
+
+        if (StringUtils.isBlank(savePath)) {
+            AlertDialog.error("导出", "请选择要导出的文件位置。");
+            actionEvent.consume();
+            return;
+        }
+
+        try {
+            exportPasswordLib(rootEntry, password, savePath);
+            AlertDialog.info("导出完毕", "导出完毕。");
+        } catch (Exception e) {
+            AlertDialog.error("导出失败", e);
+            actionEvent.consume();
+        }
+    }
+
+    private void exportPasswordLib(TreeItem<SearchItem> rootEntry, String password, String savePath) {
+
+        Category rootCategory = assembleCategory(rootEntry);
+        PasswordLib passwordLib = new PasswordLib(new File(savePath), password, true);
+        passwordLib.setRootCategory(rootCategory);
+        passwordLib.save();
+    }
+
+    private Category assembleCategory(TreeItem<SearchItem> rootEntry) {
+        Category origin = ((SearchItem.CategorySearchItem) rootEntry.getValue()).category;
+        Category category = copyCategory(origin);
+
+        copyChildren(rootEntry, category);
+
+        return category;
+    }
+
+    private Category copyCategory(Category origin) {
+        Category category = new Category();
+        copyProperties(origin, category);
+        return category;
+    }
+
+    private void copyChildren(TreeItem<SearchItem> treeItem, Category category) {
+
+        treeItem.getChildren().forEach(childTreeItem -> {
+            SearchItem searchItem = childTreeItem.getValue();
+
+            if (searchItem instanceof SearchItem.CategorySearchItem) {
+                Category origin = ((SearchItem.CategorySearchItem) searchItem).category;
+                Category child = copyCategory(origin);
+                category.addChild(child);
+
+                copyChildren(childTreeItem, child);
+            } else if (searchItem instanceof SearchItem.EntrySearchItem) {
+                category.addEntry(((SearchItem.EntrySearchItem) searchItem).entry);
+            }
+        });
+    }
+
+    // 将基本属性从 origin 拷贝到 category
+    private void copyProperties(Category origin, Category category) {
+        category.setId(origin.getId());
+        category.setName(origin.getName());
+        category.setOrder(origin.getOrder());
+        category.setSortBy(origin.getSortBy());
+        category.setParentId(origin.getParentId());
     }
 
     private void onStageShown(DialogEvent dialogEvent) {
@@ -54,6 +136,16 @@ public class ExportDialog extends BasicDialog {
     }
 
     private void closeButtonClicked(ActionEvent actionEvent) {
+        this.close();
+    }
 
+    @FXML
+    public void onSelectFileClicked() {
+        File f = FileDialog.showSaveFile(
+                AppPrimaryStage.getPrimaryStage(), "选择保存位置", App.FILE_EXT, App.FILE_EXT_NAME, "");
+
+        if (f != null) {
+            this.txtSavePath.setText(f.getAbsolutePath());
+        }
     }
 }

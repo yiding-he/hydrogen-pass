@@ -5,6 +5,7 @@ import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.App;
+import com.hyd.pass.model.PasswordLib;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
@@ -19,13 +20,13 @@ import java.util.Objects;
 public class ChangeMasterPasswordDialog extends BasicDialog {
 
     @FXML
-    public PasswordField txtOldPassword;
+    private PasswordField txtOldPassword;
 
     @FXML
-    public PasswordField txtNewPassword;
+    private PasswordField txtNewPassword;
 
     @FXML
-    public PasswordField txtNewPassword2;
+    private PasswordField txtNewPassword2;
 
     private String newPassword;
 
@@ -47,11 +48,12 @@ public class ChangeMasterPasswordDialog extends BasicDialog {
 
     private void onOkButtonClicked(ActionEvent actionEvent) {
 
+        PasswordLib passwordLib = App.getPasswordLib();
         String oldPassword = txtOldPassword.getText();
         String newPassword = txtNewPassword.getText();
         String newPassword2 = txtNewPassword2.getText();
 
-        if (!Objects.equals(oldPassword, App.getMasterPassword())) {
+        if (!passwordLib.validatePassword(oldPassword)) {
             AlertDialog.error("修改主密码失败", "旧密码不正确");
             actionEvent.consume();
             return;

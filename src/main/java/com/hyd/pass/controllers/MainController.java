@@ -3,6 +3,7 @@ package com.hyd.pass.controllers;
 import com.hyd.fx.NodeUtils;
 import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.dialog.AlertDialog;
+import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.fx.dialog.FileDialog;
 import com.hyd.fx.system.ClipboardHelper;
 import com.hyd.pass.App;
@@ -12,6 +13,7 @@ import com.hyd.pass.dialogs.*;
 import com.hyd.pass.fx.AuthenticationTableRow;
 import com.hyd.pass.fx.CategoryTreeView;
 import com.hyd.pass.fx.EntryTableRow;
+import com.hyd.pass.fx.Icons;
 import com.hyd.pass.model.*;
 import com.hyd.pass.utils.OrElse;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -81,6 +83,8 @@ public class MainController extends BaseController {
     public MenuItem mnuPasteEntry;
 
     public MenuItem mnuExport;
+
+    public MenuItem mnuCloudStorage;
 
     public void initialize() {
         this.split1.setDividerPositions(0.2);
@@ -517,5 +521,14 @@ public class MainController extends BaseController {
 
     public void exportFileClicked() {
         new ExportDialog().showAndWait();
+    }
+
+    public void cloudStorageClicked() {
+        new DialogBuilder()
+                .title("cloudstorage")
+                .logo(Icons.Logo.getImage())
+                .body("/fxml/storage/storage-settings.fxml")
+                .buttons(ButtonType.CLOSE)
+                .showAndWait();
     }
 }

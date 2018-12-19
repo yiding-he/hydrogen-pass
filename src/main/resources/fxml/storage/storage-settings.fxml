@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox stylesheets="/css/style.css"
+      styleClass="dialog-body"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.hyd.pass.cloudstorage.CloudStorageConfigController"
+      prefHeight="400.0" prefWidth="600.0">
+
+    <TabPane VBox.vgrow="ALWAYS">
+        <Tab text="阿里云" closable="false">
+            <VBox styleClass="dialog-body">
+                <padding>
+                    <Insets top="20" left="10" right="10" bottom="10"/>
+                </padding>
+                <Label style="-fx-font-weight: bold" text="访问授权"/>
+                <Separator/>
+                <HBox styleClass="form-field">
+                    <Label text="Endpoint :" minWidth="100" alignment="BASELINE_RIGHT"/>
+                    <TextField HBox.hgrow="ALWAYS" fx:id="txtAliyunEndPoint"/>
+                </HBox>
+                <HBox styleClass="form-field">
+                    <Label text="AccessKeyId :" minWidth="100" alignment="BASELINE_RIGHT"/>
+                    <TextField HBox.hgrow="ALWAYS"  fx:id="txtAliyunAccessKeyId"/>
+                </HBox>
+                <HBox styleClass="form-field">
+                    <Label text="AccessKeySecret :" minWidth="100" alignment="BASELINE_RIGHT"/>
+                    <PasswordField HBox.hgrow="ALWAYS"  fx:id="txtAliyunAccessKeySecret"/>
+                </HBox>
+                <Pane prefHeight="20"/>
+                <Label style="-fx-font-weight: bold" text="存储位置"/>
+                <Separator/>
+                <HBox styleClass="form-field">
+                    <Label text="Bucket :" minWidth="60" alignment="BASELINE_RIGHT"/>
+                    <TextField HBox.hgrow="ALWAYS"  fx:id="txtAliyunBucket"/>
+                </HBox>
+                <HBox styleClass="form-field">
+                    <Label text="文件路径 :" minWidth="60" alignment="BASELINE_RIGHT"/>
+                    <TextField HBox.hgrow="ALWAYS"  fx:id="txtAliyunFilePath"/>
+                    <Label text=".hpass"/>
+                </HBox>
+                <Pane prefHeight="10"/>
+                <HBox alignment="BASELINE_RIGHT" spacing="10">
+                    <Button text="保存设置" onAction="#saveAliyunConfig"/>
+                    <Button text="打开密码库..." onAction="#openAliyunFile" fx:id="btnOpenAliyunPasswordLib"/>
+                </HBox>
+            </VBox>
+        </Tab>
+        <Tab text="腾讯云" closable="false">
+
+        </Tab>
+        <Tab text="百度云" closable="false">
+
+        </Tab>
+    </TabPane>
+    <Separator/>
+</VBox>

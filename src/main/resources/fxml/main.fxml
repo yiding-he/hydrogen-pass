@@ -19,6 +19,7 @@
                 <MenuItem text="打开(_O)..." onAction="#openFileClicked" accelerator="Shortcut+O"/>
                 <SeparatorMenuItem/>
                 <MenuItem text="导出(_E)..." onAction="#exportFileClicked" fx:id="mnuExport" disable="true"/>
+                <MenuItem text="云存储(_C)..." onAction="#cloudStorageClicked" fx:id="mnuCloudStorage"/>
                 <SeparatorMenuItem/>
                 <MenuItem text="保存(_S)" onAction="#saveClicked" accelerator="Shortcut+S"/>
                 <MenuItem text="退出(_X)" onAction="#exitClicked"/>

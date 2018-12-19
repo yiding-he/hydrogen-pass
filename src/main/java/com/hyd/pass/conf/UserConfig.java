@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -63,7 +64,15 @@ public class UserConfig {
 
     public static void setString(String key, String value) {
         properties.put(key, value);
+        trySave();
+    }
 
+    public static void setProperties(Map<String, String> properties) {
+        UserConfig.properties.putAll(properties);
+        trySave();
+    }
+
+    private static void trySave() {
         if (!readOnly) {
             try {
                 try (Writer writer = new FileWriter(new File(userConfigPath))) {

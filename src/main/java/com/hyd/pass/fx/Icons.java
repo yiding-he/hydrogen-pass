@@ -19,10 +19,17 @@ public enum Icons {
 
     ;
 
+    private String path;
+
     private Image image;
 
     Icons(String imagePath) {
+        this.path = imagePath;
         this.image = new Image(getClass().getResourceAsStream(imagePath));
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public Image getImage() {

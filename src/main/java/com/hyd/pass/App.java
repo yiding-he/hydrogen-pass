@@ -1,5 +1,6 @@
 package com.hyd.pass;
 
+import com.hyd.fx.app.AppLogo;
 import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.dialog.FileDialog;
 import com.hyd.pass.fx.Icons;
@@ -52,8 +53,10 @@ public class App extends Application {
         AppPrimaryStage.setPrimaryStage(primaryStage);
         FileDialog.setInitDirectory(new File("."));
 
+        AppLogo.setPath(Icons.Logo.getPath());
+        AppLogo.setStageLogo(primaryStage);
+
         Parent parent = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
-        primaryStage.getIcons().add(Icons.Logo.getImage());
         primaryStage.setTitle(APP_NAME);
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();

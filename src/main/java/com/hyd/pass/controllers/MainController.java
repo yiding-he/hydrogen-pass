@@ -32,6 +32,8 @@ import static com.hyd.fx.helpers.TableViewHelper.setColumnValueFactory;
 import static com.hyd.fx.system.ClipboardHelper.getApplicationClipboard;
 import static com.hyd.pass.fx.AuthenticationTableRow.AUTH_CLIP_KEY;
 import static com.hyd.pass.fx.AuthenticationTableRow.ENTRY_CLIP_KEY;
+import static javafx.scene.control.TableColumn.SortType.ASCENDING;
+import static javafx.scene.control.TableColumn.SortType.DESCENDING;
 
 /**
  * @author yiding.he
@@ -139,7 +141,9 @@ public class MainController extends BaseController {
         List<TableColumn<Entry, ?>> sortColumns = event.getSource().getSortOrder();
         if (!sortColumns.isEmpty()) {
             TableColumn<Entry, ?> column = sortColumns.get(0);
-            App.getCurrentCategory().setSortBy(getSortByName(column));
+            Category currentCategory = App.getCurrentCategory();
+            currentCategory.setSortBy(getSortByName(column));
+            currentCategory.setSortAscending(column.getSortType() != DESCENDING);
         }
     }
 
@@ -224,13 +228,16 @@ public class MainController extends BaseController {
 
         if (selected != null) {
             String sortBy = selected.getValue().getSortBy();
-            this.tblEntries.getSortOrder().setAll(getEntryTableColumn(sortBy));
+            boolean ascending = selected.getValue().isSortAscending();
+
+            Collection<? extends TableColumn<Entry, ?>> col = getEntryTableColumn(sortBy, ascending);
+            this.tblEntries.getSortOrder().setAll(col);
         }
 
         refreshEntryList();
     }
 
-    private Collection<? extends TableColumn<Entry, ?>> getEntryTableColumn(String property) {
+    private Collection<? extends TableColumn<Entry, ?>> getEntryTableColumn(String property, boolean ascending) {
         TableColumn<Entry, ?> result;
 
         if (property == null) {
@@ -242,6 +249,7 @@ public class MainController extends BaseController {
                     .findFirst().orElse(colEntryName);
         }
 
+        result.setSortType(ascending? ASCENDING : DESCENDING);
         return Collections.singleton(result);
     }
 
@@ -411,6 +419,7 @@ public class MainController extends BaseController {
         Category currentCategory = App.getCurrentCategory();
         if (currentCategory != null) {
             tblEntries.getItems().setAll(currentCategory.getEntries());
+            tblEntries.sort();
         } else {
             tblEntries.getItems().clear();
         }

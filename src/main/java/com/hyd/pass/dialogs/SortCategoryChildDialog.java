@@ -1,7 +1,7 @@
 package com.hyd.pass.dialogs;
 
 import com.hyd.fx.app.AppLogo;
-import com.hyd.fx.cells.ListCellFactoryBuilder;
+import com.hyd.fx.builders.ListViewBuilder;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.App;
@@ -40,9 +40,8 @@ public class SortCategoryChildDialog extends BasicDialog {
                 .buttons(ButtonType.CLOSE)
                 .applyTo(this);
 
-        new ListCellFactoryBuilder<Category>()
-                .setToString(Category::getName)
-                .setTo(lvCategories);
+        ListViewBuilder.of(lvCategories)
+                .setStringFunction(Category::getName);
     }
 
     public void initialize() {

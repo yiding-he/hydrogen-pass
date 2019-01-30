@@ -28,13 +28,29 @@ public class Category extends OrderedItem {
 
     private List<String> entryStrings = new ArrayList<>();
 
+    /**
+     * 当前按照哪个属性排序
+     */
     private String sortBy;
+
+    /**
+     * 当前排序的方向，仅当 {@link #sortBy} 不为空时有效
+     */
+    private boolean sortAscending = true;
 
     public Category() {
     }
 
     public Category(String name) {
         setName(name);
+    }
+
+    public boolean isSortAscending() {
+        return sortAscending;
+    }
+
+    public void setSortAscending(boolean sortAscending) {
+        this.sortAscending = sortAscending;
     }
 
     public String getSortBy() {

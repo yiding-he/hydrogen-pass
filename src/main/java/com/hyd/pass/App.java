@@ -6,13 +6,13 @@ import com.hyd.pass.fx.Icons;
 import com.hyd.pass.model.Category;
 import com.hyd.pass.model.Entry;
 import com.hyd.pass.model.PasswordLib;
+import java.io.File;
+import java.util.Timer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 /**
  * @author yiding.he
@@ -26,6 +26,8 @@ public class App extends Application {
     public static final String FILE_EXT_NAME = "HPass 密码库";
 
     public static final boolean IS_DEV = Boolean.parseBoolean(System.getProperty("dev", "false"));
+
+    public static final Timer TIMER = new Timer(true);
 
     private static PasswordLib passwordLib;
 

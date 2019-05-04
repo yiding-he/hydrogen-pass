@@ -2,10 +2,24 @@
 
 <?import com.hyd.pass.fx.CategoryTreeView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <BorderPane xmlns="http://javafx.com/javafx"
             stylesheets="@/css/style.css"
             xmlns:fx="http://javafx.com/fxml"
@@ -15,16 +29,34 @@
     <top>
         <MenuBar>
             <Menu text="文件">
-                <MenuItem text="新建(_N)..." onAction="#newFileClicked" accelerator="Shortcut+N"/>
+                <MenuItem text="新建(_N)..." onAction="#newFileClicked" accelerator="Shortcut+N">
+                    <graphic>
+                        <ImageView fitWidth="16" fitHeight="16">
+                            <Image url="@/icons/new.png"/>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
                 <MenuItem text="打开(_O)..." onAction="#openFileClicked" accelerator="Shortcut+O"/>
                 <SeparatorMenuItem/>
                 <MenuItem text="导出(_E)..." onAction="#exportFileClicked" fx:id="mnuExport" disable="true"/>
                 <SeparatorMenuItem/>
-                <MenuItem text="保存(_S)" onAction="#saveClicked" accelerator="Shortcut+S"/>
+                <MenuItem text="保存(_S)" onAction="#saveClicked" accelerator="Shortcut+S">
+                    <graphic>
+                        <ImageView fitWidth="16" fitHeight="16">
+                            <Image url="@/icons/save.png"/>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
                 <MenuItem text="退出(_X)" onAction="#exitClicked"/>
             </Menu>
             <Menu text="编辑">
-                <MenuItem text="搜索(_F)..." onAction="#openSearch" accelerator="Shortcut+F"/>
+                <MenuItem text="搜索(_F)..." onAction="#openSearch" accelerator="Shortcut+F">
+                    <graphic>
+                        <ImageView fitWidth="16" fitHeight="16">
+                            <Image url="@/icons/search.png"/>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
                 <MenuItem text="修改主密码(_M)..." onAction="#changeMasterPasswordClicked"/>
             </Menu>
             <Menu text="选项">
@@ -44,7 +76,13 @@
                         <padding>
                             <Insets topRightBottomLeft="5"/>
                         </padding>
-                        <Button text="新建..." disable="true" fx:id="btnNewEntry" onAction="#newEntryClicked"/>
+                        <Button text="新建..." disable="true" fx:id="btnNewEntry" onAction="#newEntryClicked">
+                            <graphic>
+                                <ImageView fitWidth="16" fitHeight="16">
+                                    <Image url="@/icons/new.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
                     </HBox>
                     <TableView fx:id="tblEntries" VBox.vgrow="ALWAYS" disable="true">
                         <columns>
@@ -76,7 +114,13 @@
                                 <padding>
                                     <Insets topRightBottomLeft="5"/>
                                 </padding>
-                                <Button text="新建..." disable="true" fx:id="btnNewLogin" onAction="#newLoginClicked"/>
+                                <Button text="新建..." disable="true" fx:id="btnNewLogin" onAction="#newLoginClicked">
+                                    <graphic>
+                                        <ImageView fitWidth="16" fitHeight="16">
+                                            <Image url="@/icons/new.png"/>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
                             </HBox>
                             <TableView fx:id="tblAuthentications" VBox.vgrow="ALWAYS">
                                 <columns>

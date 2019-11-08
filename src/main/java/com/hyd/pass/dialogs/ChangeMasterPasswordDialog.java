@@ -6,11 +6,11 @@ import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.App;
 import com.hyd.pass.model.PasswordLib;
+import com.hyd.pass.utils.Str;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
 
@@ -59,7 +59,7 @@ public class ChangeMasterPasswordDialog extends BasicDialog {
             return;
         }
 
-        if (StringUtils.isAnyBlank(newPassword, newPassword2)) {
+        if (Str.isAnyBlank(newPassword, newPassword2)) {
             AlertDialog.error("修改主密码失败", "新密码不能为空");
             actionEvent.consume();
             return;

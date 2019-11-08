@@ -1,23 +1,17 @@
 package com.hyd.pass.dialogs;
 
 import com.hyd.fx.app.AppPrimaryStage;
-import com.hyd.fx.dialog.AlertDialog;
-import com.hyd.fx.dialog.BasicDialog;
-import com.hyd.fx.dialog.DialogBuilder;
-import com.hyd.fx.dialog.FileDialog;
+import com.hyd.fx.dialog.*;
 import com.hyd.fx.helpers.TreeViewHelper;
 import com.hyd.pass.App;
 import com.hyd.pass.fx.TreeItemBuilder;
-import com.hyd.pass.model.Category;
-import com.hyd.pass.model.PasswordLib;
-import com.hyd.pass.model.SearchItem;
+import com.hyd.pass.model.*;
+import com.hyd.pass.utils.Str;
+import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTreeCell;
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.File;
 
 public class ExportDialog extends BasicDialog {
 
@@ -59,13 +53,13 @@ public class ExportDialog extends BasicDialog {
             return;
         }
 
-        if (StringUtils.isBlank(password)) {
+        if (Str.isBlank(password)) {
             AlertDialog.error("导出", "请填写主密码。");
             actionEvent.consume();
             return;
         }
 
-        if (StringUtils.isBlank(savePath)) {
+        if (Str.isBlank(savePath)) {
             AlertDialog.error("导出", "请选择要导出的文件位置。");
             actionEvent.consume();
             return;

@@ -1,11 +1,9 @@
 package com.hyd.pass.model;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import static com.hyd.pass.utils.Str.containsIgnoreCase;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.hyd.pass.utils.Str;
+import java.util.*;
 
 /**
  * @author yiding.he
@@ -34,7 +32,7 @@ public class Entry extends OrderedItem implements Cloneable {
     }
 
     private static String now() {
-        return DateFormatUtils.format(new Date(), DATE_PATTERN);
+        return Str.formatDate(new Date(), DATE_PATTERN);
     }
 
     public String getCreateTime() {
@@ -80,10 +78,10 @@ public class Entry extends OrderedItem implements Cloneable {
     ///////////////////////////////////////////////
 
     public boolean matchKeyword(String keyword) {
-        return StringUtils.containsIgnoreCase(getName(), keyword) ||
-                StringUtils.containsIgnoreCase(location, keyword) ||
-                StringUtils.containsIgnoreCase(comment, keyword) ||
-                StringUtils.containsIgnoreCase(note, keyword);
+        return containsIgnoreCase(getName(), keyword) ||
+                containsIgnoreCase(location, keyword) ||
+                containsIgnoreCase(comment, keyword) ||
+                containsIgnoreCase(note, keyword);
     }
 
     @Override

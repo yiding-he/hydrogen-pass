@@ -15,49 +15,23 @@ import com.hyd.fx.system.ClipboardHelper;
 import com.hyd.pass.App;
 import com.hyd.pass.Logger;
 import com.hyd.pass.conf.UserConfig;
-import com.hyd.pass.dialogs.AuthenticationInfoDialog;
-import com.hyd.pass.dialogs.ChangeMasterPasswordDialog;
-import com.hyd.pass.dialogs.CreatePasswordLibDialog;
-import com.hyd.pass.dialogs.EnterPasswordDialog;
-import com.hyd.pass.dialogs.EntryInfoDialog;
-import com.hyd.pass.dialogs.ExportDialog;
-import com.hyd.pass.dialogs.SearchDialog;
-import com.hyd.pass.fx.AuthenticationTableRow;
-import com.hyd.pass.fx.CategoryTreeView;
-import com.hyd.pass.fx.EntryTableRow;
-import com.hyd.pass.model.Authentication;
-import com.hyd.pass.model.Category;
-import com.hyd.pass.model.Entry;
-import com.hyd.pass.model.PasswordLib;
-import com.hyd.pass.model.PasswordLibException;
+import com.hyd.pass.dialogs.*;
+import com.hyd.pass.fx.*;
+import com.hyd.pass.model.*;
 import com.hyd.pass.utils.OrElse;
+import com.hyd.pass.utils.Str;
 import java.io.File;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.function.Consumer;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SortEvent;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TreeItem;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.WindowEvent;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author yiding.he
@@ -181,7 +155,7 @@ public class MainController extends BaseController {
 
         if (UserConfig.getBoolean("auto_open_on_start", false)) {
             String filePath = UserConfig.getString("latest_file", "");
-            if (StringUtils.isNotBlank(filePath)) {
+            if (Str.isNotBlank(filePath)) {
                 File file = new File(filePath);
                 if (file.exists() && file.canRead()) {
                     openPasswordLibFile(file);

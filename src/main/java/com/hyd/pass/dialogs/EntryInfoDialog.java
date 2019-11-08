@@ -4,11 +4,11 @@ import com.hyd.fx.app.AppLogo;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.model.Entry;
+import com.hyd.pass.utils.Str;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author yidin
@@ -53,14 +53,14 @@ public class EntryInfoDialog extends BasicDialog {
 
     private void onOkButtonClicked(ActionEvent event) {
 
-        if (StringUtils.isBlank(txtEntryName.getText())) {
+        if (Str.isBlank(txtEntryName.getText())) {
             event.consume();
             return;
         }
 
-        String name = StringUtils.trim(txtEntryName.getText());
-        String location = StringUtils.trim(txtEntryLocation.getText());
-        String comment = StringUtils.trim(txtEntryComment.getText());
+        String name = Str.trim(txtEntryName.getText());
+        String location = Str.trim(txtEntryLocation.getText());
+        String comment = Str.trim(txtEntryComment.getText());
 
         if (this.entry == null) {
             this.entry = new Entry(name, location, comment);

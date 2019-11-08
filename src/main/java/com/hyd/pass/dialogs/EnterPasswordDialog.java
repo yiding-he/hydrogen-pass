@@ -1,14 +1,12 @@
 package com.hyd.pass.dialogs;
 
 import com.hyd.fx.app.AppLogo;
-import com.hyd.fx.dialog.AlertDialog;
-import com.hyd.fx.dialog.BasicDialog;
-import com.hyd.fx.dialog.DialogBuilder;
+import com.hyd.fx.dialog.*;
+import com.hyd.pass.utils.Str;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * (description)
@@ -37,7 +35,7 @@ public class EnterPasswordDialog extends BasicDialog {
     }
 
     private void onOkButtonClicked(ActionEvent event) {
-        if (StringUtils.isBlank(mainPassword.getText())) {
+        if (Str.isBlank(mainPassword.getText())) {
             AlertDialog.error("密码不能为空");
             event.consume();
             return;

@@ -2,21 +2,15 @@ package com.hyd.pass.dialogs;
 
 import com.hyd.fx.app.AppLogo;
 import com.hyd.fx.app.AppPrimaryStage;
-import com.hyd.fx.dialog.AlertDialog;
-import com.hyd.fx.dialog.BasicDialog;
-import com.hyd.fx.dialog.DialogBuilder;
-import com.hyd.fx.dialog.FileDialog;
+import com.hyd.fx.dialog.*;
 import com.hyd.pass.App;
 import com.hyd.pass.utils.FileUtils;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import org.apache.commons.lang3.StringUtils;
-
+import com.hyd.pass.utils.Str;
 import java.io.File;
 import java.util.Objects;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
 
 /**
  * (description)
@@ -47,7 +41,7 @@ public class CreatePasswordLibDialog extends BasicDialog {
 
     private void onOkButtonClicked(ActionEvent event) {
 
-        if (StringUtils.isBlank(txtSavePath.getText())) {
+        if (Str.isBlank(txtSavePath.getText())) {
             AlertDialog.error("存储文件不能为空");
             event.consume();
             return;
@@ -59,7 +53,7 @@ public class CreatePasswordLibDialog extends BasicDialog {
             return;
         }
 
-        if (StringUtils.isAllBlank(password1.getText(), password2.getText())) {
+        if (Str.isAllBlank(password1.getText(), password2.getText())) {
             AlertDialog.error("主密码不能为空");
             event.consume();
             return;

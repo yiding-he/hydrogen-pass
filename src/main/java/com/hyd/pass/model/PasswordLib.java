@@ -1,25 +1,18 @@
 package com.hyd.pass.model;
 
+import static com.hyd.pass.utils.AESUtils.encode128;
+import static com.hyd.pass.utils.Bytes.md5;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.hyd.pass.utils.FileUtils;
-import org.apache.commons.io.IOUtils;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
-
-import static com.hyd.pass.utils.AESUtils.encode128;
-import static com.hyd.pass.utils.Bytes.md5;
+import com.hyd.pass.utils.IoStream;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.zip.*;
 
 /**
  * (description)
@@ -31,7 +24,7 @@ public class PasswordLib {
 
     private static final String ENC_TEST_STRING = "abcdefghijklmnopqrstuvwxyz";
 
-    private String charset = "UTF-8";
+    private Charset charset = StandardCharsets.UTF_8;
 
     private File saveFile;
 
@@ -179,7 +172,7 @@ public class PasswordLib {
                 ZipEntry entry = f.getEntry("content.json");
                 if (entry != null) {
                     try (InputStream is = f.getInputStream(entry)) {
-                        return IOUtils.toString(is, charset);
+                        return IoStream.toString(is, charset);
                     }
                 } else {
                     throw new IOException("文件内容不存在");

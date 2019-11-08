@@ -1,5 +1,8 @@
 package com.hyd.pass.dialogs;
 
+import static com.hyd.pass.utils.Str.isBlank;
+import static com.hyd.pass.utils.Str.trim;
+
 import com.hyd.fx.app.AppLogo;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
@@ -14,8 +17,6 @@ import javafx.scene.control.TextField;
 import java.security.SecureRandom;
 import java.util.Random;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.trim;
 
 /**
  * @author yiding.he

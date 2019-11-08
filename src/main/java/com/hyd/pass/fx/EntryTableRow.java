@@ -1,24 +1,20 @@
 package com.hyd.pass.fx;
 
+import static com.hyd.fx.builders.ImageBuilder.image;
+import static com.hyd.fx.builders.MenuBuilder.*;
+import static com.hyd.fx.system.ClipboardHelper.putApplicationClipboard;
+import static com.hyd.pass.fx.AuthenticationTableRow.ENTRY_CLIP_KEY;
+
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.system.ClipboardHelper;
 import com.hyd.pass.App;
 import com.hyd.pass.dialogs.EntryInfoDialog;
 import com.hyd.pass.model.Category;
 import com.hyd.pass.model.Entry;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableRow;
-import javafx.scene.input.MouseButton;
-import org.apache.commons.lang3.StringUtils;
-
+import com.hyd.pass.utils.Str;
 import java.util.stream.Stream;
-
-import static com.hyd.fx.builders.ImageBuilder.image;
-import static com.hyd.fx.builders.MenuBuilder.*;
-import static com.hyd.fx.system.ClipboardHelper.putApplicationClipboard;
-import static com.hyd.pass.fx.AuthenticationTableRow.ENTRY_CLIP_KEY;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 
 /**
  * @author yidin
@@ -35,10 +31,10 @@ public class EntryTableRow extends TableRow<Entry> {
 
         String location = this.getItem().getLocation();
 
-        if (StringUtils.isNotBlank(location)) {
+        if (Str.isNotBlank(location)) {
 
             MenuItem[] locationMenuItems = Stream.of(location.split(","))
-                    .filter(StringUtils::isNotBlank)
+                    .filter(Str::isNotBlank)
                     .map(String::trim)
                     .map(l -> menuItem(l, () -> ClipboardHelper.putString(l)))
                     .toArray(MenuItem[]::new);

@@ -1,10 +1,9 @@
 package com.hyd.pass.utils;
 
 import com.hyd.pass.Logger;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * (description)
@@ -17,7 +16,7 @@ public class FileUtils {
     private static final Logger logger = Logger.getLogger(FileUtils.class);
 
     public static boolean ensureFile(String filePath) {
-        if (StringUtils.isBlank(filePath)) {
+        if (Str.isBlank(filePath)) {
             return false;
         }
 
@@ -39,10 +38,10 @@ public class FileUtils {
     }
 
     public static String read(File file) throws IOException {
-        return org.apache.commons.io.FileUtils.readFileToString(file, "UTF-8");
+        return IoStream.toString(file, StandardCharsets.UTF_8);
     }
 
     public static void write(File file, String content, String charset) throws IOException {
-        org.apache.commons.io.FileUtils.write(file, content, charset);
+        IoStream.write(file, content, charset);
     }
 }

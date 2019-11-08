@@ -1,21 +1,19 @@
 package com.hyd.pass.dialogs;
 
+import static com.hyd.fx.builders.ImageBuilder.image;
+import static com.hyd.pass.utils.Str.containsIgnoreCase;
+
 import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.cells.TreeCellFactoryBuilder;
 import com.hyd.fx.components.FilterableTreeView;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.App;
-import com.hyd.pass.model.Category;
-import com.hyd.pass.model.Entry;
-import com.hyd.pass.model.SearchItem;
+import com.hyd.pass.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import org.apache.commons.lang3.StringUtils;
-
-import static com.hyd.fx.builders.ImageBuilder.image;
 
 /**
  * @author yidin
@@ -117,10 +115,10 @@ public class SearchDialog extends BasicDialog {
 
             } else if (searchItem instanceof SearchItem.EntrySearchItem) {
                 Entry entry = ((SearchItem.EntrySearchItem) searchItem).entry;
-                return StringUtils.containsIgnoreCase(entry.getName(), keyword)||
-                        StringUtils.containsIgnoreCase(entry.getNote(), keyword)||
-                        StringUtils.containsIgnoreCase(entry.getComment(), keyword)||
-                        StringUtils.containsIgnoreCase(entry.getLocation(), keyword);
+                return containsIgnoreCase(entry.getName(), keyword)||
+                        containsIgnoreCase(entry.getNote(), keyword)||
+                        containsIgnoreCase(entry.getComment(), keyword)||
+                        containsIgnoreCase(entry.getLocation(), keyword);
             }
 
             return false;

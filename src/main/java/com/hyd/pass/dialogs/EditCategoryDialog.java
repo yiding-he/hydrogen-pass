@@ -4,10 +4,10 @@ import com.hyd.fx.app.AppLogo;
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
+import com.hyd.pass.utils.Str;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * (description)
@@ -38,7 +38,7 @@ public class EditCategoryDialog extends BasicDialog {
     }
 
     private void okClicked(ActionEvent event) {
-        if (StringUtils.isBlank(this.txtCategoryName.getText())) {
+        if (Str.isBlank(this.txtCategoryName.getText())) {
             AlertDialog.error("分类名称不能为空");
             event.consume();
             return;

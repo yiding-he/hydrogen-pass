@@ -1,6 +1,6 @@
 package com.hyd.pass.fx;
 
-import static com.hyd.fx.builders.ImageBuilder.image;
+import static com.hyd.fx.builders.ImageBuilder.imageView;
 import static com.hyd.fx.builders.MenuBuilder.*;
 import static com.hyd.fx.system.ClipboardHelper.putApplicationClipboard;
 import static com.hyd.pass.fx.AuthenticationTableRow.ENTRY_CLIP_KEY;
@@ -13,7 +13,10 @@ import com.hyd.pass.model.Category;
 import com.hyd.pass.model.Entry;
 import com.hyd.pass.utils.Str;
 import java.util.stream.Stream;
-import javafx.scene.control.*;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableRow;
 import javafx.scene.input.MouseButton;
 
 /**
@@ -40,10 +43,10 @@ public class EntryTableRow extends TableRow<Entry> {
                     .toArray(MenuItem[]::new);
 
             currentContextMenu = contextMenu(
-                    menuItem("编辑入口...", image("/icons/edit.png"), this::editEntryClicked),
-                    menuItem("复制入口", image("/icons/copy.png"), this::copyEntryClicked),
-                    menuItem("删除入口", image("/icons/delete.png"), this::deleteEntryClicked),
-                    menu("复制地址", image("/icons/copy.png"), locationMenuItems)
+                    menuItem("编辑入口...", imageView("/icons/edit.png"), this::editEntryClicked),
+                    menuItem("复制入口", imageView("/icons/copy.png"), this::copyEntryClicked),
+                    menuItem("删除入口", imageView("/icons/delete.png"), this::deleteEntryClicked),
+                    menu("复制地址", imageView("/icons/copy.png"), locationMenuItems)
             );
 
         } else {

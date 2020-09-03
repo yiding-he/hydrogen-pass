@@ -1,19 +1,15 @@
 package com.hyd.pass.fx;
 
-import static com.hyd.fx.builders.ImageBuilder.imageView;
-import static com.hyd.fx.builders.MenuBuilder.contextMenu;
-import static com.hyd.fx.builders.MenuBuilder.menuItem;
-
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.pass.App;
 import com.hyd.pass.dialogs.EditCategoryDialog;
 import com.hyd.pass.dialogs.SortCategoryChildDialog;
 import com.hyd.pass.model.Category;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.TreeCell;
-import javafx.scene.control.TreeItem;
+import javafx.scene.control.*;
+
+import static com.hyd.fx.builders.ImageBuilder.imageView;
+import static com.hyd.fx.builders.MenuBuilder.contextMenu;
+import static com.hyd.fx.builders.MenuBuilder.menuItem;
 
 /**
  * (description)
@@ -24,17 +20,17 @@ import javafx.scene.control.TreeItem;
 public class CategoryTreeCell extends TreeCell<Category> {
 
     private final ContextMenu contextMenu = contextMenu(
-            menuItem("编辑", imageView("/icons/edit.png"), this::editItem),
-            menuItem("新建分类...   ", imageView("/icons/new.png"), this::createChild),
-            menuItem("子类排序...   ", imageView("/icons/sort.png"), this::sortChild),
+            menuItem("编辑", imageView("/icons/edit.png", 16), this::editItem),
+            menuItem("新建分类...   ", imageView("/icons/new.png", 16), this::createChild),
+            menuItem("子类排序...   ", imageView("/icons/sort.png", 16), this::sortChild),
             new SeparatorMenuItem(),
-            menuItem("删除", imageView("/icons/delete.png"), this::deleteItem)
+            menuItem("删除", imageView("/icons/delete.png", 16), this::deleteItem)
     );
 
     private final ContextMenu rootContextMenu = contextMenu(
-            menuItem("编辑", imageView("/icons/edit.png"), this::editItem),
-            menuItem("新建分类...   ", imageView("/icons/new.png"), this::createChild),
-            menuItem("子类排序...   ", imageView("/icons/sort.png"), this::sortChild)
+            menuItem("编辑", imageView("/icons/edit.png", 16), this::editItem),
+            menuItem("新建分类...   ", imageView("/icons/new.png", 16), this::createChild),
+            menuItem("子类排序...   ", imageView("/icons/sort.png", 16), this::sortChild)
     );
 
     private void deleteItem() {

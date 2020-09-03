@@ -1,10 +1,17 @@
 package com.hyd.pass.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.stream.Stream;
 
-public class Str {
+public final class Str {
+
+    private Str() {
+
+    }
 
     public static boolean isBlank(String s) {
         return s == null || s.trim().length() == 0;
@@ -36,5 +43,21 @@ public class Str {
 
     public static String formatDate(Date date, String pattern) {
         return new SimpleDateFormat(pattern).format(date);
+    }
+
+    public static String encodeUrl(String s) {
+        try {
+            return URLEncoder.encode(s, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return s;
+        }
+    }
+
+    public static String decodeUrl(String s) {
+        try {
+            return URLDecoder.decode(s, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return s;
+        }
     }
 }

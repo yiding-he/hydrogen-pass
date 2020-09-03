@@ -1,10 +1,5 @@
 package com.hyd.pass.fx;
 
-import static com.hyd.fx.builders.ImageBuilder.imageView;
-import static com.hyd.fx.builders.MenuBuilder.contextMenu;
-import static com.hyd.fx.builders.MenuBuilder.menuItem;
-import static com.hyd.fx.system.ClipboardHelper.putApplicationClipboard;
-
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.system.ClipboardHelper;
 import com.hyd.pass.App;
@@ -17,6 +12,11 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableRow;
 import javafx.scene.input.MouseButton;
 
+import static com.hyd.fx.builders.ImageBuilder.imageView;
+import static com.hyd.fx.builders.MenuBuilder.contextMenu;
+import static com.hyd.fx.builders.MenuBuilder.menuItem;
+import static com.hyd.fx.system.ClipboardHelper.putApplicationClipboard;
+
 /**
  * @author yiding.he
  */
@@ -27,12 +27,12 @@ public class AuthenticationTableRow extends TableRow<Authentication> {
     public static final String ENTRY_CLIP_KEY = "copy_entry";
 
     private final ContextMenu contextMenu = contextMenu(
-            menuItem("复制用户名", imageView("/icons/copy.png"), "Shortcut+X", this::copyUsernameClicked),
-            menuItem("复制密码", imageView("/icons/copy.png"), "Shortcut+C", this::copyPasswordClicked),
+            menuItem("复制用户名", imageView("/icons/copy.png", 16), "Shortcut+X", this::copyUsernameClicked),
+            menuItem("复制密码", imageView("/icons/copy.png", 16), "Shortcut+C", this::copyPasswordClicked),
             new SeparatorMenuItem(),
-            menuItem("复制账号", imageView("/icons/copy.png"), this::copyEntryClicked),
-            menuItem("编辑账号...", imageView("/icons/edit.png"), this::editEntryClicked),
-            menuItem("删除账号", imageView("/icons/delete.png"), this::deleteEntryClicked)
+            menuItem("复制账号", imageView("/icons/copy.png", 16), this::copyEntryClicked),
+            menuItem("编辑账号...", imageView("/icons/edit.png", 16), this::editEntryClicked),
+            menuItem("删除账号", imageView("/icons/delete.png", 16), this::deleteEntryClicked)
     );
 
     private void copyEntryClicked() {

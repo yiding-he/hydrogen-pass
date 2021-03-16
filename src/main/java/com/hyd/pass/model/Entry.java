@@ -1,9 +1,15 @@
 package com.hyd.pass.model;
 
-import static com.hyd.pass.utils.Str.containsIgnoreCase;
-
 import com.hyd.pass.utils.Str;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.hyd.pass.utils.Str.containsIgnoreCase;
 
 /**
  * @author yiding.he
@@ -82,6 +88,16 @@ public class Entry extends OrderedItem implements Cloneable {
                 containsIgnoreCase(location, keyword) ||
                 containsIgnoreCase(comment, keyword) ||
                 containsIgnoreCase(note, keyword);
+    }
+
+    public List<String> locationAsList() {
+        if (Str.isBlank(location)) {
+            return Collections.emptyList();
+        }
+        return Stream.of(location.split(","))
+                .filter(Str::isNotBlank)
+                .map(String::trim)
+                .collect(Collectors.toList());
     }
 
     @Override

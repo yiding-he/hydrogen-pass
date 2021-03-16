@@ -10,8 +10,6 @@ import com.hyd.pass.model.Entry;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.TableRow;
-import javafx.scene.input.MouseButton;
 
 import static com.hyd.fx.builders.ImageBuilder.imageView;
 import static com.hyd.fx.builders.MenuBuilder.contextMenu;
@@ -21,7 +19,7 @@ import static com.hyd.fx.system.ClipboardHelper.putApplicationClipboard;
 /**
  * @author yiding.he
  */
-public class AuthenticationTableRow extends TableRow<Authentication> {
+public class AuthenticationTableRow extends AbstractTableRow<Authentication> {
 
     public static final String AUTH_CLIP_KEY = "copy_authentication";
 
@@ -42,18 +40,16 @@ public class AuthenticationTableRow extends TableRow<Authentication> {
 
     public AuthenticationTableRow() {
 
-        setOnContextMenuRequested(event -> {
-            if (!isEmpty()) {
-                contextMenu.show(this, event.getScreenX(), event.getScreenY());
-                event.consume();
-            }
-        });
+    }
 
-        setOnMouseClicked(event -> {
-            if (!isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                editEntryClicked();
-            }
-        });
+    @Override
+    ContextMenu createContextMenu() {
+        return contextMenu;
+    }
+
+    @Override
+    void onDoubleClick() {
+        editEntryClicked();
     }
 
     private void deleteEntryClicked() {

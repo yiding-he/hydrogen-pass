@@ -7,14 +7,11 @@ import com.hyd.pass.App;
 import com.hyd.pass.dialogs.EntryInfoDialog;
 import com.hyd.pass.model.Category;
 import com.hyd.pass.model.Entry;
-import com.hyd.pass.utils.Str;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableRow;
-import javafx.scene.input.MouseButton;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 import static com.hyd.fx.builders.ImageBuilder.imageView;
 import static com.hyd.fx.builders.MenuBuilder.*;
@@ -24,38 +21,29 @@ import static com.hyd.pass.fx.AuthenticationTableRow.ENTRY_CLIP_KEY;
 /**
  * @author yidin
  */
-public class EntryTableRow extends TableRow<Entry> {
+public class EntryTableRow extends AbstractTableRow<Entry> {
 
     private ContextMenu currentContextMenu;
 
-    private ContextMenu createContextMenu() {
+    @Override
+    ContextMenu createContextMenu() {
 
-        if (currentContextMenu != null) {
-            currentContextMenu.hide();
-        }
 
-        String location = this.getItem().getLocation();
+        currentContextMenu = contextMenu(
+            menuItem("编辑入口...", imageView("/icons/edit.png", 16), this::editEntryClicked),
+            menuItem("复制入口", imageView("/icons/copy.png", 16), this::copyEntryClicked),
+            menuItem("删除入口", imageView("/icons/delete.png", 16), this::deleteEntryClicked)
+        );
 
-        if (Str.isNotBlank(location)) {
-
-            MenuItem[] locationMenuItems = Stream.of(location.split(","))
-                    .filter(Str::isNotBlank)
-                    .map(String::trim)
+        List<String> locationList = this.getItem().locationAsList();
+        if (!locationList.isEmpty()) {
+            currentContextMenu.getItems().add(menu(
+                "复制地址",
+                imageView("/icons/copy.png", 16),
+                locationList.stream()
                     .map(l -> menuItem(l, () -> ClipboardHelper.putString(l)))
-                    .toArray(MenuItem[]::new);
-
-            currentContextMenu = contextMenu(
-                    menuItem("编辑入口...", imageView("/icons/edit.png", 16), this::editEntryClicked),
-                    menuItem("复制入口", imageView("/icons/copy.png", 16), this::copyEntryClicked),
-                    menuItem("删除入口", imageView("/icons/delete.png", 16), this::deleteEntryClicked),
-                    menu("复制地址", imageView("/icons/copy.png", 16), locationMenuItems)
-            );
-
-        } else {
-            currentContextMenu = contextMenu(
-                    menuItem("编辑入口...", this::editEntryClicked),
-                    menuItem("删除入口", this::deleteEntryClicked)
-            );
+                    .toArray(MenuItem[]::new)
+            ));
         }
 
         return currentContextMenu;
@@ -63,18 +51,11 @@ public class EntryTableRow extends TableRow<Entry> {
 
     public EntryTableRow() {
 
-        setOnContextMenuRequested(event -> {
-            if (!isEmpty()) {
-                createContextMenu().show(this, event.getScreenX(), event.getScreenY());
-                event.consume();
-            }
-        });
+    }
 
-        setOnMouseClicked(event -> {
-            if (!isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                editEntryClicked();
-            }
-        });
+    @Override
+    void onDoubleClick() {
+        editEntryClicked();
     }
 
     private void copyEntryClicked() {

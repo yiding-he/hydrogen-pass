@@ -6,13 +6,14 @@ import com.hyd.pass.fx.Icons;
 import com.hyd.pass.model.Category;
 import com.hyd.pass.model.Entry;
 import com.hyd.pass.model.PasswordLib;
-import java.io.File;
-import java.util.Timer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.util.Timer;
 
 /**
  * @author yiding.he
@@ -43,10 +44,6 @@ public class App extends Application {
         if (passwordLib != null) {
             passwordLib.setChanged(true);
         }
-    }
-
-    public static void main(String[] args) {
-        Application.launch(App.class);
     }
 
     @Override

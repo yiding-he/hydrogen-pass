@@ -1,19 +1,21 @@
 package com.hyd.pass.dialogs;
 
-import static com.hyd.fx.builders.ImageBuilder.image;
-import static com.hyd.pass.utils.Str.containsIgnoreCase;
-
 import com.hyd.fx.app.AppPrimaryStage;
-import com.hyd.fx.cells.TreeCellFactoryBuilder;
+import com.hyd.fx.cells.TreeCellFactory;
 import com.hyd.fx.components.FilterableTreeView;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.App;
-import com.hyd.pass.model.*;
+import com.hyd.pass.model.Category;
+import com.hyd.pass.model.Entry;
+import com.hyd.pass.model.SearchItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+
+import static com.hyd.fx.builders.ImageBuilder.image;
+import static com.hyd.pass.utils.Str.containsIgnoreCase;
 
 /**
  * @author yidin
@@ -55,11 +57,11 @@ public class SearchDialog extends BasicDialog {
         this.txtKeyword.textProperty().addListener((ob, oldValue, newValue) -> this.keywordChanged(newValue));
         this.tvSearchResult.setOriginalRoot(buildOriginalRoot());
 
-        new TreeCellFactoryBuilder<SearchItem>()
+        this.tvSearchResult.setCellFactory(new TreeCellFactory<SearchItem>()
                 .setToString(SearchItem::toString)
                 .setOnDoubleClick(this::searchItemSelected)
                 .setIconSupplier(this::getTreeNodeIcon)
-                .setTo(tvSearchResult);
+        );
     }
 
     private Image getTreeNodeIcon(TreeItem<SearchItem> treeItem) {
@@ -115,9 +117,9 @@ public class SearchDialog extends BasicDialog {
 
             } else if (searchItem instanceof SearchItem.EntrySearchItem) {
                 Entry entry = ((SearchItem.EntrySearchItem) searchItem).entry;
-                return containsIgnoreCase(entry.getName(), keyword)||
-                        containsIgnoreCase(entry.getNote(), keyword)||
-                        containsIgnoreCase(entry.getComment(), keyword)||
+                return containsIgnoreCase(entry.getName(), keyword) ||
+                        containsIgnoreCase(entry.getNote(), keyword) ||
+                        containsIgnoreCase(entry.getComment(), keyword) ||
                         containsIgnoreCase(entry.getLocation(), keyword);
             }
 

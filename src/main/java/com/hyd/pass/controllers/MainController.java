@@ -185,6 +185,7 @@ public class MainController extends BaseController {
 
     public void openSearch() {
         SearchDialog searchDialog = new SearchDialog();
+        searchDialog.setOwner(AppPrimaryStage.getPrimaryStage());
         searchDialog.showAndWait();
 
         Entry entry = searchDialog.getSelectedEntry();
@@ -355,6 +356,7 @@ public class MainController extends BaseController {
 
     private void newFileClicked0() {
         CreatePasswordLibDialog createPasswordLibDialog = new CreatePasswordLibDialog();
+        createPasswordLibDialog.setOwner(AppPrimaryStage.getPrimaryStage());
         ButtonType buttonType = createPasswordLibDialog.showAndWait().orElse(ButtonType.CANCEL);
 
         if (buttonType == ButtonType.OK) {
@@ -463,6 +465,7 @@ public class MainController extends BaseController {
 
     public void newEntryClicked() {
         EntryInfoDialog dialog = new EntryInfoDialog(null);
+        dialog.setOwner(AppPrimaryStage.getPrimaryStage());
         ButtonType buttonType = dialog.showAndWait().orElse(ButtonType.CANCEL);
 
         if (buttonType == ButtonType.OK) {
@@ -475,6 +478,7 @@ public class MainController extends BaseController {
 
     public void newLoginClicked() {
         AuthenticationInfoDialog dialog = new AuthenticationInfoDialog(null);
+        dialog.setOwner(AppPrimaryStage.getPrimaryStage());
 
         if (dialog.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             App.getCurrentEntry().getAuthentications().add(dialog.getAuthentication());
@@ -506,6 +510,7 @@ public class MainController extends BaseController {
         }
 
         ChangeMasterPasswordDialog dialog = new ChangeMasterPasswordDialog();
+        dialog.setOwner(AppPrimaryStage.getPrimaryStage());
         if (dialog.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             passwordLib.setMasterPassword(dialog.getNewPassword());
             passwordLib.save();

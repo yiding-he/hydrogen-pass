@@ -1,5 +1,6 @@
 package com.hyd.pass.fx;
 
+import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.system.ClipboardHelper;
 import com.hyd.pass.App;
@@ -93,6 +94,7 @@ public class EntryTableRow extends TableRow<Entry> {
 
     private void editEntryClicked() {
         EntryInfoDialog dialog = new EntryInfoDialog(getItem());
+        dialog.setOwner(AppPrimaryStage.getPrimaryStage());
         if (dialog.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             App.setPasswordLibChanged();
             getTableView().refresh();

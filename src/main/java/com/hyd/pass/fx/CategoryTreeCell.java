@@ -1,5 +1,6 @@
 package com.hyd.pass.fx;
 
+import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.pass.App;
 import com.hyd.pass.dialogs.EditCategoryDialog;
@@ -50,6 +51,7 @@ public class CategoryTreeCell extends TreeCell<Category> {
 
     private void createChild() {
         EditCategoryDialog dialog = new EditCategoryDialog("编辑分类", "");
+        dialog.setOwner(AppPrimaryStage.getPrimaryStage());
         ButtonType buttonType = dialog.showAndWait().orElse(ButtonType.CANCEL);
 
         if (buttonType == ButtonType.OK) {
@@ -62,6 +64,7 @@ public class CategoryTreeCell extends TreeCell<Category> {
 
     private void editItem() {
         EditCategoryDialog dialog = new EditCategoryDialog("编辑分类", getItem().getName());
+        dialog.setOwner(AppPrimaryStage.getPrimaryStage());
         ButtonType buttonType = dialog.showAndWait().orElse(ButtonType.CANCEL);
         if (buttonType == ButtonType.OK) {
             getItem().setName(dialog.getCategoryName());

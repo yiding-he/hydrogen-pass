@@ -111,7 +111,9 @@
                             <generateInstaller>false</generateInstaller>
                             <administratorRequired>false</administratorRequired>
                             <platform>auto</platform>
-                            <iconFile>${project.basedir}/src/main/resources/logo.ico</iconFile>
+                            <winConfig>
+                                <icoFile>${project.basedir}/assets/windows/logo.ico</icoFile>
+                            </winConfig>
                         </configuration>
                     </execution>
                 </executions>

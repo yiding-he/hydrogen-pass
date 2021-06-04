@@ -298,8 +298,10 @@ public class MainController extends BaseController {
             }
 
             ButtonType buttonType = AlertDialog.confirmYesNoCancel("保存文件",
-                    "文件尚未保存。是否保存然后退出？\n\n" +
-                            "点击“是”则保存文件然后退出，点击“否”则直接退出，点击“取消”不退出。");
+                """
+                    文件尚未保存。是否保存然后退出？
+
+                    点击“是”则保存文件然后退出，点击“否”则直接退出，点击“取消”不退出。""");
 
             if (buttonType == ButtonType.CANCEL) {
                 event.consume();
@@ -341,6 +343,7 @@ public class MainController extends BaseController {
                 PasswordLib passwordLib = new PasswordLib(file, masterPassword, false);
                 loadPasswordLib(passwordLib);
                 App.setPasswordLib(passwordLib);
+                App.setMainStageTitle(App.APP_NAME + " - " + file.getName());
             } catch (PasswordLibException e) {
                 logger.error("打开文件失败", e);
                 AlertDialog.error("密码不正确", e);
@@ -393,7 +396,6 @@ public class MainController extends BaseController {
         this.mnuExport.setDisable(false);
         this.tvCategories.getRoot().setExpanded(true);
         this.tvCategories.getSelectionModel().select(this.tvCategories.getRoot());
-        AppPrimaryStage.getPrimaryStage().setTitle(App.APP_NAME + " - " + passwordLib.filePath());
 
         if (!App.IS_DEV) {
             UserConfig.setString("latest_file", Str.encodeUrl(passwordLib.filePath()));

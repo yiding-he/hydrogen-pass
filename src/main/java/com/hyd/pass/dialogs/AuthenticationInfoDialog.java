@@ -1,21 +1,19 @@
 package com.hyd.pass.dialogs;
 
-import static com.hyd.pass.utils.Str.isBlank;
-import static com.hyd.pass.utils.Str.trim;
-
 import com.hyd.fx.app.AppLogo;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.model.Authentication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 
 import java.security.SecureRandom;
 import java.util.Random;
+
+import static com.hyd.pass.utils.Str.isBlank;
+import static com.hyd.pass.utils.Str.trim;
 
 
 /**
@@ -30,7 +28,7 @@ public class AuthenticationInfoDialog extends BasicDialog {
     private TextField txtUsername;
 
     @FXML
-    private TextField txtPassword;
+    private TextArea txtPassword;
 
     @FXML
     private CheckBox chkNum;
@@ -50,7 +48,7 @@ public class AuthenticationInfoDialog extends BasicDialog {
     @FXML
     private Spinner<Integer> spnLength;
 
-    private Random random = new SecureRandom();
+    private final Random random = new SecureRandom();
 
     public void onGenerateClick() {
         String chars = "";
@@ -84,13 +82,17 @@ public class AuthenticationInfoDialog extends BasicDialog {
         this.authentication = authentication;
 
         new DialogBuilder()
-                .title("登录信息")
-                .logo(AppLogo.getLogo())
-                .body("/fxml/authentication-info-dialog.fxml", this)
-                .buttons(ButtonType.OK, ButtonType.CANCEL)
-                .onOkButtonClicked(this::onOkButtonClicked)
-                .onStageShown(event -> txtUsername.requestFocus())
-                .applyTo(this);
+            .title("登录信息")
+            .logo(AppLogo.getLogo())
+            .body("/fxml/authentication-info-dialog.fxml", this)
+            .buttons(ButtonType.OK, ButtonType.CANCEL)
+            .onOkButtonClicked(this::onOkButtonClicked)
+            .onStageShown(event -> txtUsername.requestFocus())
+            .resizable(true)
+            .applyTo(this);
+
+        // make textarea grows vertically
+        this.txtPassword.prefHeightProperty().bind(((HBox)this.txtPassword.getParent()).heightProperty());
     }
 
     public void initialize() {

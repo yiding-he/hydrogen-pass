@@ -1,18 +1,21 @@
 package com.hyd.pass;
 
 import com.hyd.fx.app.AppPrimaryStage;
+import com.hyd.fx.dialog.AlertDialog;
 import com.hyd.fx.dialog.FileDialog;
 import com.hyd.pass.fx.Icons;
 import com.hyd.pass.model.Category;
 import com.hyd.pass.model.Entry;
 import com.hyd.pass.model.PasswordLib;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.URL;
 import java.util.Timer;
 
 /**
@@ -32,6 +35,12 @@ public class App extends Application {
 
     private static PasswordLib passwordLib;
 
+    private static String mainStageTitle = APP_NAME;
+
+    public static void setMainStageTitle(String mainStageTitle) {
+        App.mainStageTitle = mainStageTitle;
+    }
+
     public static void setPasswordLib(PasswordLib passwordLib) {
         App.passwordLib = passwordLib;
     }
@@ -48,16 +57,21 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        URL mainStageUrl = getClass().getResource("/fxml/main.fxml");
+        if (mainStageUrl == null) {
+            AlertDialog.error("无法加载 main.fxml");
+            Platform.exit();
+            return;
+        }
+
         AppPrimaryStage.setPrimaryStage(primaryStage);
         FileDialog.setInitDirectory(new File("."));
 
-        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
+        Parent parent = FXMLLoader.load(mainStageUrl);
         primaryStage.getIcons().add(Icons.Logo.getImage());
-        primaryStage.setTitle(APP_NAME);
+        primaryStage.setTitle(mainStageTitle);
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
-
-        System.out.println("__OK__");
     }
 
     ////////////////////////////////////////////////////////////////////////////////

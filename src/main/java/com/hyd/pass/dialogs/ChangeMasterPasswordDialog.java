@@ -1,9 +1,7 @@
 package com.hyd.pass.dialogs;
 
 import com.hyd.fx.app.AppLogo;
-import com.hyd.fx.dialog.AlertDialog;
-import com.hyd.fx.dialog.BasicDialog;
-import com.hyd.fx.dialog.DialogBuilder;
+import com.hyd.fx.dialog.*;
 import com.hyd.pass.App;
 import com.hyd.pass.model.PasswordLib;
 import com.hyd.pass.utils.Str;
@@ -34,7 +32,7 @@ public class ChangeMasterPasswordDialog extends BasicDialog {
         new DialogBuilder()
                 .title("修改主密码")
                 .logo(AppLogo.getLogo())
-                .body("/fxml/change-master-password.fxml", this)
+                .body(getClass().getClassLoader().getResource("fxml/change-master-password.fxml"), this)
                 .buttons(ButtonType.OK, ButtonType.CANCEL)
                 .onOkButtonClicked(this::onOkButtonClicked)
                 .onStageShown(event -> txtOldPassword.requestFocus())

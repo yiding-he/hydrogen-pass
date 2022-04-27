@@ -1,18 +1,27 @@
 package com.hyd.pass.model;
 
-import static com.hyd.pass.utils.AESUtils.encode128;
-import static com.hyd.pass.utils.Bytes.md5;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONWriter;
 import com.hyd.pass.utils.FileUtils;
 import com.hyd.pass.utils.IoStream;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.zip.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
+
+import static com.hyd.pass.utils.AESUtils.encode128;
+import static com.hyd.pass.utils.Bytes.md5;
 
 /**
  * (description)
@@ -24,19 +33,17 @@ public class PasswordLib {
 
     private static final String ENC_TEST_STRING = "abcdefghijklmnopqrstuvwxyz";
 
-    private Charset charset = StandardCharsets.UTF_8;
+    private final Charset charset = StandardCharsets.UTF_8;
 
-    private File saveFile;
+    private final File saveFile;
 
     private String masterPasswordValidator;
 
     private Category rootCategory;
 
-    @JSONField(serialize = false)
-    private boolean changed;
+    private transient boolean changed;
 
-    @JSONField(serialize = false)
-    private String masterPassword;
+    private transient String masterPassword;
 
     /**
      * 创建或打开密码库
@@ -66,8 +73,9 @@ public class PasswordLib {
                 throw new PasswordLibException("无法打开文件", e);
             }
 
+            var rootCatJsonObj = jsonObject.getJSONObject("rootCategory");
             try {
-                long rootId = jsonObject.getJSONObject("rootCategory").getLong("id");
+                long rootId = rootCatJsonObj.getLong("id");
                 String userValue = generateValidator(masterPassword, rootId);
                 if (!userValue.equals(masterPasswordValidator)) {
                     throw new PasswordLibException("密码不正确");
@@ -79,7 +87,7 @@ public class PasswordLib {
             }
 
             this.saveFile = saveFile;
-            this.rootCategory = jsonObject.getObject("rootCategory", Category.class);
+            this.rootCategory = rootCatJsonObj.toJavaObject(Category.class);
             this.masterPasswordValidator = masterPasswordValidator;
             this.masterPassword = masterPassword;
 
@@ -159,7 +167,7 @@ public class PasswordLib {
     }
 
     private void saveContent(Map<String, Object> data, ZipOutputStream zos) throws IOException {
-        String content = JSON.toJSONString(data, true);
+        String content = JSON.toJSONString(data, JSONWriter.Feature.PrettyFormat);
 
         zos.putNextEntry(new ZipEntry("content.json"));
         zos.write(content.getBytes(charset));

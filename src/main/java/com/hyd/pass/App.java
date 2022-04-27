@@ -3,21 +3,20 @@ package com.hyd.pass;
 import com.hyd.fx.app.AppPrimaryStage;
 import com.hyd.fx.dialog.FileDialog;
 import com.hyd.pass.fx.Icons;
-import com.hyd.pass.model.Category;
-import com.hyd.pass.model.Entry;
-import com.hyd.pass.model.PasswordLib;
-import java.io.File;
-import java.util.Timer;
+import com.hyd.pass.model.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.util.Timer;
+
 /**
  * @author yiding.he
  */
-public class App extends Application {
+public class App {
 
     public static final String APP_NAME = "Hydrogen Pass 密码管理";
 
@@ -46,21 +45,24 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        Application.launch(App.class);
+        Application.launch(FxApp.class);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        AppPrimaryStage.setPrimaryStage(primaryStage);
-        FileDialog.setInitDirectory(new File("."));
+    public static class FxApp extends Application {
 
-        Parent parent = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
-        primaryStage.getIcons().add(Icons.Logo.getImage());
-        primaryStage.setTitle(APP_NAME);
-        primaryStage.setScene(new Scene(parent));
-        primaryStage.show();
+        @Override
+        public void start(Stage primaryStage) throws Exception {
+            AppPrimaryStage.setPrimaryStage(primaryStage);
+            FileDialog.setInitDirectory(new File("."));
 
-        System.out.println("__OK__");
+            Parent parent = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
+            primaryStage.getIcons().add(Icons.Logo.getImage());
+            primaryStage.setTitle(APP_NAME);
+            primaryStage.setScene(new Scene(parent));
+            primaryStage.show();
+
+            System.out.println("__OK__");
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////

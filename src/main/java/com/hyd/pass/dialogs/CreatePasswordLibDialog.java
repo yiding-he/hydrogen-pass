@@ -6,11 +6,12 @@ import com.hyd.fx.dialog.*;
 import com.hyd.pass.App;
 import com.hyd.pass.utils.FileUtils;
 import com.hyd.pass.utils.Str;
-import java.io.File;
-import java.util.Objects;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
+import java.io.File;
+import java.util.Objects;
 
 /**
  * (description)
@@ -33,7 +34,7 @@ public class CreatePasswordLibDialog extends BasicDialog {
         new DialogBuilder()
                 .title("创建密码库")
                 .logo(AppLogo.getLogo())
-                .body("/fxml/create-password-lib.fxml", this)
+                .body(getClass().getClassLoader().getResource("fxml/create-password-lib.fxml"), this)
                 .buttons(ButtonType.OK, ButtonType.CANCEL)
                 .onOkButtonClicked(this::onOkButtonClicked)
                 .applyTo(this);

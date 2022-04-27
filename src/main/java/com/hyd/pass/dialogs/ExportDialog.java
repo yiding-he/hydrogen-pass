@@ -7,11 +7,12 @@ import com.hyd.pass.App;
 import com.hyd.pass.fx.TreeItemBuilder;
 import com.hyd.pass.model.*;
 import com.hyd.pass.utils.Str;
-import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTreeCell;
+
+import java.io.File;
 
 public class ExportDialog extends BasicDialog {
 
@@ -29,7 +30,7 @@ public class ExportDialog extends BasicDialog {
 
     public ExportDialog() {
         new DialogBuilder()
-                .body("/fxml/export.fxml", this)
+                .body(getClass().getClassLoader().getResource("fxml/export.fxml"), this)
                 .owner(AppPrimaryStage.getPrimaryStage())
                 .title("导出密码库")
                 .buttons(BUTTON_TYPE_EXPORT, ButtonType.CLOSE)

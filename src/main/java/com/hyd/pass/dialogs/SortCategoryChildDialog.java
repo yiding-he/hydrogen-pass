@@ -6,12 +6,13 @@ import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.App;
 import com.hyd.pass.model.Category;
-import java.util.List;
-import java.util.function.BiFunction;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TreeItem;
+
+import java.util.List;
+import java.util.function.BiFunction;
 
 /**
  * (description)
@@ -35,7 +36,7 @@ public class SortCategoryChildDialog extends BasicDialog {
         new DialogBuilder()
             .title("子类排序")
             .logo(AppLogo.getLogo())
-            .body("/fxml/sort-category-child.fxml", this)
+            .body(getClass().getClassLoader().getResource("fxml/sort-category-child.fxml"), this)
             .buttons(ButtonType.CLOSE)
             .applyTo(this);
 

@@ -1,9 +1,7 @@
 package com.hyd.pass.dialogs;
 
 import com.hyd.fx.app.AppLogo;
-import com.hyd.fx.dialog.AlertDialog;
-import com.hyd.fx.dialog.BasicDialog;
-import com.hyd.fx.dialog.DialogBuilder;
+import com.hyd.fx.dialog.*;
 import com.hyd.pass.utils.Str;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +23,7 @@ public class EditCategoryDialog extends BasicDialog {
     public EditCategoryDialog(String title, String defaultName) {
         new DialogBuilder()
                 .logo(AppLogo.getLogo())
-                .body("/fxml/edit-category.fxml", this)
+                .body(getClass().getClassLoader().getResource("fxml/edit-category.fxml"), this)
                 .title(title)
                 .onOkButtonClicked(this::okClicked)
                 .onStageShown(event -> {

@@ -1,21 +1,18 @@
 package com.hyd.pass.dialogs;
 
-import static com.hyd.pass.utils.Str.isBlank;
-import static com.hyd.pass.utils.Str.trim;
-
 import com.hyd.fx.app.AppLogo;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.model.Authentication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.security.SecureRandom;
 import java.util.Random;
+
+import static com.hyd.pass.utils.Str.isBlank;
+import static com.hyd.pass.utils.Str.trim;
 
 
 /**
@@ -86,7 +83,7 @@ public class AuthenticationInfoDialog extends BasicDialog {
         new DialogBuilder()
                 .title("登录信息")
                 .logo(AppLogo.getLogo())
-                .body("/fxml/authentication-info-dialog.fxml", this)
+                .body(getClass().getClassLoader().getResource("fxml/authentication-info-dialog.fxml"), this)
                 .buttons(ButtonType.OK, ButtonType.CANCEL)
                 .onOkButtonClicked(this::onOkButtonClicked)
                 .onStageShown(event -> txtUsername.requestFocus())

@@ -6,9 +6,7 @@ import com.hyd.fx.components.FilterableTreeView;
 import com.hyd.fx.dialog.BasicDialog;
 import com.hyd.fx.dialog.DialogBuilder;
 import com.hyd.pass.App;
-import com.hyd.pass.model.Category;
-import com.hyd.pass.model.Entry;
-import com.hyd.pass.model.SearchItem;
+import com.hyd.pass.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -35,7 +33,7 @@ public class SearchDialog extends BasicDialog {
 
     public SearchDialog() {
         new DialogBuilder()
-                .body("/fxml/search.fxml", this)
+                .body(getClass().getClassLoader().getResource("fxml/search.fxml"), this)
                 .owner(AppPrimaryStage.getPrimaryStage())
                 .title("关键字搜索")
                 .buttons(ButtonType.CLOSE)

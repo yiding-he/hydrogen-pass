@@ -1,7 +1,6 @@
 package com.hyd.pass.model;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.JSON;
 import com.hyd.pass.utils.AESUtils;
 import javafx.scene.control.TreeItem;
 
@@ -23,10 +22,9 @@ public class Category extends OrderedItem {
 
     private List<Category> children = new ArrayList<>();
 
-    @JSONField(serialize = false)
-    private List<Entry> entries = new ArrayList<>();
-
     private List<String> entryStrings = new ArrayList<>();
+
+    private transient List<Entry> entries = new ArrayList<>();
 
     /**
      * 当前按照哪个属性排序

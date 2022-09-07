@@ -21,7 +21,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
+            <version>1.2.11</version>
         </dependency>
         <dependency>
             <groupId>com.hyd</groupId>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.46</version>
+            <version>1.2.83</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

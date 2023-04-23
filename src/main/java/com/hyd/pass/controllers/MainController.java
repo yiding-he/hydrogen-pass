@@ -343,7 +343,7 @@ public class MainController extends BaseController {
                 PasswordLib passwordLib = new PasswordLib(file, masterPassword, false);
                 loadPasswordLib(passwordLib);
                 App.setPasswordLib(passwordLib);
-                App.setMainStageTitle(App.APP_NAME + " - " + file.getName());
+                AppPrimaryStage.getPrimaryStage().setTitle(App.APP_NAME + " - " + file.getName());
             } catch (PasswordLibException e) {
                 logger.error("打开文件失败", e);
                 AlertDialog.error("密码不正确", e);

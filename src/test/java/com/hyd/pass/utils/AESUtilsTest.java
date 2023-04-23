@@ -1,6 +1,6 @@
 package com.hyd.pass.utils;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * (description)

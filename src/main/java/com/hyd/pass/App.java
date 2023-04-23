@@ -13,10 +13,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author yiding.he
  */
+@SpringBootApplication
 public class App extends Application {
 
     public static final String APP_NAME = "Hydrogen Pass 密码管理";
@@ -46,7 +49,8 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        Application.launch(App.class);
+        SpringApplication.run(App.class, args);
+        Application.launch(App.class, args);
     }
 
     @Override

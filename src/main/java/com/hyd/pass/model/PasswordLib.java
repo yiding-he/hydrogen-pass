@@ -3,9 +3,10 @@ package com.hyd.pass.model;
 import static com.hyd.pass.utils.AESUtils.encode128;
 import static com.hyd.pass.utils.Bytes.md5;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONWriter;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.hyd.pass.utils.FileUtils;
 import com.hyd.pass.utils.IoStream;
 import java.io.*;
@@ -159,7 +160,7 @@ public class PasswordLib {
     }
 
     private void saveContent(Map<String, Object> data, ZipOutputStream zos) throws IOException {
-        String content = JSON.toJSONString(data, true);
+        String content = JSON.toJSONString(data, JSONWriter.Feature.PrettyFormat);
 
         zos.putNextEntry(new ZipEntry("content.json"));
         zos.write(content.getBytes(charset));

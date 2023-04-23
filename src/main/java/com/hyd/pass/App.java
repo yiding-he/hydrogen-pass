@@ -17,7 +17,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author yiding.he
+ * 运行时需要加上 JVM 参数：
+ * <pre>
+ *     --module-path [本机 javafx-sdk-20.0.1\lib]
+ *     --add-modules javafx.controls
+ *     --add-exports javafx.base/com.sun.javafx.binding=ALL-UNNAMED
+ *     --add-exports javafx.base/com.sun.javafx.reflect=ALL-UNNAMED
+ *     --add-exports javafx.base/com.sun.javafx.beans=ALL-UNNAMED
+ *     --add-exports javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED
+ *     --add-exports javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED
+ *     --add-exports javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED
+ *     --add-exports javafx.graphics/com.sun.javafx.util=ALL-UNNAMED
+ * </pre>
  */
 @SpringBootApplication
 public class App extends Application {

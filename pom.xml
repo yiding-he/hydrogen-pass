@@ -89,6 +89,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/dist</outputDirectory>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

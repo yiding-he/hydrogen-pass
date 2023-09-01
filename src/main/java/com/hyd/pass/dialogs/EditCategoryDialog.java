@@ -25,7 +25,7 @@ public class EditCategoryDialog extends BasicDialog {
     public EditCategoryDialog(String title, String defaultName) {
         new DialogBuilder()
                 .logo(AppLogo.getLogo())
-                .body("/fxml/edit-category.fxml", this)
+                .body(getClass().getResource("/fxml/edit-category.fxml"), this)
                 .title(title)
                 .onOkButtonClicked(this::okClicked)
                 .onStageShown(event -> {

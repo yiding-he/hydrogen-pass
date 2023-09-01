@@ -33,7 +33,7 @@ public class EnterPasswordDialog extends BasicDialog {
         new DialogBuilder()
             .title("输入“" + fileName + "”的主密码")
             .logo(AppLogo.getLogo())
-            .body("/fxml/enter-password.fxml", this)
+            .body(getClass().getResource("/fxml/enter-password.fxml"), this)
             .buttons(ButtonType.OK, ButtonType.CANCEL, EXIT_BUTTON_TYPE)
             .onOkButtonClicked(this::onOkButtonClicked)
             .onStageShown(event -> mainPassword.requestFocus())

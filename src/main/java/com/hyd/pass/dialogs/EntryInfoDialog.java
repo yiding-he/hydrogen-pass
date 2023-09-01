@@ -32,7 +32,7 @@ public class EntryInfoDialog extends BasicDialog {
         new DialogBuilder()
                 .title("入口信息")
                 .logo(AppLogo.getLogo())
-                .body("/fxml/entry-info-dialog.fxml", this)
+                .body(getClass().getResource("/fxml/entry-info-dialog.fxml"), this)
                 .buttons(ButtonType.OK, ButtonType.CANCEL)
                 .onOkButtonClicked(this::onOkButtonClicked)
                 .onStageShown(event -> txtEntryName.requestFocus())

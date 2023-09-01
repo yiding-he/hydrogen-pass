@@ -6,8 +6,6 @@ import com.hyd.pass.fx.Icons;
 import com.hyd.pass.model.Category;
 import com.hyd.pass.model.Entry;
 import com.hyd.pass.model.PasswordLib;
-import java.io.File;
-import java.util.Timer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,10 +14,13 @@ import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.File;
+import java.util.Timer;
+
 /**
- * 运行时需要加上 JVM 参数：
+ * JVM parameters need to be added at runtime:
  * <pre>
- *     --module-path [本机 javafx-sdk-20.0.1\lib]
+ *     --module-path [local path javafx-sdk-20.0.1\lib]
  *     --add-modules javafx.controls
  *     --add-exports javafx.base/com.sun.javafx.binding=ALL-UNNAMED
  *     --add-exports javafx.base/com.sun.javafx.reflect=ALL-UNNAMED
@@ -74,8 +75,6 @@ public class App extends Application {
         primaryStage.setTitle(APP_NAME);
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
-
-        System.out.println("__OK__");
     }
 
     ////////////////////////////////////////////////////////////////////////////////

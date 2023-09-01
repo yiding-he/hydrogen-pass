@@ -35,7 +35,7 @@ public class SearchDialog extends BasicDialog {
 
     public SearchDialog() {
         new DialogBuilder()
-                .body("/fxml/search.fxml", this)
+                .body(getClass().getResource("/fxml/search.fxml"), this)
                 .owner(AppPrimaryStage.getPrimaryStage())
                 .title("关键字搜索")
                 .buttons(ButtonType.CLOSE)
